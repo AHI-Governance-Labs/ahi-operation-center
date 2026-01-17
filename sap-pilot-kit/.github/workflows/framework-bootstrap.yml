@@ -1,0 +1,127 @@
+name: Bootstrap AHI Governance Framework
+
+on:
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  pull-requests: write
+  metadata: read
+
+jobs:
+  bootstrap-framework:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout (empty)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install PyJWT requests
+
+      - name: Generate Installation Access Token
+        id: auth
+        run: |
+          python << 'EOF'
+          import jwt, time, requests, os
+
+          APP_ID = int(os.environ["GH_APP_ID"])
+          INSTALLATION_ID = os.environ["GH_INSTALLATION_ID"]
+          PRIVATE_KEY = os.environ["GH_APP_PRIVATE_KEY"]
+
+          payload = {
+              "iat": int(time.time()) - 60,
+              "exp": int(time.time()) + 600,
+              "iss": APP_ID
+          }
+
+          token_jwt = jwt.encode(payload, PRIVATE_KEY, algorithm="RS256")
+
+          headers = {
+              "Authorization": f"Bearer {token_jwt}",
+              "Accept": "application/vnd.github+json"
+          }
+
+          url = f"https://api.github.com/app/installations/{INSTALLATION_ID}/access_tokens"
+          r = requests.post(url, headers=headers)
+          r.raise_for_status()
+
+          print(f"TOKEN={r.json()['token']}")
+          EOF
+        env:
+          GH_APP_ID: ${{ secrets.GH_APP_ID }}
+          GH_INSTALLATION_ID: ${{ secrets.GH_INSTALLATION_ID }}
+          GH_APP_PRIVATE_KEY: ${{ secrets.GH_APP_PRIVATE_KEY }}
+
+      - name: Export token
+        run: |
+          echo "${{ steps.auth.outputs.stdout }}" >> $GITHUB_ENV
+
+      - name: Create framework repository if missing
+        run: |
+          curl -s -o /dev/null -w "%{http_code}" \
+            -X POST https://api.github.com/orgs/AHI-Governance-Labs/repos \
+            -H "Authorization: token $TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            -d '{
+              "name": "ahi-governance-framework",
+              "private": true,
+              "description": "Canonical framework root for AHI Governance"
+            }' || true
+
+      - name: Checkout framework repo
+        uses: actions/checkout@v4
+        with:
+          repository: AHI-Governance-Labs/ahi-governance-framework
+          token: ${{ env.TOKEN }}
+          ref: main
+          path: framework
+
+      - name: Create bootstrap branch
+        run: |
+          cd framework
+          git checkout -b chore/framework-bootstrap
+
+      - name: Write required files
+        run: |
+          cd framework
+
+          echo "# AHI Governance Framework" > README.md
+          echo "Canonical framework root. See FRAMEWORK_SPEC.md." >> README.md
+
+          cp ../FRAMEWORK_SPEC.md FRAMEWORK_SPEC.md || true
+
+          echo "CC BY-NC-SA 4.0" > LICENSE
+
+          cp ../CONTRIBUTING.md CONTRIBUTING.md || true
+          cp ../SECURITY.md SECURITY.md || true
+          cp ../CODE_OF_CONDUCT.md CODE_OF_CONDUCT.md || true
+
+      - name: Commit changes
+        run: |
+          cd framework
+          git add .
+          git config user.name "ahi-governance-automation"
+          git config user.email "automation@ahigovernance.com"
+          git commit -m "Bootstrap framework root per FRAMEWORK_SPEC.md"
+
+      - name: Push branch
+        run: |
+          cd framework
+          git push origin chore/framework-bootstrap
+
+      - name: Open Pull Request
+        run: |
+          curl -X POST https://api.github.com/repos/AHI-Governance-Labs/ahi-governance-framework/pulls \
+            -H "Authorization: token $TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            -d '{
+              "title": "Bootstrap framework root (governed)",
+              "head": "chore/framework-bootstrap",
+              "base": "main",
+              "body": "Initial framework bootstrap executed via GitHub Actions. No code changes. Subject to human audit."
+            }'
