@@ -1,0 +1,39 @@
+name: Deploy Websites to Hostinger
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy-ahigovernance:
+    name: Deploy AHI Governance
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Deploy to Hostinger
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.AHI_FTP_SERVER }}
+          username: ${{ secrets.AHI_FTP_USER }}
+          password: ${{ secrets.AHI_FTP_PASS }}
+          local-dir: ./sitios-web/ahigovernance.com/
+          server-dir: ./public_html/
+
+  deploy-sovereignsymbiosis:
+    name: Deploy Sovereign Symbiosis
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Deploy to Hostinger
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.SS_FTP_SERVER }}
+          username: ${{ secrets.SS_FTP_USER }}
+          password: ${{ secrets.SS_FTP_PASS }}
+          local-dir: ./sitios-web/sovereignsybiosis.com/
+          server-dir: ./public_html/
