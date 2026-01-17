@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EU AI Act Compliance Support | AHI Governance Labs</title>
+    <meta name="description"
+        content="Cómo CRI™ facilita la preparación para el EU AI Act. Pruebas de estrés, documentación técnica y evidencia auditable.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-tertiary: #1a1a24;
+            --bg-card: rgba(26, 26, 36, 0.8);
+            --text-primary: #f0f0f5;
+            --text-secondary: #9090a0;
+            --text-muted: #606070;
+            --accent-cyan: #00d4ff;
+            --accent-cyan-dim: rgba(0, 212, 255, 0.15);
+            --accent-green: #00ff88;
+            --accent-green-dim: rgba(0, 255, 136, 0.15);
+            --accent-orange: #ff9500;
+            --accent-red: #ff3b5c;
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-accent: rgba(0, 212, 255, 0.3);
+            --gradient-primary: linear-gradient(135deg, #00d4ff 0%, #0066ff 50%, #6600ff 100%);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Hero */
+        .hero {
+            padding: 120px 0 80px;
+            text-align: center;
+            background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+        }
+
+        .eu-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--accent-cyan-dim);
+            border: 1px solid var(--accent-cyan);
+            padding: 8px 16px;
+            border-radius: 100px;
+            font-size: 0.85rem;
+            margin-bottom: 24px;
+        }
+
+        .hero-title {
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 800;
+            margin-bottom: 16px;
+        }
+
+        .hero-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Content */
+        .content {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-title::before {
+            content: '';
+            width: 4px;
+            height: 28px;
+            background: var(--gradient-primary);
+            border-radius: 2px;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .card h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--accent-cyan);
+        }
+
+        .card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .card ul {
+            list-style: none;
+            margin-top: 16px;
+        }
+
+        .card ul li {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+        }
+
+        .card ul li::before {
+            content: '✓';
+            color: var(--accent-green);
+            font-weight: 600;
+        }
+
+        /* Warning box */
+        .warning-box {
+            background: rgba(255, 149, 0, 0.1);
+            border: 1px solid var(--accent-orange);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 32px 0;
+        }
+
+        .warning-box h4 {
+            color: var(--accent-orange);
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .warning-box p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        /* CTA */
+        .cta {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-accent);
+            border-radius: 20px;
+            padding: 48px;
+            text-align: center;
+            margin: 48px 0;
+        }
+
+        .cta h2 {
+            font-size: 1.5rem;
+            margin-bottom: 16px;
+        }
+
+        .cta p {
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            background: var(--gradient-primary);
+            color: white;
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 212, 255, 0.3);
+        }
+
+        /* Footer */
+        .footer {
+            padding: 32px 0;
+            text-align: center;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .footer a {
+            color: var(--accent-cyan);
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+    <section class="hero">
+        <div class="container">
+            <div class="eu-badge">🇪🇺 EU AI Act Preparation</div>
+            <h1 class="hero-title">Cómo CRI™ facilita el cumplimiento del EU AI Act</h1>
+            <p class="hero-subtitle">
+                Proveemos evidencia técnica documentada de pruebas de estrés, trazabilidad y mitigación de riesgo.
+            </p>
+        </div>
+    </section>
+
+    <section class="content">
+        <div class="container">
+
+            <h2 class="section-title">Qué proporciona CRI™</h2>
+
+            <div class="card">
+                <h3>📊 Pruebas de Estrés Cognitivo</h3>
+                <p>Evaluación sistemática del comportamiento del modelo bajo condiciones adversas.</p>
+                <ul>
+                    <li>9 dimensiones de análisis conductual</li>
+                    <li>Detección de degradación bajo presión computacional</li>
+                    <li>Identificación de puntos de fallo antes de producción</li>
+                    <li>Benchmarking comparativo contra estándares de industria</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3>📄 Documentación Técnica</h3>
+                <p>Reportes auditables que satisfacen requisitos de documentación del EU AI Act.</p>
+                <ul>
+                    <li>Índice de Fiabilidad Corporativa (CRI™ Score 0.0-1.0)</li>
+                    <li>Historial de evaluaciones con timestamps</li>
+                    <li>Análisis de riesgos con niveles de severidad</li>
+                    <li>Recomendaciones técnicas de mitigación (no legales)</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3>🔍 Trazabilidad y Auditoría</h3>
+                <p>Evidencia estructurada para procesos de due diligence regulatorio.</p>
+                <ul>
+                    <li>Log completo de decisiones del motor de consenso</li>
+                    <li>Métricas de entropía y factor de sorpresa</li>
+                    <li>Certificado descargable para stakeholders</li>
+                    <li>Re-auditoría trimestral incluida</li>
+                </ul>
+            </div>
+
+            <div class="warning-box">
+                <h4>⚠️ Nota Legal Importante</h4>
+                <p>
+                    CRI™ <strong>no proporciona certificación de cumplimiento legal</strong>.
+                    Proveemos evidencia técnica estructurada que <em>facilita</em> el cumplimiento del EU AI Act,
+                    pero la determinación final de compliance corresponde a asesores legales y autoridades regulatorias.
+                </p>
+            </div>
+
+            <h2 class="section-title">Alineación con Requisitos EU AI Act</h2>
+
+            <div class="card">
+                <h3>Art. 9 - Sistema de Gestión de Riesgos</h3>
+                <p>CRI™ identifica, analiza y evalúa riesgos conocidos y razonablemente previsibles asociados con
+                    sistemas de IA de alto riesgo.</p>
+            </div>
+
+            <div class="card">
+                <h3>Art. 11 - Documentación Técnica</h3>
+                <p>Generamos documentación estructurada que demuestra conformidad con requisitos antes de
+                    comercialización.</p>
+            </div>
+
+            <div class="card">
+                <h3>Art. 15 - Exactitud, Robustez y Ciberseguridad</h3>
+                <p>Nuestras pruebas de estrés evalúan resiliencia ante errores, fallos e inconsistencias.</p>
+            </div>
+
+            <div class="cta">
+                <h2>¿Su IA está preparada para agosto 2025?</h2>
+                <p>El EU AI Act entra en vigor parcialmente en agosto 2025. Prepare su documentación ahora.</p>
+                <a href="indexa.html#contact" class="btn">Agendar Auditoría Gratuita →</a>
+            </div>
+
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <p>© 2025 AHI Governance Labs | <a href="indexa.html">Volver al inicio</a></p>
+        </div>
+    </footer>
+</body>
+
+</html>

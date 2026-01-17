@@ -1,0 +1,18 @@
+steps:
+  # 1. Archive Proxy Bundle
+  - name: 'bash'
+    args: ['zip', '-r', 'apiproxy.zip', 'apiproxies/']
+    dir: 'src/main/apigee'
+
+  # 2. Deploy to Apigee X/Hybrid (Placeholder)
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        echo "🚀 Deploying to Apigee Organization: $PROJECT_ID"
+        # gcloud alpha apigee apis deploy --organization=$PROJECT_ID --api=sap-governance-v1 --environment=prod --source=apiproxy.zip
+        echo "✅ Deployment simulation complete."
+
+options:
+  logging: CLOUD_LOGGING_ONLY
