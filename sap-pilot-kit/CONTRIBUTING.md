@@ -7,6 +7,7 @@
 AHI Governance Labs maintains open technical tooling to support **event-level governance**, **auditing**, and **certification** of AI systems.
 
 > **Contributions are welcome only if they preserve the following principles:**
+>
 > - Deterministic behavior
 > - Auditability
 > - Reproducibility
@@ -84,6 +85,7 @@ All contributions must comply with these principles:
 ### 4.1 Code Repositories `[MIT Licensed]`
 
 **Applies to repositories such as:**
+
 - `sap-protocol-core`
 - `meba-core`
 
@@ -97,6 +99,7 @@ All contributions must comply with these principles:
 ```
 
 **By contributing code, you agree that:**
+
 1. Your contribution is licensed under the **MIT License**
 2. You grant AHI Governance Labs the right to use it without additional restrictions
 
@@ -105,6 +108,7 @@ All contributions must comply with these principles:
 ### 4.2 Standards and Certification Repositories `[CC BY-NC-SA 4.0]`
 
 **Applies to repositories such as:**
+
 - `ahi-governance-standards`
 - `ahi-certification-kit`
 - `sap-training-program`
@@ -125,7 +129,12 @@ All contributions must comply with these principles:
 ## 5. Contribution Process
 
 ```mermaid
-Fork → Branch → Changes → Tests → PR → Review
+graph LR
+    Fork --> Branch
+    Branch --> Changes
+    Changes --> Tests
+    Tests --> PR
+    PR --> Review
 ```
 
 **Step-by-step:**
@@ -136,7 +145,7 @@ Fork → Branch → Changes → Tests → PR → Review
 4. **Add or update** tests if applicable
 5. **Submit** a Pull Request (PR)
 
-### Each PR must include:
+### Each PR must include
 
 - [ ] Clear description of the change
 - [ ] Technical rationale
@@ -155,7 +164,7 @@ Pull Requests are evaluated on:
 | Impact on reproducibility | **HIGH** |
 | Risk to audit integrity | **HIGH** |
 
-### Possible outcomes:
+### Possible outcomes
 
 - **Accepted** — Merged into codebase
 - **Rejected** — Not aligned with principles
@@ -185,13 +194,13 @@ This includes the right to:
 
 Security or integrity issues must be reported **privately**.
 
-### Do NOT open public issues for:
+### Do NOT open public issues for
 
 - Vulnerabilities
 - Bypass techniques
 - Exploit vectors
 
-### Contact:
+### Contact
 
 ```
 enterprise@ahigovernance.com

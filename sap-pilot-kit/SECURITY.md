@@ -72,9 +72,11 @@ All vulnerabilities **must** be reported privately.
 
 **Do NOT:**
 
-- Open public GitHub issues
-- Publish proof-of-concept exploits
-- Share bypass techniques publicly
+```
+→ Open public GitHub issues
+→ Publish proof-of-concept exploits
+→ Share bypass techniques publicly
+```
 
 ### Reporting Channel
 
@@ -162,9 +164,11 @@ Any vulnerability discovered:
 
 This policy does **not** grant permission to:
 
-- Perform penetration testing on production systems
-- Access customer environments
-- Attempt bypasses outside controlled audit contexts
+```
+→ Perform penetration testing on production systems
+→ Access customer environments
+→ Attempt bypasses outside controlled audit contexts
+```
 
 ```
 Unauthorized testing may be unlawful.
