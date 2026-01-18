@@ -144,6 +144,6 @@ Changes to this specification require:
 ---
 
 **Document Version:** 1.0  
-**Last Updated:** 2025-01  
+**Last Updated:** 2025-01-18  
 **Authority:** AHI Governance Labs
 
