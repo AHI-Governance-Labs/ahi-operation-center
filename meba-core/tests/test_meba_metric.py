@@ -1,7 +1,6 @@
 """
 Tests for MEBA Core - MEBACalculator
 """
-import pytest
 import sys
 from pathlib import Path
 

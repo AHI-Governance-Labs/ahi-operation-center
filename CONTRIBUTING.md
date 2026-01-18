@@ -16,7 +16,7 @@ Welcome to **AHI Governance Labs**. This document outlines the guidelines for co
 
 ## Code of Conduct
 
-All contributors must adhere to our [Code of Conduct](./sap-pilot-kit/CODE_OF_CONDUCT.md).
+All contributors to the SAP Pilot Kit component must adhere to its [Code of Conduct](./sap-pilot-kit/CODE_OF_CONDUCT.md).
 
 **Key principles:**
 

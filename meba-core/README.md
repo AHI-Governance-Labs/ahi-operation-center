@@ -63,10 +63,12 @@ python src/meba_metric.py
 ```
 meba-core/
 ├── src/
-│   └── meba_metric.py    → Implementación principal
-├── CONTRIBUTING.md        → Guía de contribución
-├── LICENSE               → MIT + CC BY-NC-SA 4.0
-└── README.md             → Este archivo
+│   └── meba_metric.py      → Implementación principal
+├── tests/
+│   └── test_meba_metric.py → Pruebas unitarias para MEBA
+├── CONTRIBUTING.md         → Guía de contribución
+├── LICENSE                 → MIT + CC BY-NC-SA 4.0
+└── README.md               → Este archivo
 ```
 
 ---

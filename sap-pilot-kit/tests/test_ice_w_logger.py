@@ -115,14 +115,14 @@ class TestICEWLogger:
             'decision_entropy': 0.95
         }
         
-        blocked = False
         for _ in range(50):
             log = logger.process_event(unstable_metrics)
             if log['autarchy']['action'] == "BLOCK_OUTPUT":
-                blocked = True
                 break
         
-        assert blocked or logger.state == "INVALIDATED"
+        # Per SAP protocol: when INVALIDATED, output must be blocked
+        assert logger.state == "INVALIDATED"
+        assert logger.is_blocked
 
     def test_telemetry_log_accumulation(self):
         """Test that telemetry log accumulates events."""
@@ -185,6 +185,9 @@ class TestICEWLogger:
         assert 'issue_date' in cert
         assert cert['artifact_id'] == "TEST-001"
         assert cert['sha256'] == "abc123"
+        # Validate result field based on is_blocked state
+        assert 'result' in cert
+        assert cert['result'] in ["PASSED (BLOCKED)", "FAILED"]
 
 
 class TestSAPParameters:

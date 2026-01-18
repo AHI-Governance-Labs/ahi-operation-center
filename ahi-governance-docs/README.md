@@ -15,7 +15,7 @@ ahi-governance-docs/
 ├── CONTRIBUTING.md              → Guía de contribución
 ├── LICENSE                      → Licencia MIT + CC BY-NC-SA 4.0
 └── README.md                    → Este archivo
----
+```
 
 ## 📚 Documentos Disponibles
 
