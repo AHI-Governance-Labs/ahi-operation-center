@@ -1,0 +1,54 @@
+[project]
+name = "ahi-operation-center"
+version = "1.0.0"
+description = "Central governance infrastructure for AHI Governance Labs"
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "MIT"}
+authors = [
+    {name = "AHI Governance Labs", email = "enterprise@ahigovernance.com"}
+]
+keywords = ["governance", "ai", "certification", "sap", "meba"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+
+dependencies = [
+    "numpy>=1.21.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "flake8>=6.0.0",
+]
+
+[project.urls]
+Homepage = "https://ahigovernance.com"
+Repository = "https://github.com/AHI-Governance-Labs/ahi-operation-center"
+Documentation = "https://sovereignsymbiosis.com"
+
+[tool.pytest.ini_options]
+testpaths = ["meba-core/tests", "sap-pilot-kit/tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short"
+
+[tool.flake8]
+max-line-length = 120
+exclude = [".git", "__pycache__", "*.pyc"]
+select = ["E", "F", "W"]
+ignore = ["E501", "W503"]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
