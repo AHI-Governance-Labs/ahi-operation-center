@@ -88,7 +88,7 @@ class TestICEWLogger:
         
         # Process several unstable events to trigger state change
         for _ in range(10):
-            log = logger.process_event(unstable_metrics)
+            logger.process_event(unstable_metrics)
         
         # Should eventually transition to DEGRADED or INVALIDATED
         assert logger.state in ["DEGRADED", "INVALIDATED"]
