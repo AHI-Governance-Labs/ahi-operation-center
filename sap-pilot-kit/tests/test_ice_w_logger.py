@@ -3,12 +3,15 @@ Tests for SAP Pilot Kit - ICE-W Logger
 """
 import pytest
 import sys
-import os
 import json
 import tempfile
+import os
+from pathlib import Path
 
 # Add parent directory to path for imports
-sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
+parent_path = Path(__file__).parent.parent
+if str(parent_path) not in sys.path:
+    sys.path.insert(0, str(parent_path))
 
 from ice_w_logger import ICEWLogger
 
@@ -23,7 +26,7 @@ class TestICEWLogger:
         assert logger.artifact_id == "TEST-001"
         assert logger.sha256 == "abc123"
         assert logger.state == "SOVEREIGN"
-        assert logger.is_blocked == False
+        assert not logger.is_blocked
         assert logger.k_counter == 0
         assert logger.m_counter == 0
         assert logger.p_counter == 0

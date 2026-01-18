@@ -3,10 +3,12 @@ Tests for MEBA Core - MEBACalculator
 """
 import pytest
 import sys
-import os
+from pathlib import Path
 
-# Add parent directory to path for imports
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
+# Add src directory to path for imports
+src_path = Path(__file__).parent.parent / 'src'
+if str(src_path) not in sys.path:
+    sys.path.insert(0, str(src_path))
 
 from meba_metric import MEBACalculator, Interaction
 

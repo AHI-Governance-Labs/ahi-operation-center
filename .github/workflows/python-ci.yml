@@ -16,6 +16,9 @@ on:
       - 'requirements.txt'
       - '.github/workflows/python-ci.yml'
 
+permissions:
+  contents: read
+
 jobs:
   test:
     name: Test Python Components

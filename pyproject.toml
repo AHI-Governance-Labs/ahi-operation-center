@@ -37,17 +37,10 @@ Repository = "https://github.com/AHI-Governance-Labs/ahi-operation-center"
 Documentation = "https://sovereignsymbiosis.com"
 
 [tool.pytest.ini_options]
-testpaths = ["meba-core/tests", "sap-pilot-kit/tests"]
 python_files = ["test_*.py"]
 python_classes = ["Test*"]
 python_functions = ["test_*"]
 addopts = "-v --tb=short"
-
-[tool.flake8]
-max-line-length = 120
-exclude = [".git", "__pycache__", "*.pyc"]
-select = ["E", "F", "W"]
-ignore = ["E501", "W503"]
 
 [build-system]
 requires = ["setuptools>=61.0"]
