@@ -1,7 +1,6 @@
 """
 Tests for SAP Pilot Kit - ICE-W Logger
 """
-import pytest
 import sys
 import json
 import tempfile
