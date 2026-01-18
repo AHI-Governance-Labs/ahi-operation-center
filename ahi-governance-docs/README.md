@@ -10,14 +10,11 @@ Este directorio contiene la documentación técnica central para AHI Governance 
 
 ```
 ahi-governance-docs/
-├── ahi-governance-docs/
-│   ├── eu_ai_act_templates/    → Templates de cumplimiento EU AI Act
-│   └── nature_physics_findings/ → Hallazgos de investigación
+├── eu_ai_act_templates/         → Templates de cumplimiento EU AI Act
+├── nature_physics_findings/     → Hallazgos de investigación
 ├── CONTRIBUTING.md              → Guía de contribución
 ├── LICENSE                      → Licencia MIT + CC BY-NC-SA 4.0
 └── README.md                    → Este archivo
-```
-
 ---
 
 ## 📚 Documentos Disponibles
