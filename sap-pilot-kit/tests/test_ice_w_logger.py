@@ -1,11 +1,18 @@
 """
 Tests for SAP Pilot Kit - ICE-W Logger
 """
+import sys
 import json
 import tempfile
 import os
+from pathlib import Path
 
-from sap_pilot_kit.ice_w_logger import ICEWLogger
+# Add parent directory to path for imports
+parent_path = Path(__file__).parent.parent
+if str(parent_path) not in sys.path:
+    sys.path.insert(0, str(parent_path))
+
+from ice_w_logger import ICEWLogger
 
 
 class TestICEWLogger:
