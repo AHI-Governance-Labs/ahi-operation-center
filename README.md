@@ -21,7 +21,7 @@ Este repositorio contiene la infraestructura completa para la certificación de 
 
 ```
 ahi-operation-center/
-├── ahi-gov/                    → Configuración de Cloud Build para Apigee
+├── ahi-gov/                    → Implementación de Apigee (trabajo futuro)
 ├── ahi-governance-docs/        → Documentación técnica y templates
 ├── ahi-governance-framework/   → Especificación canónica del framework
 ├── documentos-de-gobernanza/   → Biblioteca normativa y comercial (EN/ES)
@@ -39,8 +39,8 @@ Kit de pruebas para validar la autarquía técnica de sistemas de IA mediante el
 
 ```bash
 cd sap-pilot-kit
-pip install numpy
-python boiling_frog_tester.py
+pip install .
+python src/boiling_frog_tester.py
 ```
 
 ### MEBA Core
@@ -74,8 +74,8 @@ Plataformas web para AHI Governance Labs:
 ### Sitios Web (GitHub Actions → Hostinger)
 Los sitios web se despliegan automáticamente a Hostinger via FTP cuando se hace push a `main`.
 
-### API Gateway (Cloud Build → Apigee)
-La configuración de Apigee se despliega mediante Cloud Build.
+### API Gateway (Apigee)
+*La implementación y despliegue del API Gateway están planificados para una futura versión.*
 
 ---
 

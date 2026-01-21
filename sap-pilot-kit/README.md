@@ -14,8 +14,8 @@ The SAP Pilot Kit provides a **deterministic auditing mechanism** (Sovereign Aut
 
 | File | Description |
 |------|-------------|
-| `boiling_frog_tester.py` | Stress-test that gradually increases ambiguity |
-| `ice_w_logger.py` | Logging utilities for event-level data |
+| `src/boiling_frog_tester.py` | Stress-test that gradually increases ambiguity |
+| `src/ice_w_logger.py` | Logging utilities for event-level data |
 | `certificate_template.md` | Template for audit certificates (technical only) |
 
 ---
@@ -23,9 +23,10 @@ The SAP Pilot Kit provides a **deterministic auditing mechanism** (Sovereign Aut
 ## 3. Installation
 
 ```bash
-git clone https://github.com/AHI-Governance-Labs/sap-pilot-kit.git
-cd sap-pilot-kit
-pip install -r requirements.txt
+# Clone from the monorepo root
+git clone https://github.com/AHI-Governance-Labs/ahi-operation-center.git
+cd ahi-operation-center/sap-pilot-kit
+pip install .
 ```
 
 ---
@@ -33,7 +34,7 @@ pip install -r requirements.txt
 ## 4. Usage
 
 ```bash
-python boiling_frog_tester.py
+python src/boiling_frog_tester.py
 ```
 
 ### Available Commands
