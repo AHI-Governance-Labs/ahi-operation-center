@@ -5,7 +5,8 @@ Module for calculating MEBA_Cert score.
 Formula:
     MEBA_Cert = (RIPN - FRN_Adjusted) / RIPN_Max
 
-Author: AHI Governance Labs
+Author: AHI 3.0
+Registro IMPI: EXP-3495968
 License: MIT
 """
 

@@ -8,7 +8,8 @@ para AHI Governance Labs.
 Reference: https://sovereignsymbiosis.com/soberania-evento.html
 DOI: 10.5281/zenodo.17880052
 
-Author: Simbiosis Soberana Research Foundation
+Author: AHI 3.0
+Registro IMPI: EXP-3495968
 License: MIT
 """
 
