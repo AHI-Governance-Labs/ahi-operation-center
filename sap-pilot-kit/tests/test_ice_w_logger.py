@@ -8,11 +8,11 @@ import os
 from pathlib import Path
 
 # Add parent directory to path for imports
-parent_path = Path(__file__).parent.parent
-if str(parent_path) not in sys.path:
-    sys.path.insert(0, str(parent_path))
+# parent_path = Path(__file__).parent.parent
+# if str(parent_path) not in sys.path:
+#     sys.path.insert(0, str(parent_path))
 
-from ice_w_logger import ICEWLogger
+from sap_pilot_kit.ice_w_logger import ICEWLogger
 
 
 class TestICEWLogger:

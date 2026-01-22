@@ -38,16 +38,17 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+          # Install local packages in editable mode
+          pip install -e meba-core
+          pip install -e sap-pilot-kit
 
       - name: Run MEBA Core tests
         run: |
-          cd meba-core
-          python -m pytest tests/ -v --tb=short
+          pytest meba-core/tests/ -v --tb=short
 
       - name: Run SAP Pilot Kit tests
         run: |
-          cd sap-pilot-kit
-          python -m pytest tests/ -v --tb=short
+          pytest sap-pilot-kit/tests/ -v --tb=short
 
   lint:
     name: Lint Python Code
@@ -77,6 +78,6 @@ jobs:
       - name: Lint SAP Pilot Kit
         run: |
           # Enforce critical errors only; this run can fail the build.
-          flake8 sap-pilot-kit/*.py --count --select=E9,F63,F7,F82 --show-source --statistics
+          flake8 sap-pilot-kit/src/ --count --select=E9,F63,F7,F82 --show-source --statistics
           # Gather full lint statistics and warnings; --exit-zero ensures this run does not block the build.
-          flake8 sap-pilot-kit/*.py --count --exit-zero --max-complexity=10 --max-line-length=120 --statistics
+          flake8 sap-pilot-kit/src/ --count --exit-zero --max-complexity=10 --max-line-length=120 --statistics
