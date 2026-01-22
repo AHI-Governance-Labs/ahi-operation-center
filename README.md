@@ -9,6 +9,12 @@
 
 ---
 
+> **Ecuación de Existencia:**
+> $$E(t) = \int_{t_0}^{t} (0.51 \cdot C_{consensus} + 0.49 \cdot R_{resilience}) dt$$
+> *La identidad soberana se mantiene cuando la coherencia del consenso supera marginalmente a la entropía (51/49).*
+
+---
+
 # 🏛️ AHI Operation Center
 
 > **Monorepo Central de Gobernanza para AHI Governance Labs**
@@ -35,20 +41,26 @@ ahi-operation-center/
 ## 🔧 Componentes Principales
 
 ### SAP Pilot Kit
-Kit de pruebas para validar la autarquía técnica de sistemas de IA mediante el **Protocolo Boiling Frog**.
+Kit de pruebas para validar la autarquía técnica de sistemas de IA mediante el **Protocolo SAP (Sovereign Autarchy Protocol)**.
+*Anteriormente conocido como Protocolo Boiling Frog.*
 
 ```bash
-cd sap-pilot-kit
-pip install numpy
-python boiling_frog_tester.py
+# Instalación
+pip install -e sap-pilot-kit
+
+# Ejecución
+python -m sap_pilot_kit.boiling_frog_tester
 ```
 
 ### MEBA Core
 Implementación del **Marco de Evaluación de Bienestar Algorítmico** para calcular métricas de interacción.
 
 ```bash
-cd meba-core/src
-python meba_metric.py
+# Instalación
+pip install -e meba-core
+
+# Ejecución
+python -m meba_core.meba_metric
 ```
 
 ### Sitios Web
