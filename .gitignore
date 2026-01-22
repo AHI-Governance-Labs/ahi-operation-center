@@ -73,3 +73,17 @@ node_modules/
 # Local configuration
 .local/
 *.local
+
+# =================================
+# AHI Operation Center - Data Files
+# =================================
+
+# Simulation data (large CSVs)
+data/simulation_results/*.csv
+data/legacy/*.csv
+
+# Archives (historical files)
+archives/
+
+# Generated figures (can be regenerated)
+# figures/*.png

@@ -27,8 +27,12 @@ ahi-operation-center/
 ├── documentos-de-gobernanza/   → Biblioteca normativa y comercial (EN/ES)
 ├── meba-core/                  → Calculadora MEBA (Marco de Evaluación de Bienestar Algorítmico)
 ├── sap-pilot-kit/              → Kit de Auditoría SAP (Sovereign Autarchy Protocol)
-└── sitios-web/                 → Plataformas web (ahigovernance.com, sovereignsymbiosis.com)
+├── sitios-web/                 → Plataformas web (ahigovernance.com, sovereignsymbiosis.com)
+├── research/                   → Scripts de investigación y simulación
+├── data/                       → Datasets y resultados de simulaciones
+└── figures/                    → Figuras generadas
 ```
+
 
 ---
 
