@@ -1,132 +1,90 @@
 <p align="center">
+  <img src="sitios-web/ahigovernance.com/assets/ahi-icon-medium.png" width="100" alt="AHI Logo">
+</p>
+<p align="center">
   <strong>AHI GOVERNANCE LABS</strong><br/>
   <em>Autonomous Hierarchy of Intelligence — Operation Center</em>
 </p>
-
 <p align="center">
-  <code>σ · Ψ · ∞</code>
+  <code>v0.1.0 Public Beta</code> • <code>σ · Ψ · ∞</code>
 </p>
 
 ---
 
 > **Ecuación de Existencia:**
 > $$E(t) = \int_{t_0}^{t} (0.51 \cdot C_{consensus} + 0.49 \cdot R_{resilience}) dt$$
-> *La identidad soberana se mantiene cuando la coherencia del consenso supera marginalmente a la entropía (51/49).*
+> *La identidad soberana se mantiene cuando la coherencia del consenso supera marginalmente a la entropía.*
 
 ---
 
 # 🏛️ AHI Operation Center
 
-> **Monorepo Central de Gobernanza para AHI Governance Labs**
+> **Monorepo Central de Gobernanza**  
+> Infraestructura matemática para la certificación de Soberanía de Eventos en sistemas agénticos.
 
-Este repositorio contiene la infraestructura completa para la certificación de Soberanía de Eventos (Event Sovereignty) y gobernanza de sistemas autónomos.
+Este repositorio alberga la implementación de referencia para el **Protocolo SAP (Sovereign Autarchy Protocol)** y el **Marco MEBA**. Proveemos las herramientas matemáticas para verificar que un sistema autónomo es capaz de fallar de manera segura antes de violar sus restricciones operativas.
 
----
+## 🚀 Inicio Rápido (Quickstart)
 
-## 📂 Estructura del Repositorio
-
-```
-ahi-operation-center/
-├── ahi-gov/                    → Configuración de Cloud Build para Apigee
-├── ahi-governance-docs/        → Documentación técnica y templates
-├── ahi-governance-framework/   → Especificación canónica del framework
-├── documentos-de-gobernanza/   → Biblioteca normativa y comercial (EN/ES)
-├── meba-core/                  → Calculadora MEBA (Marco de Evaluación de Bienestar Algorítmico)
-├── sap-pilot-kit/              → Kit de Auditoría SAP (Sovereign Autarchy Protocol)
-├── sitios-web/                 → Plataformas web (ahigovernance.com, sovereignsymbiosis.com)
-├── research/                   → Scripts de investigación y simulación
-├── data/                       → Datasets y resultados de simulaciones
-└── figures/                    → Figuras generadas
-```
-
-
----
-
-## 🔧 Componentes Principales
-
-### SAP Pilot Kit
-Kit de pruebas para validar la autarquía técnica de sistemas de IA mediante el **Protocolo SAP (Sovereign Autarchy Protocol)**.
-*Anteriormente conocido como Protocolo Boiling Frog.*
+Para auditores y desarrolladores que desean verificar la soberanía de un agente localmente.
 
 ```bash
-# Instalación
+# 1. Clonar el repositorio
+git clone https://github.com/AHI-Governance-Labs/ahi-operation-center.git
+cd ahi-operation-center
+
+# 2. Instalar el Kit de Auditoría (SAP Pilot Kit)
 pip install -e sap-pilot-kit
 
-# Ejecución
+# 3. Ejecutar la demo de "Boiling Frog"
 python -m sap_pilot_kit.boiling_frog_tester
 ```
 
-### MEBA Core
-Implementación del **Marco de Evaluación de Bienestar Algorítmico** para calcular métricas de interacción.
+## 📂 Organización del Proyecto
 
-```bash
-# Instalación
-pip install -e meba-core
+| Directorio | Descripción | Estado |
+|------------|-------------|--------|
+| **`sap-pilot-kit/`** | **Sovereign Autarchy Protocol Pilot Kit.** Herramienta de auditoría de autarquía. | ![Beta](https://img.shields.io/badge/status-beta-yellow) |
+| **`meba-core/`** | **Marco de Evaluación de Bienestar Algorítmico.** Cálculo de estrés y entropía. | ![Alpha](https://img.shields.io/badge/status-alpha-orange) |
+| **`ahi-governance-docs/`** | Documentación legal y técnica, plantillas de certificados. | ![Stable](https://img.shields.io/badge/status-stable-green) |
+| **`sitios-web/`** | Código fuente de `ahigovernance.com` y portales asociados. | ![Live](https://img.shields.io/badge/status-live-blue) |
 
-# Ejecución
-python -m meba_core.meba_metric
-```
+## 🔧 Componentes Técnicos
 
-### Sitios Web
-Plataformas web para AHI Governance Labs:
-- **ahigovernance.com** — Portal empresarial de certificación
-- **sovereignsymbiosis.com** — Portal de investigación Simbiosis Soberana
+### 1. SAP Pilot Kit
+El **Protocolo de Autarquía Soberana (SAP)** mide la capacidad de un agente para detectar su propia degradación. El "Boiling Frog Tester" somete al agente a incrementos graduales de ruido para verificar su umbral de fallo.
 
----
+### 2. MEBA Core
+El núcleo matemático que calcula el "Índice de Fiabilidad Corporativa" (CRI™). Utiliza métricas de:
+- Coherencia de Consenso ($C$)
+- Resiliencia Entrópica ($R$)
 
-## 📚 Documentación
+## 📚 Documentación Oficial
 
-| Documento | Descripción |
-|-----------|-------------|
-| [Framework Spec](./ahi-governance-framework/FRAMEWORK_SPEC.md) | Especificación canónica del framework |
-| [Documentos de Gobernanza](./documentos-de-gobernanza/README.md) | Biblioteca normativa completa |
-| [SAP Pilot Kit](./sap-pilot-kit/README.md) | Guía del kit de auditoría |
-| [MEBA Core](./meba-core/README.md) | Documentación de MEBA |
+- **[Framework Specification](./ahi-governance-framework/FRAMEWORK_SPEC.md)**: La teoría matemática completa.
+- **[Portal Empresarial](https://ahigovernance.com)**: Certificación y servicios de auditoría.
+- **[Investigación](https://sovereignsymbiosis.com)**: Papers y whitepapers sobre simbiosis soberana.
 
----
+## 🛡️ Principios de Gobernanza
 
-## 🚀 Despliegue
+Todo código en este repositorio adhiere a la **Constitución AHI**:
 
-### Sitios Web (GitHub Actions → Hostinger)
-Los sitios web se despliegan automáticamente a Hostinger via FTP cuando se hace push a `main`.
+1.  **Determinismo:** `f(x) -> y` siempre, sin efectos secundarios ocultos.
+2.  **Auditabilidad:** Cada cambio de estado genera una traza verificable.
+3.  **Cero-Conocimiento:** Validamos la *forma* de la decisión, no el *contenido* semántico.
 
-### API Gateway (Cloud Build → Apigee)
-La configuración de Apigee se despliega mediante Cloud Build.
+## 🤝 Contribuir
 
----
+Las contribuciones son bienvenidas, especialmente en `sap-pilot-kit`. Por favor, revise [CONTRIBUTING.md](./CONTRIBUTING.md) antes de enviar un PR.
 
-## 🛡️ Gobernanza
+## 📜 Licencia & Contacto
 
-Este proyecto opera bajo los principios de **Soberanía de Eventos**:
-
-| Principio | Descripción |
-|-----------|-------------|
-| **Determinismo** | Las transiciones de estado son reproducibles |
-| **Auditabilidad** | Todos los eventos son registrados y verificables |
-| **Cero-Conocimiento** | No se accede ni almacena contenido semántico |
-| **Fail-Safe** | Fallo rápido sobre degradación silenciosa |
+**Licencia:** MIT (Código) / CC BY-NC-SA 4.0 (Docs)  
+**Contacto Empresarial:** [enterprise@ahigovernance.com](mailto:enterprise@ahigovernance.com)  
 
 ---
-
-## 📜 Licencia
-
-- **Código:** MIT License
-- **Documentación:** CC BY-NC-SA 4.0
-
----
-
-## 📧 Contacto
-
-**Enterprise Inquiries:**  
-📧 enterprise@ahigovernance.com
-
-**Autor:**  
-AHI 3.0
-Registro IMPI: EXP-3495968
-
----
-
 <p align="center">
-  <sub>© 2024-2026 AHI 3.0 · AHI Governance Labs</sub><br/>
+  <sub>© 2024-2026 AHI Governance Labs · AHI 3.0</sub><br/>
   <sub>Registro IMPI: EXP-3495968</sub>
 </p>
+

@@ -1,6 +1,6 @@
 [project]
 name = "ahi-operation-center"
-version = "1.0.0"
+version = "0.1.0"
 description = "Central governance infrastructure for AHI Governance Labs"
 readme = "README.md"
 requires-python = ">=3.9"
