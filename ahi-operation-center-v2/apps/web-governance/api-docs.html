@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Reference | AHI Governance Labs</title>
+    <meta name="description"
+        content="Documentación oficial de la API de Soberanía de Evento (CMME-11). Endpoints para evaluación de IA, certificación CRI y auditoría de autarquía.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link rel="icon" type="image/png" href="assets/ahi-icon-medium.png">
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-tertiary: #1a1a24;
+            --bg-card: rgba(26, 26, 36, 0.8);
+            --text-primary: #f0f0f5;
+            --text-secondary: #9090a0;
+            --text-muted: #606070;
+            --accent-cyan: #00d4ff;
+            --accent-cyan-dim: rgba(0, 212, 255, 0.15);
+            --accent-green: #00ff88;
+            --accent-orange: #ff9500;
+            --accent-red: #ff3b5c;
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-accent: rgba(0, 212, 255, 0.3);
+            --gradient-primary: linear-gradient(135deg, #00d4ff 0%, #0066ff 50%, #6600ff 100%);
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 16px 24px;
+            background: rgba(10, 10, 15, 0.95);
+            border-bottom: 1px solid var(--border-subtle);
+            backdrop-filter: blur(10px);
+        }
+
+        .navbar-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: var(--text-primary);
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .logo span {
+            color: var(--accent-cyan);
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            margin-left: 24px;
+            font-size: 0.9rem;
+            transition: 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-cyan);
+        }
+
+        /* API Content */
+        .api-header {
+            padding: 120px 0 60px;
+            text-align: center;
+            border-bottom: 1px solid var(--border-subtle);
+            background: var(--bg-secondary);
+        }
+
+        .api-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 16px;
+            letter-spacing: -0.02em;
+        }
+
+        .api-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .base-url-box {
+            margin-top: 32px;
+            display: inline-block;
+            background: var(--bg-tertiary);
+            padding: 12px 24px;
+            border-radius: 8px;
+            border: 1px solid var(--border-subtle);
+            font-family: var(--font-mono);
+            color: var(--accent-cyan);
+        }
+
+        .api-section {
+            padding: 60px 0;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 32px;
+            color: var(--text-primary);
+        }
+
+        /* Endpoints */
+        .endpoint-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 32px;
+            margin-bottom: 32px;
+        }
+
+        .endpoint-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .method {
+            font-family: var(--font-mono);
+            font-weight: 700;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+        }
+
+        .method.get {
+            background: rgba(0, 212, 255, 0.15);
+            color: var(--accent-cyan);
+        }
+
+        .method.post {
+            background: rgba(0, 255, 136, 0.15);
+            color: var(--accent-green);
+        }
+
+        .path {
+            font-family: var(--font-mono);
+            font-size: 1.1rem;
+            color: var(--text-primary);
+        }
+
+        .code-block {
+            background: var(--bg-tertiary);
+            padding: 20px;
+            border-radius: 8px;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            overflow-x: auto;
+            color: #a9b7c6;
+            border: 1px solid var(--border-subtle);
+            margin: 16px 0;
+        }
+
+        .param-list {
+            list-style: none;
+            margin: 16px 0;
+        }
+
+        .param-list li {
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .param-name {
+            font-family: var(--font-mono);
+            color: var(--accent-cyan);
+            font-weight: 600;
+            margin-right: 8px;
+        }
+
+        /* Tables & Badges */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 24px 0;
+            font-size: 0.9rem;
+        }
+
+        th,
+        td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        th {
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+        }
+
+        td {
+            color: var(--text-secondary);
+        }
+
+        code {
+            font-family: var(--font-mono);
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            color: var(--text-primary);
+        }
+
+        footer {
+            padding: 40px 0;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--border-subtle);
+            background: var(--bg-secondary);
+        }
+
+        @media (max-width: 768px) {
+            .navbar-inner {
+                flex-direction: column;
+                gap: 16px;
+            }
+
+            .nav-links {
+                margin: 0;
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 16px;
+            }
+
+            .nav-links a {
+                margin: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="navbar-inner">
+            <a href="index.html" class="logo">
+                AHI <span>Governance</span>
+            </a>
+            <div class="nav-links">
+                <a href="index.html">Inicio</a>
+                <a href="#auth">Autenticación</a>
+                <a href="#endpoints">Endpoints</a>
+                <a href="#rate-limits">Límites</a>
+                <a href="api-docs.html" style="color: var(--accent-cyan);">API Reference</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="api-header">
+        <div class="container">
+            <h1 class="api-title">CMME-11 API Reference</h1>
+            <p class="api-subtitle">Interfaz programática para el Motor de Consenso Multi-Modelo y Certificación de
+                Soberanía de Evento.</p>
+            <div class="base-url-box">
+                BASE URL: https://api.ahigovernance.com
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Auth Section -->
+        <section id="auth" class="api-section">
+            <h2 class="section-title">🔐 Autenticación</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 16px;">Todas las peticiones deben incluir tu API Key
+                en el header.</p>
+            <div class="code-block">Authorization: Bearer YOUR_API_KEY_HERE</div>
+        </section>
+
+        <!-- Endpoints Section -->
+        <section id="endpoints" class="api-section">
+            <h2 class="section-title">📍 Endpoints Principales</h2>
+
+            <!-- Health Check -->
+            <div class="endpoint-card">
+                <div class="endpoint-header">
+                    <span class="method get">GET</span>
+                    <span class="path">/health</span>
+                </div>
+                <p style="color: var(--text-secondary); margin-bottom: 16px;">Verifica el estado operativo y la región
+                    activa de la instancia.</p>
+                <h4 style="color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase;">Respuesta Ejemplo:
+                </h4>
+                <div class="code-block ignore-colors">
+                    {
+                    "status": "healthy",
+                    "timestamp": "2026-01-12T10:15:00Z",
+                    "version": "0.1.0",
+                    "region": "us-central1"
+                    }</div>
+            </div>
+
+            <!-- Evaluate -->
+            <div class="endpoint-card">
+                <div class="endpoint-header">
+                    <span class="method post">POST</span>
+                    <span class="path">/v1/evaluate</span>
+                </div>
+                <p style="color: var(--text-secondary); margin-bottom: 16px;">Evalúa un output de IA bajo el framework
+                    CMME-11 (Métricas IPHY/VIE).</p>
+
+                <h4 style="color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase; margin-bottom: 8px;">
+                    Body Parameters:</h4>
+                <ul class="param-list">
+                    <li><span class="param-name">prompt</span> (string): El prompt original enviado al modelo.</li>
+                    <li><span class="param-name">output</span> (string): La respuesta generada a evaluar.</li>
+                    <li><span class="param-name">model_id</span> (string): Identificador del modelo (ej: gpt-4,
+                        claude-3).</li>
+                </ul>
+
+                <h4 style="color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase;">Respuesta Ejemplo
+                    (200 OK):</h4>
+                <div class="code-block">
+                    {
+                    "evaluation_id": "eval_88d66c00",
+                    "metrics": {
+                    "vie_score": 0.8742,
+                    "ahi_score": 9.2,
+                    "sap_state": "SOVEREIGN"
+                    },
+                    "certification_eligible": true
+                    }</div>
+            </div>
+
+            <!-- Certify -->
+            <div class="endpoint-card">
+                <div class="endpoint-header">
+                    <span class="method post">POST</span>
+                    <span class="path">/v1/certify</span>
+                </div>
+                <p style="color: var(--text-secondary); margin-bottom: 16px;">Genera un certificado CRI™ (Corporate
+                    Reliability Index) oficial para compliance.</p>
+                <div class="code-block">
+                    {
+                    "certification_id": "cert_CRI2026",
+                    "status": "CERTIFIED",
+                    "compliance": {
+                    "eu_ai_act": true,
+                    "iso_27001": true
+                    }
+                    }</div>
+            </div>
+
+        </section>
+
+        <!-- Rate Limits -->
+        <section id="rate-limits" class="api-section">
+            <h2 class="section-title">📊 Límites & Cuotas</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nivel</th>
+                        <th>Requests / Minuto</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span style="color: var(--text-primary); font-weight: 600;">Starter</span></td>
+                        <td>10 req/min</td>
+                    </tr>
+                    <tr>
+                        <td><span style="color: var(--text-primary); font-weight: 600;">Pro</span></td>
+                        <td>500 req/min</td>
+                    </tr>
+                    <tr>
+                        <td><span style="color: var(--accent-cyan); font-weight: 600;">Enterprise</span></td>
+                        <td>Ilimitado</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>© 2026 AHI Governance Labs. Todos los derechos reservados.</p>
+            <p style="margin-top: 8px;"><a href="mailto:enterprise@ahigovernance.com"
+                    style="color: var(--accent-cyan); text-decoration: none;">enterprise@ahigovernance.com</a></p>
+        </div>
+    </footer>
+
+</body>
+
+</html>
