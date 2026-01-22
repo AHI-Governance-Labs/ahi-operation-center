@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sap-pilot-kit"
+version = "0.1.0"
+description = "Sovereign Autarchy Protocol (SAP) Pilot Kit for AI Auditability"
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "MIT"}
+authors = [
+    {name = "AHI Governance Labs", email = "enterprise@ahigovernance.com"}
+]
+dependencies = [
+    "numpy>=1.21.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
