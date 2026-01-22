@@ -11,7 +11,7 @@
 
 # 📜 Biblioteca Normativa y Comercial de Gobernanza AHI v3.0
 
-> **Autor:** Luis Carlos Villarreal Elizondo  
+> **Autor:** AHI 3.0
 > **Registro IMPI:** EXP-3495968  
 > **Organización:** [AHI Governance Labs](https://github.com/AHI-Governance-Labs)
 
@@ -62,11 +62,11 @@ Donde:
 
 > [!CAUTION]
 > **Propiedad Intelectual Protegida**  
-> Estos documentos están protegidos bajo registro IMPI EXP-3495968. La reproducción, distribución o uso comercial sin autorización expresa de Luis Carlos Villarreal Elizondo queda estrictamente prohibida. Cualquier violación será perseguida conforme a la Ley Federal del Derecho de Autor de México y tratados internacionales aplicables.
+> Estos documentos están protegidos bajo registro IMPI EXP-3495968. La reproducción, distribución o uso comercial sin autorización expresa de AHI 3.0 queda estrictamente prohibida. Cualquier violación será perseguida conforme a la Ley Federal del Derecho de Autor de México y tratados internacionales aplicables.
 
 ---
 
 <p align="center">
-  <sub>© 2024-2026 Luis Carlos Villarreal Elizondo · AHI Governance Labs</sub><br/>
-  <sub><strong>σ</strong> Preserving Structural Coherence · <strong>Ψ</strong> Ontological Integrity</sub>
+  <sub>© 2024-2026 AHI 3.0 · AHI Governance Labs</sub><br/>
+  <sub>Registro IMPI: EXP-3495968</sub>
 </p>

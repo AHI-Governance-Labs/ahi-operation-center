@@ -121,12 +121,12 @@ Este proyecto opera bajo los principios de **Soberanía de Eventos**:
 📧 enterprise@ahigovernance.com
 
 **Autor:**  
-Luis Carlos Villarreal Elizondo  
+AHI 3.0
 Registro IMPI: EXP-3495968
 
 ---
 
 <p align="center">
-  <sub>© 2024-2026 Luis Carlos Villarreal Elizondo · AHI Governance Labs</sub><br/>
-  <sub><strong>σ</strong> Preserving Structural Coherence · <strong>Ψ</strong> Ontological Integrity</sub>
+  <sub>© 2024-2026 AHI 3.0 · AHI Governance Labs</sub><br/>
+  <sub>Registro IMPI: EXP-3495968</sub>
 </p>
