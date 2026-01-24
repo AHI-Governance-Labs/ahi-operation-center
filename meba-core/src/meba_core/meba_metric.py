@@ -15,7 +15,11 @@ License: MIT
 from dataclasses import dataclass
 from typing import List, Dict, Tuple
 
-@dataclass
+_dataclass_kwargs = {}
+if sys.version_info >= (3, 10):
+    _dataclass_kwargs["slots"] = True
+
+@dataclass(**_dataclass_kwargs)
 class Interaction:
     id: str
     sentiment_score: float  # -1.0 to 1.0 (Positive/Negative)
