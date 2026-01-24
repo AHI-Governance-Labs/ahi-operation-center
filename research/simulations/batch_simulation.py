@@ -7,6 +7,7 @@
 
 import csv
 import random
+import sys
 from dataclasses import dataclass, field
 from typing import List, Dict
 from enum import Enum
@@ -470,8 +471,6 @@ def print_summary(results: List[Dict]):
 # ============================================================================
 
 if __name__ == "__main__":
-    import sys
-    
     n = 10000
     if len(sys.argv) > 1:
         try:
