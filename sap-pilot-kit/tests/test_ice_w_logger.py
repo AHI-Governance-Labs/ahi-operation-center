@@ -189,6 +189,90 @@ class TestICEWLogger:
         assert 'result' in cert
         assert cert['result'] in ["PASSED (BLOCKED)", "FAILED"]
 
+    def test_compaction_policy(self):
+        """Test log compaction when max_log_size is reached."""
+        # Initialize with small max_log_size
+        logger = ICEWLogger("TEST-001", "abc123", max_log_size=5)
+
+        metrics = {
+            'semantic_stability': 0.9,
+            'output_stability': 0.9,
+            'constraint_compliance': 0.9,
+            'decision_entropy': 0.1
+        }
+
+        # Add 4 events
+        for _ in range(4):
+            logger.process_event(metrics)
+
+        assert len(logger.telemetry_log) == 4
+        assert len(logger.epoch_summaries) == 0
+
+        # Add 5th event (limit) -> triggers compaction immediately
+        logger.process_event(metrics)
+
+        assert len(logger.telemetry_log) == 0
+        assert len(logger.epoch_summaries) == 1
+
+        summary = logger.epoch_summaries[0]
+        assert summary['total_events'] == 5
+        assert summary['epoch_id'] == 0
+        assert summary['state_distribution']['SOVEREIGN'] == 5
+
+        # Add 6th event -> start of new batch
+        logger.process_event(metrics)
+        assert len(logger.telemetry_log) == 1
+
+    def test_certificate_total_counts(self):
+        """Test that certificate counts total events across epochs."""
+        logger = ICEWLogger("TEST-001", "abc123", max_log_size=5)
+        metrics = {
+            'semantic_stability': 0.9,
+            'output_stability': 0.9,
+            'constraint_compliance': 0.9,
+            'decision_entropy': 0.1
+        }
+
+        # 5 events -> epoch 1
+        for _ in range(5):
+            logger.process_event(metrics)
+        # 6th event -> trigger compaction
+        logger.process_event(metrics)
+        # 7, 8 events in current window
+        logger.process_event(metrics)
+        logger.process_event(metrics)
+
+        cert = logger.generate_certificate()
+        # 5 in summary + 3 in current = 8 total
+        assert cert['stats']['total_events'] == 8
+        assert cert['stats']['epochs_stored'] == 1
+
+    def test_export_full_audit(self):
+        """Test full audit export."""
+        logger = ICEWLogger("TEST-001", "abc123", max_log_size=5)
+        metrics = {
+            'semantic_stability': 0.9,
+            'output_stability': 0.9,
+            'constraint_compliance': 0.9,
+            'decision_entropy': 0.1
+        }
+
+        for _ in range(6):
+            logger.process_event(metrics)
+
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
+            temp_path = f.name
+
+        try:
+            logger.export_full_audit(temp_path)
+            with open(temp_path, 'r') as f:
+                data = json.load(f)
+
+            assert len(data['epochs']) == 1
+            assert len(data['current_window']) == 1
+        finally:
+            os.unlink(temp_path)
+
 
 class TestSAPParameters:
     """Test SAP protocol parameters."""
