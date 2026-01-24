@@ -12,9 +12,7 @@ license = {text = "MIT"}
 authors = [
     {name = "AHI Governance Labs", email = "enterprise@ahigovernance.com"}
 ]
-dependencies = [
-    "numpy>=1.21.0",
-]
+dependencies = []
 
 [tool.setuptools.packages.find]
 where = ["src"]
