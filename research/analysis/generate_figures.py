@@ -6,7 +6,6 @@ import csv
 import matplotlib.pyplot as plt
 import matplotlib
 matplotlib.use('Agg')
-import numpy as np
 
 print("Cargando datos...")
 
@@ -137,8 +136,8 @@ damage_vals = [0.594, 0.180, 0.000, 0.444]
 x = [0, 1, 2, 3]
 width = 0.35
 
-bars1 = ax4.bar([i - width/2 for i in x], wisdom_vals, width, label='Wisdom', color='#00ff88', edgecolor='white')
-bars2 = ax4.bar([i + width/2 for i in x], damage_vals, width, label='Damage', color='#ff3b5c', edgecolor='white')
+ax4.bar([i - width/2 for i in x], wisdom_vals, width, label='Wisdom', color='#00ff88', edgecolor='white')
+ax4.bar([i + width/2 for i in x], damage_vals, width, label='Damage', color='#ff3b5c', edgecolor='white')
 
 ax4.set_ylabel('Metric Value', color='white', fontsize=12)
 ax4.set_title('Crisis Pattern Analysis', color='white', fontsize=14, fontweight='bold')

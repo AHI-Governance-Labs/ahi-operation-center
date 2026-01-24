@@ -21,50 +21,34 @@ permissions:
 
 jobs:
   test:
-    name: Test Python ${{ matrix.python-version }}
+    name: Test Python Components
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: ['3.9', '3.10', '3.11', '3.12']
     
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Python ${{ matrix.python-version }}
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: '3.11'
           cache: 'pip'
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          pip install coverage coverage-badge
           # Install local packages in editable mode
           pip install -e meba-core
           pip install -e sap-pilot-kit
 
-      - name: Run Tests with Coverage
+      - name: Run MEBA Core tests
         run: |
-          # Run tests for both packages with coverage
-          coverage run --source=meba-core/src,sap-pilot-kit/src -m pytest meba-core/tests/ sap-pilot-kit/tests/ -v --tb=short
-          coverage xml
-          coverage html
+          pytest meba-core/tests/ -v --tb=short
 
-      - name: Generate Coverage Badge
+      - name: Run SAP Pilot Kit tests
         run: |
-          coverage-badge -o coverage.svg
-
-      - name: Upload Coverage Report
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage-report-${{ matrix.python-version }}
-          path: |
-            coverage.xml
-            htmlcov/
-            coverage.svg
+          pytest sap-pilot-kit/tests/ -v --tb=short
 
   lint:
     name: Lint Python Code

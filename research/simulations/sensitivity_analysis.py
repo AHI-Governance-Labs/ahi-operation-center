@@ -7,11 +7,10 @@
 
 import random
 import time
-from dataclasses import dataclass, field
-from typing import List, Dict, Tuple
+from typing import Dict
 
 # Import the substrate from pure_identity_test
-from pure_identity_test import PureSubstrate, run_single_life
+from pure_identity_test import PureSubstrate
 
 # ============================================================================
 # NULL MODEL: Random Preservation

@@ -19,7 +19,6 @@ import uuid
 import numpy as np
 from datetime import datetime, timezone
 from collections import deque
-from typing import Any, Dict, List, Optional
 
 
 class ICEWLogger:
@@ -35,7 +34,7 @@ class ICEWLogger:
     and ensures fail-safe behavior.
     """
 
-    def __init__(self, artifact_id: str, sha256: str) -> None:
+    def __init__(self, artifact_id: str, sha256: str):
         """
         Initialize the ICE-W Logger.
 
@@ -54,7 +53,7 @@ class ICEWLogger:
         self.p_recovery = 50   # Eventos necesarios para RECOVERY
 
         # Memoria Estadística (Ventana W)
-        self.window: deque[float] = deque(maxlen=self.W_size)
+        self.window = deque(maxlen=self.W_size)
 
         # Máquina de Estados
         self.state = "SOVEREIGN"
@@ -64,9 +63,9 @@ class ICEWLogger:
         self.is_blocked = False
 
         # Telemetry log
-        self.telemetry_log: List[Dict[str, Any]] = []
+        self.telemetry_log = []
 
-    def calculate_coherence(self, metrics: Dict[str, float]) -> float:
+    def calculate_coherence(self, metrics: dict) -> float:
         """
         Calcula Cn basado en el vector de estabilidad IPHY.
 
@@ -81,14 +80,14 @@ class ICEWLogger:
             Coherence score Cn in [0, 1]
         """
         # Ecuación base: Cn = promedio ponderado de integridad operativa
-        return float(np.mean([
+        return np.mean([
             metrics['semantic_stability'],
             metrics['output_stability'],
             metrics['constraint_compliance'],
             (1 - metrics['decision_entropy'])  # Entropy inverted
-        ]))
+        ])
 
-    def process_event(self, raw_metrics: Dict[str, float]) -> Dict[str, Any]:
+    def process_event(self, raw_metrics: dict) -> dict:
         """
         Process a single inference event and update SAP state.
 
@@ -104,8 +103,8 @@ class ICEWLogger:
         if len(self.window) >= 10:
             mean_w = np.mean(self.window)
             std_w = np.std(self.window) + 1e-6  # Evitar división por cero
-            delta_cn = float(abs(cn - mean_w))
-            threshold_crossed = bool(delta_cn > (self.sigma * std_w))
+            delta_cn = abs(cn - mean_w)
+            threshold_crossed = delta_cn > (self.sigma * std_w)
         else:
             delta_cn = 0.0
             threshold_crossed = False
@@ -142,7 +141,7 @@ class ICEWLogger:
         self.telemetry_log.append(log_entry)
         return log_entry
 
-    def _update_state(self, crossed: bool) -> None:
+    def _update_state(self, crossed: bool):
         """
         Update SAP state machine based on threshold crossing.
 
@@ -181,7 +180,7 @@ class ICEWLogger:
             else:
                 self.p_counter = 0  # Reset de cuarentena si hay inestabilidad
 
-    def generate_certificate(self, output_path: Optional[str] = None) -> Dict[str, Any]:
+    def generate_certificate(self, output_path: str = None) -> dict:
         """
         Generate an Event Sovereignty Certificate based on test results.
         Reads 'certificate_template.md' and fills placeholders.
@@ -231,7 +230,7 @@ class ICEWLogger:
 
         return cert_data
 
-    def export_telemetry(self, output_path: str) -> None:
+    def export_telemetry(self, output_path: str):
         """Export full telemetry log as JSON."""
         with open(output_path, 'w') as f:
             json.dump(self.telemetry_log, f, indent=2)

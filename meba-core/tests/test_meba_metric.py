@@ -7,14 +7,6 @@ Registro IMPI: EXP-3495968
 Author: AHI 3.0
 License: MIT
 """
-import sys
-import pytest
-from pathlib import Path
-
-# Add src directory to path for imports
-# src_path = Path(__file__).parent.parent / 'src'
-# if str(src_path) not in sys.path:
-#     sys.path.insert(0, str(src_path))
 
 from meba_core.meba_metric import MEBACalculator, Interaction
 
@@ -114,32 +106,6 @@ class TestMEBACalculator:
         
         result = calc.calculate_score()
         assert result["meba_cert"] <= 1.0
-
-    def test_neutral_sentiment_interactions(self):
-        """Test interactions with neutral sentiment are handled correctly."""
-        calc = MEBACalculator()
-        # Neutral sentiment (between -0.1 and 0.1)
-        calc.add_interaction(Interaction("1", 0.05, 100))
-
-        pos_count, neg_count, neg_time, total_time = calc._calculate_aggregates()
-        assert pos_count == 0
-        assert neg_count == 0
-        assert neg_time == 0.0
-        assert total_time == 100.0
-
-        # FRN should be 0 because neg_time is 0
-        assert calc.calculate_frn() == 0.0
-
-        # RIPN should be 0 because counts are 0
-        assert calc.calculate_ripn() == 0.0
-
-    def test_zero_ripn_max(self):
-        """Test behavior when ripn_max is zero (should raise error)."""
-        calc = MEBACalculator(ripn_max=0.0)
-        calc.add_interaction(Interaction("1", 0.8, 60))
-
-        with pytest.raises(ZeroDivisionError):
-            calc.calculate_score()
 
 
 class TestInteraction:

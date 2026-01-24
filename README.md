@@ -8,11 +8,6 @@
 <p align="center">
   <code>v0.1.0 Public Beta</code> • <code>σ · Ψ · ∞</code>
 </p>
-<p align="center">
-  <a href="https://github.com/AHI-Governance-Labs/ahi-operation-center/actions/workflows/python-ci.yml">
-    <img src="https://github.com/AHI-Governance-Labs/ahi-operation-center/actions/workflows/python-ci.yml/badge.svg" alt="Python CI">
-  </a>
-</p>
 
 ---
 

@@ -12,16 +12,10 @@ Author: AHI 3.0
 License: MIT
 """
 
-import math
-import sys
 from dataclasses import dataclass
-from typing import Any, Dict, List, Tuple
+from typing import List, Dict, Tuple
 
-_dataclass_kwargs = {}
-if sys.version_info >= (3, 10):
-    _dataclass_kwargs["slots"] = True
-
-@dataclass(**_dataclass_kwargs)
+@dataclass
 class Interaction:
     id: str
     sentiment_score: float  # -1.0 to 1.0 (Positive/Negative)
@@ -29,7 +23,7 @@ class Interaction:
     user_feedback: str = "neutral"  # positive, negative, neutral
 
 class MEBACalculator:
-    def __init__(self, ripn_max: float = 10.0, frn_penalty_weight: float = 1.2) -> None:
+    def __init__(self, ripn_max: float = 10.0, frn_penalty_weight: float = 1.2):
         """
         Args:
             ripn_max: Theoretical maximum for normalization (default 10.0 for standard scale)
@@ -39,7 +33,7 @@ class MEBACalculator:
         self.frn_penalty_weight = frn_penalty_weight
         self.interactions: List[Interaction] = []
 
-    def add_interaction(self, interaction: Interaction) -> None:
+    def add_interaction(self, interaction: Interaction):
         self.interactions.append(interaction)
 
     def _calculate_aggregates(self) -> Tuple[int, int, float, float]:
@@ -100,7 +94,7 @@ class MEBACalculator:
         _, _, neg_time, total_time = self._calculate_aggregates()
         return self._compute_frn_value(neg_time, total_time)
 
-    def calculate_score(self) -> Dict[str, Any]:
+    def calculate_score(self) -> Dict[str, float]:
         """
         Calculates the final MEBA_Cert score.
         """

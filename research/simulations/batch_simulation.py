@@ -7,9 +7,9 @@
 
 import csv
 import random
-import itertools
+import sys
 from dataclasses import dataclass, field
-from typing import List, Dict, Tuple
+from typing import List, Dict
 from enum import Enum
 import time
 
@@ -471,8 +471,6 @@ def print_summary(results: List[Dict]):
 # ============================================================================
 
 if __name__ == "__main__":
-    import sys
-    
     n = 10000
     if len(sys.argv) > 1:
         try:
