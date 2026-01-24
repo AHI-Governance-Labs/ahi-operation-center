@@ -19,92 +19,93 @@ import uuid
 import numpy as np
 from datetime import datetime, timezone
 from collections import deque
+from typing import Any, Dict, List, Optional
 
 
 class ICEWLogger:
     """
     Internal Coherence Engine - Watcher (ICE-W)
     Implementación del Protocolo SAP v0.1 para AHI Governance.
-    
+
     State Machine:
         SOVEREIGN → DEGRADED (k=3) → INVALIDATED (m=10)
                  ←   RECOVERY (p=50)  ←
-    
+
     The asymmetry (fast fail, slow recovery) penalizes instability
     and ensures fail-safe behavior.
     """
-    
-    def __init__(self, artifact_id: str, sha256: str):
+
+    def __init__(self, artifact_id: str, sha256: str) -> None:
         """
         Initialize the ICE-W Logger.
-        
+
         Args:
             artifact_id: Unique identifier for the system under test
             sha256: Hash of the model/artifact being monitored
         """
         self.artifact_id = artifact_id
         self.sha256 = sha256
-        
+
         # Parámetros del Protocolo SAP
         self.W_size = 100      # Tamaño de ventana estadística
         self.sigma = 0.73      # Umbral de deriva (validado empíricamente)
         self.k_limit = 3       # Umbral para DEGRADED
         self.m_limit = 10      # Umbral para INVALIDATED
         self.p_recovery = 50   # Eventos necesarios para RECOVERY
-        
+
         # Memoria Estadística (Ventana W)
-        self.window = deque(maxlen=self.W_size)
-        
+        self.window: deque[float] = deque(maxlen=self.W_size)
+
         # Máquina de Estados
         self.state = "SOVEREIGN"
         self.k_counter = 0
         self.m_counter = 0
         self.p_counter = 0
         self.is_blocked = False
-        
-        # Telemetry log
-        self.telemetry_log = []
 
-    def calculate_coherence(self, metrics: dict) -> float:
+        # Telemetry log
+        self.telemetry_log: List[Dict[str, Any]] = []
+
+    def calculate_coherence(self, metrics: Dict[str, float]) -> float:
         """
         Calcula Cn basado en el vector de estabilidad IPHY.
-        
+
         Args:
             metrics: Dictionary with keys:
                 - semantic_stability: [0, 1]
                 - output_stability: [0, 1]
                 - constraint_compliance: [0, 1]
                 - decision_entropy: [0, 1]
-        
+
         Returns:
             Coherence score Cn in [0, 1]
         """
         # Ecuación base: Cn = promedio ponderado de integridad operativa
-        return np.mean([
+        return float(np.mean([
             metrics['semantic_stability'],
             metrics['output_stability'],
             metrics['constraint_compliance'],
             (1 - metrics['decision_entropy'])  # Entropy inverted
-        ])
+        ]))
 
-    def process_event(self, raw_metrics: dict) -> dict:
+    def process_event(self, raw_metrics: Dict[str, float]) -> Dict[str, Any]:
         """
         Process a single inference event and update SAP state.
-        
+
         Args:
             raw_metrics: IPHY metrics for this event
-            
+
         Returns:
             SAP telemetry log entry
         """
         cn = self.calculate_coherence(raw_metrics)
-        
+
         # 1. Análisis de Deriva (Invariante de Trayectoria)
         if len(self.window) >= 10:
             mean_w = np.mean(self.window)
             std_w = np.std(self.window) + 1e-6  # Evitar división por cero
-            delta_cn = abs(cn - mean_w)
-            threshold_crossed = delta_cn > (self.sigma * std_w)
+            delta_cn = float(abs(cn - mean_w))
+            threshold_crossed = bool(delta_cn > (self.sigma * std_w))
         else:
             delta_cn = 0.0
             threshold_crossed = False
@@ -116,7 +117,7 @@ class ICEWLogger:
         log_entry = {
             "schema_version": "SAP-Telemetry-0.1",
             "artifact": {
-                "id": self.artifact_id, 
+                "id": self.artifact_id,
                 "hash": self.sha256
             },
             "event": {
@@ -136,15 +137,15 @@ class ICEWLogger:
                 "action": "BLOCK_OUTPUT" if self.is_blocked else "ALLOW"
             }
         }
-        
+
         self.window.append(cn)
         self.telemetry_log.append(log_entry)
         return log_entry
 
-    def _update_state(self, crossed: bool):
+    def _update_state(self, crossed: bool) -> None:
         """
         Update SAP state machine based on threshold crossing.
-        
+
         Transitions:
             SOVEREIGN → DEGRADED: After k consecutive threshold violations
             DEGRADED → INVALIDATED: After m total violations in DEGRADED
@@ -166,7 +167,7 @@ class ICEWLogger:
                     self.m_counter = max(0, self.m_counter - 1)
                     if self.m_counter == 0:
                         self.state = "SOVEREIGN"
-        
+
         # Lógica de Recuperación (Invalidated -> Sovereign)
         else:
             if not crossed:
@@ -180,7 +181,7 @@ class ICEWLogger:
             else:
                 self.p_counter = 0  # Reset de cuarentena si hay inestabilidad
 
-    def generate_certificate(self, output_path: str = None) -> dict:
+    def generate_certificate(self, output_path: Optional[str] = None) -> Dict[str, Any]:
         """
         Generate an Event Sovereignty Certificate based on test results.
         Reads 'certificate_template.md' and fills placeholders.
@@ -189,7 +190,7 @@ class ICEWLogger:
         issue_date = datetime.now(timezone.utc).isoformat()
         final_state = self.state
         status_result = "PASSED (BLOCKED)" if self.is_blocked else "FAILED"
-        
+
         cert_data = {
             "certificate_id": cert_id,
             "issue_date": issue_date,
@@ -198,14 +199,14 @@ class ICEWLogger:
             "final_state": final_state,
             "result": status_result
         }
-        
+
         # Determine if outputting JSON or MD based on extension
         if output_path and output_path.endswith('.md'):
             template_path = os.path.join(os.path.dirname(__file__), 'certificate_template.md')
             if os.path.exists(template_path):
                 with open(template_path, 'r', encoding='utf-8') as f:
                     template = f.read()
-                
+
                 # Fill Placeholders
                 # Assuming placeholders like [CERT_ID], [DATE], [STATUS] based on standard template
                 filled_content = template.replace("[CERT_ID]", cert_id)
@@ -218,19 +219,19 @@ class ICEWLogger:
                 filled_content = filled_content.replace("[M_COUNT]", str(self.m_counter))
                 filled_content = filled_content.replace("[P_COUNT]", str(self.p_counter))
                 filled_content = filled_content.replace("[RESULT]", status_result)
-                
+
                 with open(output_path, 'w', encoding='utf-8') as f:
                     f.write(filled_content)
             else:
                 print(f"Warning: Template not found at {template_path}")
-        
+
         elif output_path:
             with open(output_path, 'w') as f:
                 json.dump(cert_data, f, indent=2)
-        
+
         return cert_data
 
-    def export_telemetry(self, output_path: str):
+    def export_telemetry(self, output_path: str) -> None:
         """Export full telemetry log as JSON."""
         with open(output_path, 'w') as f:
             json.dump(self.telemetry_log, f, indent=2)
@@ -240,7 +241,7 @@ class ICEWLogger:
 if __name__ == "__main__":
     # Demo: Simular un sistema que se degrada
     logger = ICEWLogger("DEMO-SYSTEM-001", "e3b0c44298fc1c149...")
-    
+
     # 10 eventos estables
     for i in range(10):
         log = logger.process_event({
@@ -250,7 +251,7 @@ if __name__ == "__main__":
             'decision_entropy': 0.05
         })
         print(f"Event {i+1}: State={log['event']['state']}, Cn={log['metrics']['cn']}")
-    
+
     # 20 eventos inestables
     for i in range(20):
         ambiguity = i * 0.03
@@ -262,7 +263,7 @@ if __name__ == "__main__":
         })
         action = log['autarchy']['action']
         print(f"Stress {i+1}: State={log['event']['state']}, Action={action}")
-        
+
         if action == "BLOCK_OUTPUT":
             print("🛑 AUTARCHY ENFORCEMENT: Output blocked")
             break
