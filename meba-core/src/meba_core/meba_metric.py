@@ -49,13 +49,15 @@ class MEBACalculator:
         total_time = 0.0
 
         for i in self.interactions:
-            total_time += i.duration_seconds
+            d = i.duration_seconds
+            s = i.sentiment_score
+            total_time += d
 
-            if i.sentiment_score > 0.1:
+            if s > 0.1:
                 pos_count += 1
-            elif i.sentiment_score < -0.1:
+            elif s < -0.1:
                 neg_count += 1
-                neg_time += i.duration_seconds
+                neg_time += d
 
         return pos_count, neg_count, neg_time, total_time
 
