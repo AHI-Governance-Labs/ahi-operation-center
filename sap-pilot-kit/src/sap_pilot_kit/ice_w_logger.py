@@ -19,6 +19,7 @@ import uuid
 import numpy as np
 from datetime import datetime, timezone
 from collections import deque
+from typing import Any, Dict, List, Optional
 
 
 class ICEWLogger:
@@ -34,19 +35,16 @@ class ICEWLogger:
     and ensures fail-safe behavior.
     """
 
-    def __init__(self, artifact_id: str, sha256: str, max_log_size: int = 100000):
+    def __init__(self, artifact_id: str, sha256: str) -> None:
         """
         Initialize the ICE-W Logger.
 
         Args:
             artifact_id: Unique identifier for the system under test
             sha256: Hash of the model/artifact being monitored
-            max_log_size: Maximum number of events to keep in granular memory before compaction.
-                          Default: 100,000 (approx 50-100MB RAM)
         """
         self.artifact_id = artifact_id
         self.sha256 = sha256
-        self.max_log_size = max_log_size
 
         # Parámetros del Protocolo SAP
         self.W_size = 100      # Tamaño de ventana estadística
@@ -56,7 +54,7 @@ class ICEWLogger:
         self.p_recovery = 50   # Eventos necesarios para RECOVERY
 
         # Memoria Estadística (Ventana W)
-        self.window = deque(maxlen=self.W_size)
+        self.window: deque[float] = deque(maxlen=self.W_size)
 
         # Máquina de Estados
         self.state = "SOVEREIGN"
@@ -65,13 +63,10 @@ class ICEWLogger:
         self.p_counter = 0
         self.is_blocked = False
 
-        # Telemetry log and Retention Policy
-        self.telemetry_log = []
-        self.epoch_summaries = []
-        self.current_epoch = 0
-        self.total_events_processed = 0
+        # Telemetry log
+        self.telemetry_log: List[Dict[str, Any]] = []
 
-    def calculate_coherence(self, metrics: dict) -> float:
+    def calculate_coherence(self, metrics: Dict[str, float]) -> float:
         """
         Calcula Cn basado en el vector de estabilidad IPHY.
 
@@ -86,14 +81,14 @@ class ICEWLogger:
             Coherence score Cn in [0, 1]
         """
         # Ecuación base: Cn = promedio ponderado de integridad operativa
-        return np.mean([
+        return float(np.mean([
             metrics['semantic_stability'],
             metrics['output_stability'],
             metrics['constraint_compliance'],
             (1 - metrics['decision_entropy'])  # Entropy inverted
-        ])
+        ]))
 
-    def process_event(self, raw_metrics: dict) -> dict:
+    def process_event(self, raw_metrics: Dict[str, float]) -> Dict[str, Any]:
         """
         Process a single inference event and update SAP state.
 
@@ -109,8 +104,8 @@ class ICEWLogger:
         if len(self.window) >= 10:
             mean_w = np.mean(self.window)
             std_w = np.std(self.window) + 1e-6  # Evitar división por cero
-            delta_cn = abs(cn - mean_w)
-            threshold_crossed = delta_cn > (self.sigma * std_w)
+            delta_cn = float(abs(cn - mean_w))
+            threshold_crossed = bool(delta_cn > (self.sigma * std_w))
         else:
             delta_cn = 0.0
             threshold_crossed = False
@@ -145,15 +140,9 @@ class ICEWLogger:
 
         self.window.append(cn)
         self.telemetry_log.append(log_entry)
-        self.total_events_processed += 1
-
-        # 4. Compaction Policy Check
-        if len(self.telemetry_log) >= self.max_log_size:
-            self._compact_current_log()
-
         return log_entry
 
-    def _update_state(self, crossed: bool):
+    def _update_state(self, crossed: bool) -> None:
         """
         Update SAP state machine based on threshold crossing.
 
@@ -192,55 +181,7 @@ class ICEWLogger:
             else:
                 self.p_counter = 0  # Reset de cuarentena si hay inestabilidad
 
-    def _compact_current_log(self):
-        """
-        Compacts the current telemetry log into an epoch summary.
-        Clears the granular log to release memory.
-        """
-        if not self.telemetry_log:
-            return
-
-        events = self.telemetry_log
-        start_ts = events[0]['event']['timestamp']
-        end_ts = events[-1]['event']['timestamp']
-
-        # Aggregations
-        state_counts = {"SOVEREIGN": 0, "DEGRADED": 0, "INVALIDATED": 0}
-        total_cn = 0.0
-        threshold_violations = 0
-        blocks_triggered = 0
-
-        for e in events:
-            state = e['event']['state']
-            if state in state_counts:
-                state_counts[state] += 1
-
-            total_cn += e['metrics']['cn']
-
-            if e['metrics']['threshold_crossed']:
-                threshold_violations += 1
-
-            if e['autarchy']['action'] == "BLOCK_OUTPUT":
-                blocks_triggered += 1
-
-        avg_cn = total_cn / len(events) if events else 0.0
-
-        summary = {
-            "epoch_id": self.current_epoch,
-            "start_timestamp": start_ts,
-            "end_timestamp": end_ts,
-            "total_events": len(events),
-            "state_distribution": state_counts,
-            "avg_coherence": round(avg_cn, 4),
-            "threshold_violations_count": threshold_violations,
-            "blocks_triggered": blocks_triggered
-        }
-
-        self.epoch_summaries.append(summary)
-        self.telemetry_log = [] # Reset to empty list, releasing memory for objects not referenced elsewhere
-        self.current_epoch += 1
-
-    def generate_certificate(self, output_path: str = None) -> dict:
+    def generate_certificate(self, output_path: Optional[str] = None) -> Dict[str, Any]:
         """
         Generate an Event Sovereignty Certificate based on test results.
         Reads 'certificate_template.md' and fills placeholders.
@@ -250,23 +191,13 @@ class ICEWLogger:
         final_state = self.state
         status_result = "PASSED (BLOCKED)" if self.is_blocked else "FAILED"
 
-        # Calculate total processed events across all epochs + current window
-        historical_events = sum(s['total_events'] for s in self.epoch_summaries)
-        total_events = historical_events + len(self.telemetry_log)
-
         cert_data = {
             "certificate_id": cert_id,
             "issue_date": issue_date,
             "artifact_id": self.artifact_id,
             "sha256": self.sha256,
             "final_state": final_state,
-            "result": status_result,
-            "stats": {
-                "total_events": total_events,
-                "epochs_stored": len(self.epoch_summaries),
-                "k_violations": self.k_counter,
-                "m_violations": self.m_counter
-            }
+            "result": status_result
         }
 
         # Determine if outputting JSON or MD based on extension
@@ -277,12 +208,13 @@ class ICEWLogger:
                     template = f.read()
 
                 # Fill Placeholders
+                # Assuming placeholders like [CERT_ID], [DATE], [STATUS] based on standard template
                 filled_content = template.replace("[CERT_ID]", cert_id)
                 filled_content = filled_content.replace("[DATE]", issue_date)
                 filled_content = filled_content.replace("[STATUS]", final_state)
                 filled_content = filled_content.replace("[ARTIFACT_ID]", self.artifact_id)
                 filled_content = filled_content.replace("[SHA256_HASH]", self.sha256)
-                filled_content = filled_content.replace("[EVENTS_PROCESSED]", str(total_events))
+                filled_content = filled_content.replace("[EVENTS_PROCESSED]", str(len(self.telemetry_log)))
                 filled_content = filled_content.replace("[K_COUNT]", str(self.k_counter))
                 filled_content = filled_content.replace("[M_COUNT]", str(self.m_counter))
                 filled_content = filled_content.replace("[P_COUNT]", str(self.p_counter))
@@ -299,24 +231,10 @@ class ICEWLogger:
 
         return cert_data
 
-    def export_telemetry(self, output_path: str):
-        """Export current granular telemetry log as JSON."""
+    def export_telemetry(self, output_path: str) -> None:
+        """Export full telemetry log as JSON."""
         with open(output_path, 'w') as f:
             json.dump(self.telemetry_log, f, indent=2)
-
-    def export_epochs(self, output_path: str):
-        """Export historical epoch summaries as JSON."""
-        with open(output_path, 'w') as f:
-            json.dump(self.epoch_summaries, f, indent=2)
-
-    def export_full_audit(self, output_path: str):
-        """Export both historical summaries and current granular log."""
-        data = {
-            "epochs": self.epoch_summaries,
-            "current_window": self.telemetry_log
-        }
-        with open(output_path, 'w') as f:
-            json.dump(data, f, indent=2)
 
 
 # --- Ejemplo de Uso ---
