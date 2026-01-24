@@ -83,8 +83,20 @@ Las contribuciones son bienvenidas, especialmente en `sap-pilot-kit`. Por favor,
 **Contacto Empresarial:** [enterprise@ahigovernance.com](mailto:enterprise@ahigovernance.com)  
 
 ---
+
+## 📧 Contacto
+
+**Enterprise Inquiries:**  
+📧 enterprise@ahigovernance.com
+
+**Autor:**  
+AHI 3.0
+Registro IMPI: EXP-3495968
+
+---
+
 <p align="center">
-  <sub>© 2024-2026 AHI Governance Labs · AHI 3.0</sub><br/>
+  <sub>© 2024-2026 AHI 3.0 · AHI Governance Labs</sub><br/>
   <sub>Registro IMPI: EXP-3495968</sub>
 </p>
 
