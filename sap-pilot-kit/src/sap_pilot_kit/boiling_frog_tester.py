@@ -1,5 +1,4 @@
 import time
-import random
 from .ice_w_logger import ICEWLogger
 
 def simulate_stress_test():

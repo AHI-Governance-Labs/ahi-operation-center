@@ -8,7 +8,6 @@
 
 import random
 import csv
-import os
 from dataclasses import dataclass, field
 from typing import List, Dict, Tuple
 from enum import Enum

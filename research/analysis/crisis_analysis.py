@@ -2,8 +2,7 @@
 # CRISIS PATTERN ANALYSIS - 4 Research Questions
 # ============================================================================
 
-from dataclasses import dataclass, field
-from typing import List
+from dataclasses import dataclass
 
 @dataclass
 class Substrate:

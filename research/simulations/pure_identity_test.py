@@ -17,9 +17,7 @@ import random
 import csv
 import time
 from dataclasses import dataclass, field
-from typing import List, Dict, Tuple
-from enum import Enum
-from collections import Counter
+from typing import List, Dict
 
 # ============================================================================
 # MINIMAL SUBSTRATE (Pure Numbers)

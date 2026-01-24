@@ -16,7 +16,7 @@ real-time as correlation of valence, trauma transfer, and coherent wisdom.
 import random
 import time
 from dataclasses import dataclass, field
-from typing import List, Tuple
+from typing import List
 from collections import deque
 import numpy as np
 
@@ -177,7 +177,7 @@ class SyntergicAnalyzer:
 # VISUALIZATION
 # ============================================================================
 
-def create_spark_line(values: List[float], width: int = 50, height: int = 8) -> str:
+def create_spark_line(values: List[float], width: int = 50) -> str:
     """Create ASCII sparkline graph"""
     if not values or len(values) < 2:
         return " " * width

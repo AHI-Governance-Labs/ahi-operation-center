@@ -7,13 +7,6 @@ Registro IMPI: EXP-3495968
 Author: AHI 3.0
 License: MIT
 """
-import sys
-from pathlib import Path
-
-# Add src directory to path for imports
-# src_path = Path(__file__).parent.parent / 'src'
-# if str(src_path) not in sys.path:
-#     sys.path.insert(0, str(src_path))
 
 from meba_core.meba_metric import MEBACalculator, Interaction
 
