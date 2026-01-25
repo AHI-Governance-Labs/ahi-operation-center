@@ -65,6 +65,44 @@ class ICEWLogger:
         # Telemetry log
         self.telemetry_log = []
 
+        # Retention Policy
+        self.max_log_size = 100000
+        self.epoch_summaries = []
+
+    def _compact_logs(self):
+        """
+        Summarize granular telemetry logs into an epoch summary to free memory.
+        """
+        if not self.telemetry_log:
+            return
+
+        cns = [entry['metrics']['cn'] for entry in self.telemetry_log]
+        start_time = self.telemetry_log[0]['event']['timestamp']
+        end_time = self.telemetry_log[-1]['event']['timestamp']
+
+        # Count violations
+        degraded_count = sum(1 for entry in self.telemetry_log if entry['event']['state'] == "DEGRADED")
+        invalidated_count = sum(1 for entry in self.telemetry_log if entry['event']['state'] == "INVALIDATED")
+
+        summary = {
+            "type": "epoch_summary",
+            "start_time": start_time,
+            "end_time": end_time,
+            "event_count": len(self.telemetry_log),
+            "metrics": {
+                "cn_avg": float(np.mean(cns)),
+                "cn_min": float(np.min(cns)),
+                "cn_max": float(np.max(cns))
+            },
+            "violations": {
+                "degraded": degraded_count,
+                "invalidated": invalidated_count
+            }
+        }
+
+        self.epoch_summaries.append(summary)
+        self.telemetry_log = []
+
     def calculate_coherence(self, metrics: dict) -> float:
         """
         Calcula Cn basado en el vector de estabilidad IPHY.
@@ -138,6 +176,11 @@ class ICEWLogger:
         }
 
         self.window.append(cn)
+
+        # Compact logs if limit reached
+        if len(self.telemetry_log) >= self.max_log_size:
+            self._compact_logs()
+
         self.telemetry_log.append(log_entry)
         return log_entry
 
@@ -213,7 +256,9 @@ class ICEWLogger:
                 filled_content = filled_content.replace("[STATUS]", final_state)
                 filled_content = filled_content.replace("[ARTIFACT_ID]", self.artifact_id)
                 filled_content = filled_content.replace("[SHA256_HASH]", self.sha256)
-                filled_content = filled_content.replace("[EVENTS_PROCESSED]", str(len(self.telemetry_log)))
+
+                total_events = sum(s['event_count'] for s in self.epoch_summaries) + len(self.telemetry_log)
+                filled_content = filled_content.replace("[EVENTS_PROCESSED]", str(total_events))
                 filled_content = filled_content.replace("[K_COUNT]", str(self.k_counter))
                 filled_content = filled_content.replace("[M_COUNT]", str(self.m_counter))
                 filled_content = filled_content.replace("[P_COUNT]", str(self.p_counter))
@@ -231,9 +276,13 @@ class ICEWLogger:
         return cert_data
 
     def export_telemetry(self, output_path: str):
-        """Export full telemetry log as JSON."""
+        """Export full telemetry log as JSON, including historical summaries."""
+        export_data = {
+            "epoch_summaries": self.epoch_summaries,
+            "current_window": self.telemetry_log
+        }
         with open(output_path, 'w') as f:
-            json.dump(self.telemetry_log, f, indent=2)
+            json.dump(export_data, f, indent=2)
 
 
 # --- Ejemplo de Uso ---
