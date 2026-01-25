@@ -1,0 +1,16 @@
+<APIProxy revision="1" name="sap-governance-v1">
+    <Basepaths>/sap-governance/v1</Basepaths>
+    <ConfigurationVersion majorVersion="4" minorVersion="0"/>
+    <DisplayName>SAP Governance V1</DisplayName>
+    <Description>Governance API for SAP</Description>
+    <Policies/>
+    <ProxyEndpoints>
+        <ProxyEndpoint>default</ProxyEndpoint>
+    </ProxyEndpoints>
+    <Resources/>
+    <Spec></Spec>
+    <TargetEndpoints>
+        <TargetEndpoint>default</TargetEndpoint>
+    </TargetEndpoints>
+    <Validate>false</Validate>
+</APIProxy>
