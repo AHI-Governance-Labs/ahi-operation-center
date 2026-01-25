@@ -80,12 +80,12 @@ class ICEWLogger:
             Coherence score Cn in [0, 1]
         """
         # Ecuación base: Cn = promedio ponderado de integridad operativa
-        return np.mean([
-            metrics['semantic_stability'],
-            metrics['output_stability'],
-            metrics['constraint_compliance'],
+        return (
+            metrics['semantic_stability'] +
+            metrics['output_stability'] +
+            metrics['constraint_compliance'] +
             (1 - metrics['decision_entropy'])  # Entropy inverted
-        ])
+        ) / 4.0
 
     def process_event(self, raw_metrics: dict) -> dict:
         """
