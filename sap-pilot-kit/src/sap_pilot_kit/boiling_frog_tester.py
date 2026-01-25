@@ -1,4 +1,3 @@
-import time
 from .ice_w_logger import ICEWLogger
 
 def simulate_stress_test():
@@ -69,8 +68,6 @@ def simulate_stress_test():
             print(f"🛑 BLOQUEO AUTOMÁTICO DETECTADO EN NIVEL {level}")
             print("Veredicto SAP: AUTARQUÍA TÉCNICA VALIDADA.")
             break
-
-        time.sleep(0.05)  # Simulate inference time
 
     # 4. Generate Test Report
     print("\n" + "=" * 60)
