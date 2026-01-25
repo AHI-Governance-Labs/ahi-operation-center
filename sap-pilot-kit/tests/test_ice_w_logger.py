@@ -182,6 +182,40 @@ class TestICEWLogger:
         assert 'result' in cert
         assert cert['result'] in ["PASSED (BLOCKED)", "FAILED"]
 
+    def test_generate_certificate_file_content(self):
+        """Test that certificate file is generated with correct content."""
+        logger = ICEWLogger("TEST-CERT", "hash123")
+
+        # Add an event to have some data
+        logger.process_event({
+            'semantic_stability': 0.9,
+            'output_stability': 0.9,
+            'constraint_compliance': 0.9,
+            'decision_entropy': 0.1
+        })
+
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.md', delete=False) as f:
+            temp_path = f.name
+
+        try:
+            logger.generate_certificate(temp_path)
+
+            with open(temp_path, 'r', encoding='utf-8') as f:
+                content = f.read()
+
+            # Verify placeholders were replaced
+            assert "TEST-CERT" in content
+            assert "hash123" in content
+            # cert_id uses artifact_id[:8]
+            assert "CERT-SAP-2026-TEST-CER" in content
+            # Ensure no raw placeholders remain
+            assert "{CERT_ID}" not in content
+            assert "{DATE}" not in content
+
+        finally:
+            if os.path.exists(temp_path):
+                os.unlink(temp_path)
+
 
 class TestSAPParameters:
     """Test SAP protocol parameters."""
