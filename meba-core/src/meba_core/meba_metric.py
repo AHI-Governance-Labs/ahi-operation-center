@@ -12,10 +12,14 @@ Author: AHI 3.0
 License: MIT
 """
 
+import sys
 from dataclasses import dataclass
-from typing import List, Dict, Tuple
+from typing import List, Dict, Tuple, Optional
 
-@dataclass
+# Optimize Interaction class with slots if supported
+dataclass_kwargs = {"slots": True} if sys.version_info >= (3, 10) else {}
+
+@dataclass(**dataclass_kwargs)
 class Interaction:
     id: str
     sentiment_score: float  # -1.0 to 1.0 (Positive/Negative)
@@ -32,9 +36,11 @@ class MEBACalculator:
         self.ripn_max = ripn_max
         self.frn_penalty_weight = frn_penalty_weight
         self.interactions: List[Interaction] = []
+        self._aggregates_cache: Optional[Tuple[int, int, float, float]] = None
 
     def add_interaction(self, interaction: Interaction):
         self.interactions.append(interaction)
+        self._aggregates_cache = None
 
     def _calculate_aggregates(self) -> Tuple[int, int, float, float]:
         """
@@ -42,6 +48,9 @@ class MEBACalculator:
         Returns:
             (pos_count, neg_count, neg_time, total_time)
         """
+        if self._aggregates_cache is not None:
+            return self._aggregates_cache
+
         pos_count = 0
         neg_count = 0
         neg_time = 0.0
@@ -58,7 +67,8 @@ class MEBACalculator:
                 neg_count += 1
                 neg_time += d
 
-        return pos_count, neg_count, neg_time, total_time
+        self._aggregates_cache = (pos_count, neg_count, neg_time, total_time)
+        return self._aggregates_cache
 
     def _compute_ripn_value(self, pos_count: int, neg_count: int) -> float:
         """
