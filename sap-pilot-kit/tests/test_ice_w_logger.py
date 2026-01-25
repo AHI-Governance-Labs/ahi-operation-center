@@ -154,11 +154,43 @@ class TestICEWLogger:
             with open(temp_path, 'r') as f:
                 data = json.load(f)
             
-            assert isinstance(data, list)
-            assert len(data) == 1
-            assert data[0]['artifact']['id'] == "TEST-001"
+            assert isinstance(data, dict)
+            assert "epoch_summaries" in data
+            assert "current_window" in data
+            assert len(data["current_window"]) == 1
+            assert data["current_window"][0]['artifact']['id'] == "TEST-001"
         finally:
             os.unlink(temp_path)
+
+    def test_retention_policy(self):
+        """Test that telemetry log is compacted when it reaches the limit."""
+        logger = ICEWLogger("TEST-001", "abc123")
+        # Lower limit for testing
+        logger.max_log_size = 50
+
+        metrics = {
+            'semantic_stability': 0.9,
+            'output_stability': 0.9,
+            'constraint_compliance': 0.9,
+            'decision_entropy': 0.1
+        }
+
+        # Add 50 events (limit is 50)
+        for _ in range(50):
+            logger.process_event(metrics)
+
+        assert len(logger.telemetry_log) == 50
+        assert len(logger.epoch_summaries) == 0
+
+        # 51st event triggers compaction
+        logger.process_event(metrics)
+
+        assert len(logger.telemetry_log) == 1
+        assert len(logger.epoch_summaries) == 1
+
+        summary = logger.epoch_summaries[0]
+        assert summary['event_count'] == 50
+        assert summary['metrics']['cn_avg'] > 0.8
 
     def test_generate_certificate(self):
         """Test certificate generation."""
