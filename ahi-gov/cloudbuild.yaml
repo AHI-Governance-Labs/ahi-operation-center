@@ -1,7 +1,11 @@
 steps:
   # 1. Archive Proxy Bundle
   - name: 'bash'
-    args: ['zip', '-r', 'apiproxy.zip', 'apiproxies/']
+    args:
+      - '-c'
+      - |
+        cd apiproxies/sap-governance-v1
+        zip -r ../../apiproxy.zip apiproxy
     dir: 'ahi-gov/src/main/apigee'
 
   # 2. Deploy to Apigee X/Hybrid
@@ -11,8 +15,15 @@ steps:
       - '-c'
       - |
         echo "🚀 Deploying to Apigee Organization: $PROJECT_ID"
-        gcloud alpha apigee apis deploy --organization=$PROJECT_ID --api=sap-governance-v1 --environment=prod --source=ahi-gov/src/main/apigee/apiproxy.zip
+        gcloud apigee apis deploy \
+          --organization=$PROJECT_ID \
+          --api=sap-governance-v1 \
+          --environment=${_APIGEE_ENV} \
+          --source=ahi-gov/src/main/apigee/apiproxy.zip
         echo "✅ Deployment complete."
+
+substitutions:
+  _APIGEE_ENV: prod
 
 options:
   logging: CLOUD_LOGGING_ONLY
