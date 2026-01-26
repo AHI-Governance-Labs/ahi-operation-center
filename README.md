@@ -1,9 +1,5 @@
 <p align="center">
-  <img src="sitios-web/ahigovernance.com/assets/ahi-icon-medium.png" width="100" alt="AHI Logo">
-</p>
-<p align="center">
-  <strong>AHI GOVERNANCE LABS</strong><br/>
-  <em>Autonomous Hierarchy of Intelligence — Operation Center</em>
+  <img src="sitios-web/ahigovernance.com/assets/ahi-governance-banner.png" width="100%" alt="AHI Governance Labs - Architecture of Trust • Standards • Auditability">
 </p>
 <p align="center">
   <code>v0.1.0 Public Beta</code> • <code>σ · Ψ · ∞</code>
