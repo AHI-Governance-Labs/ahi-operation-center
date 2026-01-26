@@ -16,6 +16,7 @@ License: MIT
 import json
 import os
 import uuid
+import math
 import numpy as np
 from datetime import datetime, timezone
 from collections import deque
@@ -84,15 +85,20 @@ class ICEWLogger:
         degraded_count = sum(1 for entry in self.telemetry_log if entry['event']['state'] == "DEGRADED")
         invalidated_count = sum(1 for entry in self.telemetry_log if entry['event']['state'] == "INVALIDATED")
 
+        # Optimization: Use built-in functions instead of numpy
+        cn_avg = sum(cns) / len(cns) if cns else 0.0
+        cn_min = min(cns) if cns else 0.0
+        cn_max = max(cns) if cns else 0.0
+
         summary = {
             "type": "epoch_summary",
             "start_time": start_time,
             "end_time": end_time,
             "event_count": len(self.telemetry_log),
             "metrics": {
-                "cn_avg": float(np.mean(cns)),
-                "cn_min": float(np.min(cns)),
-                "cn_max": float(np.max(cns))
+                "cn_avg": float(cn_avg),
+                "cn_min": float(cn_min),
+                "cn_max": float(cn_max)
             },
             "violations": {
                 "degraded": degraded_count,
@@ -139,8 +145,15 @@ class ICEWLogger:
 
         # 1. Análisis de Deriva (Invariante de Trayectoria)
         if len(self.window) >= 10:
-            mean_w = np.mean(self.window)
-            std_w = np.std(self.window) + 1e-6  # Evitar división por cero
+            # Optimization: Pure Python calculation instead of numpy overhead for small window
+            w_list = list(self.window)
+            w_len = len(w_list)
+            mean_w = sum(w_list) / w_len
+
+            # Population standard deviation (ddof=0) to match np.std
+            variance = sum((x - mean_w) ** 2 for x in w_list) / w_len
+            std_w = math.sqrt(variance) + 1e-6  # Evitar división por cero
+
             delta_cn = abs(cn - mean_w)
             threshold_crossed = delta_cn > (self.sigma * std_w)
         else:
