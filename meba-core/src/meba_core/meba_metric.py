@@ -45,6 +45,8 @@ class MEBACalculator:
     def _calculate_aggregates(self) -> Tuple[int, int, float, float]:
         """
         Iterates interactions once to calculate all aggregate metrics.
+        Optimization: Uses a single pass (O(N)) instead of multiple iterations.
+
         Returns:
             (pos_count, neg_count, neg_time, total_time)
         """
@@ -56,7 +58,10 @@ class MEBACalculator:
         neg_time = 0.0
         total_time = 0.0
 
-        for i in self.interactions:
+        # Local variable access is faster in loops
+        interactions = self.interactions
+
+        for i in interactions:
             d = i.duration_seconds
             s = i.sentiment_score
             total_time += d
