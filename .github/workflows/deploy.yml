@@ -34,7 +34,7 @@ jobs:
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          firebaseServiceAccount: '${{ steps.auth.outputs.credentials_file_path }}'
+          firebaseServiceAccount: '${{ steps.auth.outputs.credentials_json }}'
           projectId: cs-poc-aguy0wkzgf55jarewtxljk9
           channelId: live
           target: ahigovernance
@@ -43,7 +43,7 @@ jobs:
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          firebaseServiceAccount: '${{ steps.auth.outputs.credentials_file_path }}'
+          firebaseServiceAccount: '${{ steps.auth.outputs.credentials_json }}'
           projectId: cs-poc-aguy0wkzgf55jarewtxljk9
           channelId: live
           target: sovereignsymbiosis
