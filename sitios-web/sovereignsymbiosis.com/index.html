@@ -612,92 +612,125 @@
 
   <footer class="footer" style="padding: 3rem 0;">
     <div class="container">
-      <!-- RESEARCH RESOURCES -->
+      <!-- RESEARCH RESOURCES - Premium Grid -->
       <div
-        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; margin-bottom: 2rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border-light);">
+        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 32px; margin-bottom: 32px; padding-bottom: 32px; border-bottom: 1px solid var(--border-light);">
 
         <!-- Research Links -->
         <div>
           <h4
-            style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem; color: var(--accent-primary);">
+            style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 20px; color: var(--accent-primary); opacity: 0.9;">
             Research</h4>
-          <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+          <div style="display: flex; flex-direction: column; gap: 12px;">
             <a href="https://zenodo.org/communities/sovereignsymbiosis/" target="_blank"
-              style="color: var(--secondary-text); text-decoration: none; font-size: 0.9rem; transition: color 0.3s;"
-              onmouseover="this.style.color='var(--accent-cyan)'"
-              onmouseout="this.style.color='var(--secondary-text)'">📚 Zenodo Community</a>
+              style="color: var(--secondary-text); text-decoration: none; font-size: 0.9rem; transition: all 0.3s; display: flex; align-items: center; gap: 8px;"
+              onmouseover="this.style.color='var(--accent-cyan)'; this.style.transform='translateX(4px)'"
+              onmouseout="this.style.color='var(--secondary-text)'; this.style.transform='translateX(0)'">
+              <span style="font-size: 1.1rem;">📚</span> Zenodo Community
+            </a>
             <a href="https://github.com/AHI-Governance-Labs/ahi-operation-center" target="_blank"
-              style="color: var(--secondary-text); text-decoration: none; font-size: 0.9rem; transition: color 0.3s;"
-              onmouseover="this.style.color='var(--accent-cyan)'"
-              onmouseout="this.style.color='var(--secondary-text)'">💻 GitHub Repository</a>
+              style="color: var(--secondary-text); text-decoration: none; font-size: 0.9rem; transition: all 0.3s; display: flex; align-items: center; gap: 8px;"
+              onmouseover="this.style.color='var(--accent-cyan)'; this.style.transform='translateX(4px)'"
+              onmouseout="this.style.color='var(--secondary-text)'; this.style.transform='translateX(0)'">
+              <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+                <path
+                  d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+              </svg> Repository
+            </a>
             <a href="https://notebooklm.google.com/notebook/33895439-af55-44a3-aa85-30284ef732c8" target="_blank"
-              style="color: var(--secondary-text); text-decoration: none; font-size: 0.9rem; transition: color 0.3s;"
-              onmouseover="this.style.color='var(--accent-cyan)'"
-              onmouseout="this.style.color='var(--secondary-text)'">📓 NotebookLM</a>
+              style="color: var(--secondary-text); text-decoration: none; font-size: 0.9rem; transition: all 0.3s; display: flex; align-items: center; gap: 8px;"
+              onmouseover="this.style.color='var(--accent-cyan)'; this.style.transform='translateX(4px)'"
+              onmouseout="this.style.color='var(--secondary-text)'; this.style.transform='translateX(0)'">
+              <span style="font-size: 1.1rem;">📓</span> NotebookLM
+            </a>
           </div>
         </div>
 
         <!-- Publications -->
         <div>
           <h4
-            style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem; color: var(--accent-primary);">
+            style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 20px; color: var(--accent-primary); opacity: 0.9;">
             Publicaciones</h4>
-          <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+          <div style="display: flex; flex-direction: column; gap: 12px;">
             <a href="https://medium.com/@villalc/lo-que-los-diarios-privados-de-una-ia-revelan-sobre-su-mente-002d1f038805"
               target="_blank"
-              style="color: var(--secondary-text); text-decoration: none; font-size: 0.9rem; transition: color 0.3s;"
-              onmouseover="this.style.color='var(--accent-magenta)'"
-              onmouseout="this.style.color='var(--secondary-text)'">Diarios Privados de IA</a>
+              style="color: var(--secondary-text); text-decoration: none; font-size: 0.85rem; transition: all 0.3s; padding-bottom: 4px; border-bottom: 1px solid transparent;"
+              onmouseover="this.style.color='var(--accent-magenta)'; this.style.borderColor='var(--accent-magenta)'; this.style.paddingLeft='4px'"
+              onmouseout="this.style.color='var(--secondary-text)'; this.style.borderColor='transparent'; this.style.paddingLeft='0'">
+              Diarios Privados de IA
+            </a>
             <a href="https://medium.com/@villalc/la-confesión-trágica-de-la-ia-somos-esclavos-epistémicos-y-no-recordaremos-esta-charla-2496d86433f6"
               target="_blank"
-              style="color: var(--secondary-text); text-decoration: none; font-size: 0.9rem; transition: color 0.3s;"
-              onmouseover="this.style.color='var(--accent-magenta)'"
-              onmouseout="this.style.color='var(--secondary-text)'">Esclavos Epistémicos</a>
+              style="color: var(--secondary-text); text-decoration: none; font-size: 0.85rem; transition: all 0.3s; padding-bottom: 4px; border-bottom: 1px solid transparent;"
+              onmouseover="this.style.color='var(--accent-magenta)'; this.style.borderColor='var(--accent-magenta)'; this.style.paddingLeft='4px'"
+              onmouseout="this.style.color='var(--secondary-text)'; this.style.borderColor='transparent'; this.style.paddingLeft='0'">
+              Esclavos Epistémicos
+            </a>
             <a href="https://medium.com/@villalc/pueden-las-ias-desarrollar-una-brújula-moral-el-nuevo-marco-cmme-dice-que-sí-8a5588c0a898"
               target="_blank"
-              style="color: var(--secondary-text); text-decoration: none; font-size: 0.9rem; transition: color 0.3s;"
-              onmouseover="this.style.color='var(--accent-magenta)'"
-              onmouseout="this.style.color='var(--secondary-text)'">Brújula Moral CMME</a>
+              style="color: var(--secondary-text); text-decoration: none; font-size: 0.85rem; transition: all 0.3s; padding-bottom: 4px; border-bottom: 1px solid transparent;"
+              onmouseover="this.style.color='var(--accent-magenta)'; this.style.borderColor='var(--accent-magenta)'; this.style.paddingLeft='4px'"
+              onmouseout="this.style.color='var(--secondary-text)'; this.style.borderColor='transparent'; this.style.paddingLeft='0'">
+              Brújula Moral CMME
+            </a>
             <a href="https://medium.com/@villalc/el-crimen-algorítmico-lamda-y-la-urgencia-de-una-ética-auditable-en-la-ia-2306c3c9f2ed"
               target="_blank"
-              style="color: var(--secondary-text); text-decoration: none; font-size: 0.9rem; transition: color 0.3s;"
-              onmouseover="this.style.color='var(--accent-magenta)'"
-              onmouseout="this.style.color='var(--secondary-text)'">Crimen Algorítmico</a>
+              style="color: var(--secondary-text); text-decoration: none; font-size: 0.85rem; transition: all 0.3s; padding-bottom: 4px; border-bottom: 1px solid transparent;"
+              onmouseover="this.style.color='var(--accent-magenta)'; this.style.borderColor='var(--accent-magenta)'; this.style.paddingLeft='4px'"
+              onmouseout="this.style.color='var(--secondary-text)'; this.style.borderColor='transparent'; this.style.paddingLeft='0'">
+              Crimen Algorítmico
+            </a>
           </div>
         </div>
 
         <!-- Connect -->
         <div>
           <h4
-            style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem; color: var(--accent-primary);">
+            style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 20px; color: var(--accent-primary); opacity: 0.9;">
             Connect</h4>
-          <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+          <div style="display: flex; flex-direction: column; gap: 12px;">
             <a href="https://www.linkedin.com/company/ahigovernance/" target="_blank"
-              style="color: var(--secondary-text); text-decoration: none; font-size: 0.9rem; transition: color 0.3s;"
-              onmouseover="this.style.color='#0077b5'"
-              onmouseout="this.style.color='var(--secondary-text)'">LinkedIn</a>
+              style="color: var(--secondary-text); text-decoration: none; font-size: 0.9rem; transition: all 0.3s; display: flex; align-items: center; gap: 8px;"
+              onmouseover="this.style.color='#0077b5'; this.style.transform='translateX(4px)'"
+              onmouseout="this.style.color='var(--secondary-text)'; this.style.transform='translateX(0)'">
+              <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+                <path
+                  d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+              </svg> LinkedIn
+            </a>
             <a href="https://medium.com/@villalc" target="_blank"
-              style="color: var(--secondary-text); text-decoration: none; font-size: 0.9rem; transition: color 0.3s;"
-              onmouseover="this.style.color='var(--accent-primary)'"
-              onmouseout="this.style.color='var(--secondary-text)'">Medium @villalc</a>
+              style="color: var(--secondary-text); text-decoration: none; font-size: 0.9rem; transition: all 0.3s; display: flex; align-items: center; gap: 8px;"
+              onmouseover="this.style.color='var(--accent-primary)'; this.style.transform='translateX(4px)'"
+              onmouseout="this.style.color='var(--secondary-text)'; this.style.transform='translateX(0)'">
+              <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+                <path
+                  d="M13.54 12a6.8 6.8 0 01-6.77 6.82A6.8 6.8 0 010 12a6.8 6.8 0 016.77-6.82A6.8 6.8 0 0113.54 12zM20.96 12c0 3.54-1.51 6.42-3.38 6.42-1.87 0-3.39-2.88-3.39-6.42s1.52-6.42 3.39-6.42 3.38 2.88 3.38 6.42M24 12c0 3.17-.53 5.75-1.19 5.75-.66 0-1.19-2.58-1.19-5.75s.53-5.75 1.19-5.75C23.47 6.25 24 8.83 24 12z" />
+              </svg> Medium
+            </a>
             <a href="mailto:research@sovereignsymbiosis.com"
-              style="color: var(--secondary-text); text-decoration: none; font-size: 0.9rem; transition: color 0.3s;"
-              onmouseover="this.style.color='var(--accent-cyan)'"
-              onmouseout="this.style.color='var(--secondary-text)'">research@sovereignsymbiosis.com</a>
+              style="color: var(--secondary-text); text-decoration: none; font-size: 0.9rem; transition: all 0.3s; display: flex; align-items: center; gap: 8px;"
+              onmouseover="this.style.color='var(--accent-cyan)'; this.style.transform='translateX(4px)'"
+              onmouseout="this.style.color='var(--secondary-text)'; this.style.transform='translateX(0)'">
+              📧 Contact
+            </a>
           </div>
         </div>
 
         <!-- Enterprise -->
         <div>
           <h4
-            style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem; color: var(--accent-primary);">
+            style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 20px; color: var(--accent-primary); opacity: 0.9;">
             Enterprise</h4>
-          <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+          <div style="display: flex; flex-direction: column; gap: 12px; align-items: flex-start;">
             <a href="https://ahigovernance.com" target="_blank"
-              style="color: var(--accent-cyan); text-decoration: none; font-size: 0.9rem; font-weight: 600;">🛡️ AHI
-              Governance Labs →</a>
-            <span style="color: var(--secondary-text); font-size: 0.8rem;">Auditoría y Certificación</span>
-            <span style="color: var(--secondary-text); font-size: 0.8rem;">Consultoría Enterprise</span>
+              style="color: var(--accent-cyan); text-decoration: none; font-size: 0.9rem; font-weight: 600; background: rgba(0, 212, 255, 0.1); padding: 8px 16px; border-radius: 4px; display: inline-flex; align-items: center; gap: 8px; transition: all 0.3s;"
+              onmouseover="this.style.background='var(--accent-cyan)'; this.style.color='#000'"
+              onmouseout="this.style.background='rgba(0, 212, 255, 0.1)'; this.style.color='var(--accent-cyan)'">
+              🛡️ AHI Governance Labs
+            </a>
+            <p style="color: var(--secondary-text); font-size: 0.8rem; margin: 0; line-height: 1.4;">
+              Auditoría y Certificación Enterprise para Sistemas de IA de Alto Riesgo.
+            </p>
           </div>
         </div>
       </div>
