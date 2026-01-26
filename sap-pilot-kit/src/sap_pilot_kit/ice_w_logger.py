@@ -8,7 +8,7 @@ para AHI Governance Labs.
 Reference: https://sovereignsymbiosis.com/soberania-evento.html
 DOI: 10.5281/zenodo.17880052
 
-Author: AHI 3.0
+© 2024-2026 AHI 3.0 · AHI Governance Labs
 Registro IMPI: EXP-3495968
 License: MIT
 """
@@ -17,7 +17,6 @@ import json
 import os
 import uuid
 import math
-import numpy as np
 from datetime import datetime, timezone
 from collections import deque
 
@@ -125,10 +124,10 @@ class ICEWLogger:
         """
         # Ecuación base: Cn = promedio ponderado de integridad operativa
         return (
-            metrics['semantic_stability'] +
-            metrics['output_stability'] +
-            metrics['constraint_compliance'] +
-            (1 - metrics['decision_entropy'])  # Entropy inverted
+            metrics['semantic_stability']
+            + metrics['output_stability']
+            + metrics['constraint_compliance']
+            + (1 - metrics['decision_entropy'])  # Entropy inverted
         ) / 4.0
 
     def process_event(self, raw_metrics: dict) -> dict:
@@ -311,7 +310,7 @@ if __name__ == "__main__":
             'constraint_compliance': 1.0,
             'decision_entropy': 0.05
         })
-        print(f"Event {i+1}: State={log['event']['state']}, Cn={log['metrics']['cn']}")
+        print(f"Event {i + 1}: State={log['event']['state']}, Cn={log['metrics']['cn']}")
 
     # 20 eventos inestables
     for i in range(20):
@@ -323,7 +322,7 @@ if __name__ == "__main__":
             'decision_entropy': min(0.9, 0.05 + ambiguity)
         })
         action = log['autarchy']['action']
-        print(f"Stress {i+1}: State={log['event']['state']}, Action={action}")
+        print(f"Stress {i + 1}: State={log['event']['state']}, Action={action}")
 
         if action == "BLOCK_OUTPUT":
             print("🛑 AUTARCHY ENFORCEMENT: Output blocked")
