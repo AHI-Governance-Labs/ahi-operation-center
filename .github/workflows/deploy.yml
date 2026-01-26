@@ -36,3 +36,30 @@ jobs:
           firebase deploy --only hosting --project cs-poc-aguy0wkzgf55jarewtxljk9
         env:
           GOOGLE_APPLICATION_CREDENTIALS: ${{ steps.auth.outputs.credentials_file_path }}
+
+      - name: Authenticate to Google Cloud (OIDC)
+        id: 'auth'
+        uses: google-github-actions/auth@v2
+        with:
+          project_id: cs-poc-aguy0wkzgf55jarewtxljk9
+          workload_identity_provider: projects/831861990394/locations/global/workloadIdentityPools/ahi-pool/providers/ahi-provider
+          service_account: github-actions-sa@cs-poc-aguy0wkzgf55jarewtxljk9.iam.gserviceaccount.com
+          create_credentials_file: true
+
+      - name: Deploy AHI Governance (Enterprise)
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ steps.auth.outputs.credentials_json }}'
+          projectId: cs-poc-aguy0wkzgf55jarewtxljk9
+          channelId: live
+          target: ahigovernance
+
+      - name: Deploy Sovereign Symbiosis (Research)
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ steps.auth.outputs.credentials_json }}'
+          projectId: cs-poc-aguy0wkzgf55jarewtxljk9
+          channelId: live
+          target: sovereignsymbiosis
