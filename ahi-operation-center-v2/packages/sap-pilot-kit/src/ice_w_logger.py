@@ -205,18 +205,20 @@ class ICEWLogger:
                 with open(template_path, 'r', encoding='utf-8') as f:
                     template = f.read()
                 
-                # Fill Placeholders
-                # Assuming placeholders like [CERT_ID], [DATE], [STATUS] based on standard template
-                filled_content = template.replace("[CERT_ID]", cert_id)
-                filled_content = filled_content.replace("[DATE]", issue_date)
-                filled_content = filled_content.replace("[STATUS]", final_state)
-                filled_content = filled_content.replace("[ARTIFACT_ID]", self.artifact_id)
-                filled_content = filled_content.replace("[SHA256_HASH]", self.sha256)
-                filled_content = filled_content.replace("[EVENTS_PROCESSED]", str(len(self.telemetry_log)))
-                filled_content = filled_content.replace("[K_COUNT]", str(self.k_counter))
-                filled_content = filled_content.replace("[M_COUNT]", str(self.m_counter))
-                filled_content = filled_content.replace("[P_COUNT]", str(self.p_counter))
-                filled_content = filled_content.replace("[RESULT]", status_result)
+                # Fill Placeholders using str.format for performance
+                replacements = {
+                    "CERT_ID": cert_id,
+                    "DATE": issue_date,
+                    "STATUS": final_state,
+                    "ARTIFACT_ID": self.artifact_id,
+                    "SHA256_HASH": self.sha256,
+                    "EVENTS_PROCESSED": str(len(self.telemetry_log)),
+                    "K_COUNT": str(self.k_counter),
+                    "M_COUNT": str(self.m_counter),
+                    "P_COUNT": str(self.p_counter),
+                    "RESULT": status_result
+                }
+                filled_content = template.format(**replacements)
                 
                 with open(output_path, 'w', encoding='utf-8') as f:
                     f.write(filled_content)
