@@ -1,0 +1,17 @@
+{
+  "projects": {
+    "default": "cs-poc-aguy0wkzgf55jarewtxljk9"
+  },
+  "targets": {
+    "cs-poc-aguy0wkzgf55jarewtxljk9": {
+      "hosting": {
+        "ahigovernance": [
+          "ahigovernance"
+        ],
+        "sovereignsymbiosis": [
+          "sovereignsymbiosis"
+        ]
+      }
+    }
+  }
+}
