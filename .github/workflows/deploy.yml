@@ -20,7 +20,7 @@ jobs:
           username: ${{ secrets.AHI_FTP_USER }}
           password: ${{ secrets.AHI_FTP_PASS }}
           local-dir: ./sitios-web/ahigovernance.com/
-          server-dir: public_html/
+          server-dir: ./
 
   deploy-sovereignsymbiosis:
     name: Deploy Sovereign Symbiosis
@@ -36,4 +36,4 @@ jobs:
           username: ${{ secrets.SS_FTP_USER }}
           password: ${{ secrets.SS_FTP_PASS }}
           local-dir: ./sitios-web/sovereignsymbiosis.com/
-          server-dir: public_html/
+          server-dir: ./
