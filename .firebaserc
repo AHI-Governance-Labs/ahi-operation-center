@@ -1,0 +1,17 @@
+{
+  "projects": {
+    "default": "project-59987ce8-64ac-4ffb-b2b"
+  },
+  "targets": {
+    "project-59987ce8-64ac-4ffb-b2b": {
+      "hosting": {
+        "ahigovernance": [
+          "ahigovernance"
+        ],
+        "sovereignsymbiosis": [
+          "sovereignsymbiosis"
+        ]
+      }
+    }
+  }
+}

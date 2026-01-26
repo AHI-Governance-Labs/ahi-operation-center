@@ -1,0 +1,52 @@
+{
+  "hosting": [
+    {
+      "target": "ahigovernance",
+      "public": "sitios-web/ahigovernance.com",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "headers": [
+        {
+          "source": "**",
+          "headers": [
+            {
+              "key": "X-AHI-Integrity",
+              "value": "84.2%"
+            },
+            {
+              "key": "X-Content-Type-Options",
+              "value": "nosniff"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "target": "sovereignsymbiosis",
+      "public": "sitios-web/sovereignsymbiosis.com",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "headers": [
+        {
+          "source": "**",
+          "headers": [
+            {
+              "key": "X-AHI-Integrity",
+              "value": "84.2%"
+            },
+            {
+              "key": "X-Sovereignty-Protocol",
+              "value": "SAP v0.1.0"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
