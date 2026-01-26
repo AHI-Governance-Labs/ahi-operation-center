@@ -28,23 +28,14 @@ jobs:
           project_id: cs-poc-aguy0wkzgf55jarewtxljk9
           workload_identity_provider: projects/831861990394/locations/global/workloadIdentityPools/ahi-pool/providers/ahi-provider
           service_account: github-actions-sa@cs-poc-aguy0wkzgf55jarewtxljk9.iam.gserviceaccount.com
-          create_credentials_file: true
-          export_environment_variables: true
+          token_format: 'access_token' # Solicitamos un token de acceso temporal
 
-      - name: Deploy AHI Governance (Enterprise)
-        uses: FirebaseExtended/action-hosting-deploy@v0
-        with:
-          repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          firebaseServiceAccount: '${{ steps.auth.outputs.credentials_file_contents }}'
-          projectId: cs-poc-aguy0wkzgf55jarewtxljk9
-          channelId: live
-          target: ahigovernance
-
-      - name: Deploy Sovereign Symbiosis (Research)
-        uses: FirebaseExtended/action-hosting-deploy@v0
-        with:
-          repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          firebaseServiceAccount: '${{ steps.auth.outputs.credentials_file_contents }}'
-          projectId: cs-poc-aguy0wkzgf55jarewtxljk9
-          channelId: live
-          target: sovereignsymbiosis
+      - name: Deploy to Firebase Hosting (Sovereign)
+        run: |
+          # Instalamos las herramientas de Firebase
+          npm install -g firebase-tools
+          
+          # Desplegamos ambos sitios usando el token de acceso de OIDC
+          # Esto evita el error de "firebase login" definitivamente
+          firebase deploy --only hosting:ahigovernance --project cs-poc-aguy0wkzgf55jarewtxljk9 --token "${{ steps.auth.outputs.access_token }}"
+          firebase deploy --only hosting:sovereignsymbiosis --project cs-poc-aguy0wkzgf55jarewtxljk9 --token "${{ steps.auth.outputs.access_token }}"
