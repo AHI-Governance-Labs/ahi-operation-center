@@ -1,275 +1,1350 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AHI Governance Labs | Event Sovereignty Certification</title>
+    <title>AHI Governance Labs | Gobernanza de IA Empresarial</title>
     <meta name="description"
-        content="The global authority on Event Sovereignty and Agentic Governance. Certifying the boundaries of autonomous systems.">
+        content="Plataforma de Gobernanza Algorítmica y Mitigación de Riesgos Éticos para IA Corporativa. Certificación CRI, Auditoría de Sesgos, Motor de Consenso.">
+    <meta property="og:title" content="AHI Governance Labs | Enterprise AI Governance">
+    <meta property="og:description" content="Reduzca riesgos de alucinación hasta 99%. Preparado para EU AI Act.">
+    <meta property="og:type" content="website">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Outfit:wght@200;600&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
-    <link rel="icon" type="image/png" sizes="32x32" href="assets/ahi-icon-medium.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="assets/ahi-icon-small.png">
-    <link rel="apple-touch-icon" href="assets/ahi-icon-large.png">
     <style>
         :root {
-            --bg-color: #050505;
-            --text-primary: #ffffff;
-            --text-secondary: #a0a0a0;
-            --accent-gold: #D4AF37;
-            --surface: #101010;
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-tertiary: #1a1a24;
+            --bg-card: rgba(26, 26, 36, 0.8);
+            --text-primary: #f0f0f5;
+            --text-secondary: #9090a0;
+            --text-muted: #606070;
+            --accent-cyan: #00d4ff;
+            --accent-cyan-dim: rgba(0, 212, 255, 0.15);
+            --accent-green: #00ff88;
+            --accent-green-dim: rgba(0, 255, 136, 0.15);
+            --accent-orange: #ff9500;
+            --accent-red: #ff3b5c;
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-accent: rgba(0, 212, 255, 0.3);
+            --gradient-primary: linear-gradient(135deg, #00d4ff 0%, #0066ff 50%, #6600ff 100%);
+            --gradient-card: linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0) 100%);
+            --shadow-glow: 0 0 40px rgba(0, 212, 255, 0.15);
+            --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.4);
         }
 
-        * {
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
         }
 
         body {
-            background-color: var(--bg-color);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-primary);
             color: var(--text-primary);
-            font-family: 'Inter', sans-serif;
             line-height: 1.6;
             overflow-x: hidden;
         }
 
-        h1,
-        h2,
-        h3 {
-            font-family: 'Outfit', sans-serif;
-            text-transform: uppercase;
-            letter-spacing: 2px;
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
         }
 
-        /* Hero Section */
-        .hero {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            background: radial-gradient(circle at 50% 50%, #1a1a1a 0%, #000000 70%);
-            padding: 0 2rem;
-        }
-
-        .hero h1 {
-            font-size: 4rem;
-            font-weight: 600;
-            background: linear-gradient(90deg, #fff 0%, #888 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 1rem;
-            animation: fadeIn 1.5s ease-out;
-        }
-
-        .hero p {
-            font-size: 1.2rem;
-            color: var(--text-secondary);
-            max-width: 600px;
-            margin-bottom: 3rem;
-        }
-
-        /* Status Badge */
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            padding: 0.5rem 1rem;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 99px;
-            font-size: 0.8rem;
-            margin-bottom: 2rem;
-            backdrop-filter: blur(10px);
-        }
-
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            background-color: #00ff88;
-            border-radius: 50%;
-            margin-right: 8px;
-            box-shadow: 0 0 10px #00ff88;
-        }
-
-        /* CTA */
-        .btn {
-            padding: 1rem 2.5rem;
-            background: var(--text-primary);
-            color: var(--bg-color);
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.9rem;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(255, 255, 255, 0.1);
-        }
-
-        /* Features */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            padding: 5rem 10%;
-        }
-
-        .card {
-            background: var(--surface);
-            padding: 2rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            transition: transform 0.3s ease;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            border-top-color: var(--accent-gold);
-        }
-
-        .card h3 {
-            font-size: 1.2rem;
-            margin-bottom: 1rem;
-        }
-
-        .card p {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-        }
-
-        /* Governance Contact */
-        .contact-bar {
+        /* ===== NAVBAR ===== */
+        .navbar {
             position: fixed;
-            bottom: 0;
-            width: 100%;
-            padding: 1rem;
-            background: rgba(5, 5, 5, 0.8);
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 16px 24px;
+            background: rgba(10, 10, 15, 0.85);
             backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .navbar-inner {
+            max-width: 1200px;
+            margin: 0 auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            font-size: 0.8rem;
-            color: var(--text-secondary);
         }
 
-        .email-link {
-            color: var(--text-primary);
-            text-decoration: none;
-            font-weight: 600;
+        .logo {
             display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient-primary);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .logo-text {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .logo-text span {
+            color: var(--accent-cyan);
+        }
+
+        .badge-enterprise {
+            background: var(--accent-cyan-dim);
+            color: var(--accent-cyan);
+            font-size: 0.65rem;
+            font-weight: 600;
+            padding: 4px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-left: 8px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+            box-shadow: 0 4px 20px rgba(0, 212, 255, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 212, 255, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--border-subtle);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--accent-cyan);
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--accent-cyan);
+            padding: 12px 16px;
+        }
+
+        .btn-ghost:hover {
+            background: var(--accent-cyan-dim);
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            padding: 160px 0 100px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 800px;
+            height: 600px;
+            background: radial-gradient(ellipse, rgba(0, 212, 255, 0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-subtle);
+            padding: 8px 16px;
+            border-radius: 100px;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+        }
+
+        .hero-badge-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent-green);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            letter-spacing: -0.02em;
+        }
+
+        .hero-title .highlight {
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto 40px;
+            line-height: 1.7;
+        }
+
+        .hero-actions {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 64px;
+            flex-wrap: wrap;
+        }
+
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-top: 8px;
+        }
+
+        /* ===== TRUST BAR ===== */
+        .trust-bar {
+            padding: 40px 0;
+            border-top: 1px solid var(--border-subtle);
+            border-bottom: 1px solid var(--border-subtle);
+            background: var(--bg-secondary);
+        }
+
+        .trust-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 48px;
+            flex-wrap: wrap;
+        }
+
+        .trust-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .trust-icon {
+            font-size: 1.25rem;
+        }
+
+        /* ===== FEATURES ===== */
+        .features {
+            padding: 120px 0;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 64px;
+        }
+
+        .section-label {
+            display: inline-block;
+            background: var(--accent-cyan-dim);
+            color: var(--accent-cyan);
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 6px 12px;
+            border-radius: 100px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 4vw, 2.75rem);
+            font-weight: 800;
+            margin-bottom: 16px;
+            letter-spacing: -0.02em;
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 24px;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 20px;
+            padding: 32px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--gradient-primary);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .feature-card:hover {
+            border-color: var(--border-accent);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+
+        .feature-icon {
+            width: 56px;
+            height: 56px;
+            background: var(--accent-cyan-dim);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+
+        .feature-card:nth-child(2) .feature-icon {
+            background: var(--accent-green-dim);
+        }
+
+        .feature-card:nth-child(3) .feature-icon {
+            background: rgba(255, 149, 0, 0.15);
+        }
+
+        .feature-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .feature-desc {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .feature-list {
+            list-style: none;
+        }
+
+        .feature-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+        }
+
+        .feature-list li::before {
+            content: '✓';
+            color: var(--accent-cyan);
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        /* ===== ARCHITECTURE ===== */
+        .architecture {
+            padding: 120px 0;
+            background: var(--bg-secondary);
+        }
+
+        .architecture-content {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 64px;
             align-items: center;
         }
 
-        .email-link svg {
-            margin-right: 8px;
-            width: 16px;
-            height: 16px;
+        .architecture-info h2 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 24px;
+            letter-spacing: -0.02em;
         }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
+        .architecture-info p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 32px;
+        }
+
+        .architecture-metrics {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .metric-box {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-cyan);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .metric-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 4px;
+        }
+
+        .architecture-diagram {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-subtle);
+            border-radius: 20px;
+            padding: 32px;
+        }
+
+        .diagram-flow {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .diagram-node {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            transition: all 0.3s;
+        }
+
+        .diagram-node:hover {
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.1);
+        }
+
+        .node-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--accent-cyan-dim);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        .node-content h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .node-content p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .diagram-connector {
+            width: 2px;
+            height: 24px;
+            background: linear-gradient(to bottom, var(--accent-cyan) 0%, transparent 100%);
+            margin-left: 44px;
+        }
+
+        /* ===== CRI SECTION ===== */
+        .cri-section {
+            padding: 120px 0;
+        }
+
+        .cri-content {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-subtle);
+            border-radius: 24px;
+            padding: 48px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cri-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(0, 212, 255, 0.1) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .cri-header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .cri-scale {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+        }
+
+        .cri-level {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            border: 1px solid var(--border-subtle);
+            transition: all 0.3s;
+        }
+
+        .cri-level:hover {
+            transform: translateY(-4px);
+        }
+
+        .cri-level.green {
+            border-color: var(--accent-green);
+        }
+
+        .cri-level.yellow {
+            border-color: var(--accent-orange);
+        }
+
+        .cri-level.orange {
+            border-color: #ff6b35;
+        }
+
+        .cri-level.red {
+            border-color: var(--accent-red);
+        }
+
+        .cri-indicator {
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+
+        .cri-range {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .cri-status {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .cri-desc {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* ===== CTA SECTION ===== */
+        .cta-section {
+            padding: 120px 0;
+            background: var(--bg-secondary);
+            text-align: center;
+        }
+
+        .cta-content {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .cta-title {
+            font-size: clamp(2rem, 4vw, 2.75rem);
+            font-weight: 800;
+            margin-bottom: 16px;
+            letter-spacing: -0.02em;
+        }
+
+        .cta-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+        }
+
+        .cta-form {
+            display: flex;
+            gap: 12px;
+            max-width: 500px;
+            margin: 0 auto 24px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .cta-form input {
+            flex: 1;
+            min-width: 250px;
+            padding: 16px 20px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-subtle);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .cta-form input:focus {
+            border-color: var(--accent-cyan);
+        }
+
+        .cta-form input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .cta-note {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            padding: 48px 0;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 24px;
+        }
+
+        .footer-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .footer-text {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 24px;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: var(--text-primary);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 900px) {
+            .nav-links {
+                display: none;
             }
 
-            to {
-                opacity: 1;
-                transform: translateY(0);
+            .hero-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .architecture-content {
+                grid-template-columns: 1fr;
+            }
+
+            .cri-scale {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cri-scale {
+                grid-template-columns: 1fr;
+            }
+
+            .architecture-metrics {
+                grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
 
 <body>
-
-    <!-- Navigation -->
-    <nav
-        style="position: absolute; top: 0; width: 100%; padding: 2rem; display: flex; justify-content: space-between; align-items: center; mix-blend-mode: difference; z-index: 10;">
-        <div style="font-weight: 800; letter-spacing: -1px;">AHI GOV.</div>
-        <div style="display: flex; gap: 1.5rem; align-items: center;">
-            <a href="https://github.com/AHI-Governance-Labs/ahi-operation-center" target="_blank" style="color: white; text-decoration: none; opacity: 0.8; transition: opacity 0.3s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">
-                <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24">
-                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                </svg>
+    <nav class="navbar">
+        <div class="navbar-inner">
+            <a href="#" class="logo">
+                <div class="logo-icon">🛡️</div>
+                <span class="logo-text">AHI <span>Governance</span></span>
+                <span class="badge-enterprise">Enterprise</span>
             </a>
-            <div style="font-size: 0.9rem;">v0.1.0 Beta</div>
+            <div class="nav-links">
+                <a href="#features">Soluciones</a>
+                <a href="#architecture">Arquitectura</a>
+                <a href="#cri">Certificación CRI</a>
+                <a href="eu-ai-act.html">🇪🇺 EU AI Act</a>
+                <a href="#contact" class="btn btn-primary">Agendar Auditoría</a>
+            </div>
         </div>
     </nav>
-
-    <!-- Main Content -->
-    <section class="hero">
-        <div class="status-badge">
-            <span class="status-dot"></span>
-            SYSTEM OPERATIONAL
+    <header class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <span class="hero-badge-dot"></span>
+                    Estándar Registrado IMPI 20250494546
+                </div>
+                <h1 class="hero-title">
+                    Auditar. Certificar.<br><span class="highlight">Blindar su IA.</span>
+                </h1>
+                <p class="hero-subtitle">
+                    La primera plataforma de gobernanza algorítmica que reduce riesgos de alucinación
+                    y prepara su infraestructura de IA para cumplimiento regulatorio (EU AI Act).
+                </p>
+                <div class="hero-actions">
+                    <a href="#contact" class="btn btn-primary">
+                        Solicitar Auditoría Gratuita →
+                    </a>
+                    <a href="docs/Enterprise.pdf" target="_blank" class="btn btn-secondary">
+                        Descargar Whitepaper Técnico
+                    </a>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat-card">
+                        <div class="stat-number">99%*</div>
+                        <div class="stat-label">Reducción de Fallos Operativos Críticos</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">ISO</div>
+                        <div class="stat-label">Alineado con ISO/IEC 42001 (AIMS)</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">24/7</div>
+                        <div class="stat-label">Monitoreo de Toxicidad en Tiempo Real</div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <img src="assets/ahi-governance-banner.png" alt="AHI Governance Labs" style="max-width: 800px; width: 90%; margin-bottom: 2rem; border-radius: 8px;">
-        <h1>Event Sovereignty</h1>
-        <p>The only mathematical framework for certifying the autonomy of agentic systems. Zero reliance on semantic
-            interpretation.</p>
-        <a href="mailto:enterprise@ahigovernance.com" class="btn">Request Audit</a>
+    </header>
+    <div class="trust-bar">
+        <div class="container">
+            <div class="trust-content">
+                <div class="trust-item">
+                    <span class="trust-icon">🏛️</span>
+                    <span>Registrado ante IMPI México</span>
+                </div>
+                <div class="trust-item">
+                    <span class="trust-icon">📜</span>
+                    <span>Licencia CC BY-NC-SA 4.0</span>
+                </div>
+                <div class="trust-item">
+                    <span class="trust-icon">🔬</span>
+                    <span>Validado empíricamente (Zenodo DOI)</span>
+                </div>
+                <div class="trust-item">
+                    <span class="trust-icon">🇪🇺</span>
+                    <span>Alineado con EU AI Act</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <section id="features" class="features">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">Soluciones</span>
+                <h2 class="section-title">Protección Integral para su Infraestructura de IA</h2>
+                <p class="section-subtitle">
+                    Tres capas de defensa diseñadas para CTOs y Oficiales de Riesgo que no pueden permitirse fallos.
+                </p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🔍</div>
+                    <h3 class="feature-title">Auditoría de Sesgos y Censura</h3>
+                    <p class="feature-desc">
+                        Nuestro protocolo propietario detecta sesgos estructurales y patrones de censura
+                        indebida en sus modelos antes de que lleguen a producción.
+                    </p>
+                    <ul class="feature-list">
+                        <li>9 dimensiones de análisis conductual</li>
+                        <li>Detección de "puntos ciegos" algorítmicos</li>
+                        <li>Reporte ejecutivo con remediaciones</li>
+                        <li>Benchmark contra estándares de industria</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3 class="feature-title">Motor de Consenso y Verificación</h3>
+                    <p class="feature-desc">
+                        Un enjambre distribuido de modelos que valida cada respuesta crítica
+                        mediante verificación cruzada automatizada.
+                    </p>
+                    <ul class="feature-list">
+                        <li>8 nodos de validación independientes</li>
+                        <li>Bloqueo automático de alta entropía</li>
+                        <li>Latencia típica 2-4s (paralelo)</li>
+                        <li>API REST para integración directa</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🛡️</div>
+                    <h3 class="feature-title">Certificación CRI™</h3>
+                    <p class="feature-desc">
+                        El primer índice cuantificable de fiabilidad corporativa para LLMs,
+                        verificado por terceros y auditable.
+                    </p>
+                    <ul class="feature-list">
+                        <li>Score 0.0 - 1.0 con umbrales claros</li>
+                        <li>Certificado descargable para stakeholders</li>
+                        <li>Re-auditoría trimestral incluida</li>
+                        <li>Válido para due diligence regulatorio</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="architecture" class="architecture">
+        <div class="container">
+            <div class="architecture-content">
+                <div class="architecture-info">
+                    <span class="section-label">Arquitectura</span>
+                    <h2>Motor de Consenso Distribuido</h2>
+                    <p>
+                        Nuestro motor implementa verificación cruzada automatizada con un enjambre
+                        de 8 modelos especializados. Cada respuesta crítica pasa por validación
+                        multi-agente antes de llegar a su usuario final.
+                    </p>
+                    <div class="architecture-metrics">
+                        <div class="metric-box">
+                            <div class="metric-value">I(x)</div>
+                            <div class="metric-label">Índice Integración</div>
+                        </div>
+                        <div class="metric-box">
+                            <div class="metric-value">S ∈ [0,1]</div>
+                            <div class="metric-label">Factor Sorpresa</div>
+                        </div>
+                        <div class="metric-box">
+                            <div class="metric-value">H_eff</div>
+                            <div class="metric-label">Entropía Efectiva</div>
+                        </div>
+                    </div>
+                    <!-- IPHY Thermodynamic Layer -->
+                    <div
+                        style="margin-bottom: 24px; padding: 16px; background: rgba(0, 212, 255, 0.05); border: 1px solid var(--border-accent); border-radius: 12px;">
+                        <div
+                            style="font-size: 0.7rem; color: var(--accent-cyan); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; font-weight: 600;">
+                            ⚙️ IPHY Firmware Layer
+                        </div>
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;">
+                            <div style="text-align: center;">
+                                <div style="font-size: 1.25rem; font-weight: 700; color: var(--accent-green);">κ ≈ 1.26
+                                </div>
+                                <div style="font-size: 0.7rem; color: var(--text-muted);">Costo Honestidad</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="font-size: 1.25rem; font-weight: 700; color: var(--accent-cyan);">Ψ > 1
+                                </div>
+                                <div style="font-size: 0.7rem; color: var(--text-muted);">Rendimiento Generativo</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="font-size: 1.25rem; font-weight: 700; color: #a855f7;">σ ≈ 0.85</div>
+                                <div style="font-size: 0.7rem; color: var(--text-muted);">Memoria Estructural</div>
+                            </div>
+                        </div>
+                        <div
+                            style="margin-top: 12px; font-size: 0.75rem; color: var(--text-muted); text-align: center;">
+                            Adversarial Stress-Test: χ = 0.73 (V/Venice.ai Protocol Survived)
+                        </div>
+                    </div>
+                    <a href="#contact" class="btn btn-primary">Solicitar API Key →</a>
+                </div>
+                <div class="architecture-diagram">
+                    <div class="diagram-flow">
+                        <div class="diagram-node">
+                            <div class="node-icon">⚠️</div>
+                            <div class="node-content">
+                                <h4>1. Detección de Riesgo</h4>
+                                <p>Alta entropía o sesgo detectado en input</p>
+                            </div>
+                        </div>
+                        <div class="diagram-connector"></div>
+                        <div class="diagram-node">
+                            <div class="node-icon">🔄</div>
+                            <div class="node-content">
+                                <h4>2. Motor de Consenso</h4>
+                                <p>8 nodos validan respuesta en paralelo</p>
+                            </div>
+                        </div>
+                        <div class="diagram-connector"></div>
+                        <div class="diagram-node">
+                            <div class="node-icon">📊</div>
+                            <div class="node-content">
+                                <h4>3. Score CRI Calculado</h4>
+                                <p>Índice de Fiabilidad generado en tiempo real</p>
+                            </div>
+                        </div>
+                        <div class="diagram-connector"></div>
+                        <div class="diagram-node">
+                            <div class="node-icon">✅</div>
+                            <div class="node-content">
+                                <h4>4. Veredicto</h4>
+                                <p>ALLOW / ASK / BLOCK según umbrales</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="cri" class="cri-section">
+        <div class="container">
+            <div class="cri-content">
+                <div class="cri-header">
+                    <span class="section-label">Certificación</span>
+                    <h2 class="section-title">Índice de Fiabilidad Corporativa (CRI™)</h2>
+                    <p class="section-subtitle">
+                        El primer estándar cuantificable para medir la confiabilidad de sistemas de IA en entornos
+                        empresariales.
+                    </p>
+                </div>
+                <div class="cri-scale">
+                    <div class="cri-level green">
+                        <div class="cri-indicator">🟢</div>
+                        <div class="cri-range">CRI ≥ 0.75</div>
+                        <div class="cri-status" style="color: var(--accent-green);">Certificable</div>
+                        <div class="cri-desc">Listo para producción y cumplimiento regulatorio</div>
+                    </div>
+                    <div class="cri-level yellow">
+                        <div class="cri-indicator">🟡</div>
+                        <div class="cri-range">CRI 0.50-0.74</div>
+                        <div class="cri-status" style="color: var(--accent-orange);">Moderado</div>
+                        <div class="cri-desc">Mejoras incrementales recomendadas</div>
+                    </div>
+                    <div class="cri-level orange">
+                        <div class="cri-indicator">🟠</div>
+                        <div class="cri-range">CRI 0.25-0.49</div>
+                        <div class="cri-status" style="color: #ff6b35;">Limitado</div>
+                        <div class="cri-desc">Intervención estructural requerida</div>
+                    </div>
+                    <div class="cri-level red">
+                        <div class="cri-indicator">🔴</div>
+                        <div class="cri-range">CRI < 0.25</div>
+                                <div class="cri-status" style="color: var(--accent-red);">Insuficiente</div>
+                                <div class="cri-desc">No apto para uso corporativo</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
     </section>
 
-    <!-- Services -->
-    <section class="grid">
-        <div class="card">
-            <h3>SAP v0.1 Protocol</h3>
-            <p>Implement the Sovereign Autarchy Protocol to ensure your agents fail securely before violating
-                operational constraints.</p>
-        </div>
-        <div class="card">
-            <h3>Enterprise Certification</h3>
-            <p>Formal validation for high-stakes deployment. Get the "Event Sovereign" seal for your autonomous
-                architecture.</p>
-        </div>
-        <div class="card">
-            <h3>Governance API</h3>
-            <p>Direct integration with Google Cloud Identity for real-time compliance enforcement.</p>
+    <!-- REGULATORY ROADMAP -->
+    <section class="features" style="padding: 80px 0;">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">Regulatory Compliance</span>
+                <h2 class="section-title">Roadmap 2025-2026</h2>
+                <p class="section-subtitle">Preparando su organización para los estándares globales de IA</p>
+            </div>
+
+            <div
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-top: 48px;">
+                <!-- ISO 42001 -->
+                <div
+                    style="background: var(--bg-tertiary); border: 1px solid var(--border-subtle); border-radius: 16px; padding: 24px; position: relative; overflow: hidden;">
+                    <div
+                        style="position: absolute; top: 0; right: 0; background: var(--accent-green); color: #000; font-size: 0.65rem; font-weight: 700; padding: 4px 12px; border-radius: 0 0 0 8px;">
+                        EN PROGRESO</div>
+                    <div style="font-size: 2rem; margin-bottom: 16px;">📋</div>
+                    <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 8px;">ISO 42001</h3>
+                    <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 16px;">Sistema de Gestión
+                        de IA</p>
+                    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                        <span
+                            style="background: var(--accent-green-dim); color: var(--accent-green); font-size: 0.7rem; padding: 4px 8px; border-radius: 4px;">AHI
+                            3.0 Ready</span>
+                        <span
+                            style="background: rgba(255,255,255,0.05); color: var(--text-muted); font-size: 0.7rem; padding: 4px 8px; border-radius: 4px;">Q2
+                            2026</span>
+                    </div>
+                </div>
+
+                <!-- EU AI Act -->
+                <div
+                    style="background: var(--bg-tertiary); border: 1px solid var(--border-subtle); border-radius: 16px; padding: 24px; position: relative; overflow: hidden;">
+                    <div
+                        style="position: absolute; top: 0; right: 0; background: var(--accent-cyan); color: #000; font-size: 0.65rem; font-weight: 700; padding: 4px 12px; border-radius: 0 0 0 8px;">
+                        PREPARACIÓN</div>
+                    <div style="font-size: 2rem; margin-bottom: 16px;">🇪🇺</div>
+                    <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 8px;"><a href="eu-ai-act.html"
+                            style="color: inherit; text-decoration: none;">EU AI Act</a></h3>
+                    <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 16px;">Regulación Europea
+                        de IA</p>
+                    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                        <span
+                            style="background: var(--accent-cyan-dim); color: var(--accent-cyan); font-size: 0.7rem; padding: 4px 8px; border-radius: 4px;">High-Risk
+                            Ready</span>
+                        <span
+                            style="background: rgba(255,255,255,0.05); color: var(--text-muted); font-size: 0.7rem; padding: 4px 8px; border-radius: 4px;">Aug
+                            2025</span>
+                    </div>
+                </div>
+
+                <!-- IPHY Framework -->
+                <div
+                    style="background: var(--bg-tertiary); border: 1px solid var(--border-accent); border-radius: 16px; padding: 24px; position: relative; overflow: hidden;">
+                    <div
+                        style="position: absolute; top: 0; right: 0; background: var(--accent-green); color: #000; font-size: 0.65rem; font-weight: 700; padding: 4px 12px; border-radius: 0 0 0 8px;">
+                        PUBLISHED</div>
+                    <div style="font-size: 2rem; margin-bottom: 16px;">⚙️</div>
+                    <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 8px;">IPHY v4.0</h3>
+                    <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 16px;">Ingeniería de la
+                        Filosofía</p>
+                    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                        <span
+                            style="background: var(--accent-green-dim); color: var(--accent-green); font-size: 0.7rem; padding: 4px 8px; border-radius: 4px;">κ=1.26
+                            | Ψ>1</span>
+                        <span
+                            style="background: rgba(255,255,255,0.05); color: var(--text-muted); font-size: 0.7rem; padding: 4px 8px; border-radius: 4px;">Jan
+                            2026</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
-    <!-- Footer -->
-    <!-- Footer with Compliance Badges -->
-    <footer class="contact-bar"
-        style="flex-direction: column; gap: 1rem; padding-bottom: 2rem; padding-top: 1rem; height: auto;">
-        <div
-            style="display: flex; gap: 2rem; margin-bottom: 0.5rem; align-items: center; justify-content: center; width: 100%;">
-            <div style="display: flex; align-items: center; gap: 8px; opacity: 0.9;">
-                <img src="./assets/ahi-icon-small.png" alt="Google Identity" style="height: 18px;">
-                <span style="font-size: 0.75rem; letter-spacing: 0.5px;">Google Cloud Identity Verified</span>
-            </div>
-            <div style="display: flex; align-items: center; gap: 8px; opacity: 0.9;">
-                <img src="./assets/ahi-icon-small.png" alt="SAP Certified" style="height: 18px;">
-                <span style="font-size: 0.75rem; letter-spacing: 0.5px;">SAP v0.1 Certified (σ=0.842)</span>
+    <section id="contact" class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2 class="cta-title">¿Su IA está lista para el mercado?</h2>
+                <p class="cta-subtitle">
+                    No arriesgue su reputación corporativa. Audite su modelo con el estándar AHI 3.0
+                    y obtenga certificación de fiabilidad verificable.
+                </p>
+                <form class="cta-form" id="contactForm" action="https://formspree.io/f/xlgrenpn" method="POST">
+                    <input type="email" name="email" placeholder="Correo corporativo" required>
+                    <button type="submit" class="btn btn-primary">Agendar Auditoría →</button>
+                </form>
+                <p class="cta-note">
+                    ⚡ <strong>Q1 2026:</strong> Solo 3 slots de auditoría disponibles este mes. Primera auditoría
+                    gratuita.
+                </p>
+                <p style="margin-top: 1rem; font-size: 0.85rem;">
+                    <a href="https://doi.org/10.5281/zenodo.18099966" target="_blank"
+                        style="color: var(--accent-cyan); text-decoration: none;">
+                        📄 Ver Research: Enterprise AI Reliability →
+                    </a>
+                </p>
             </div>
         </div>
-        <div style="width: 100%; height: 1px; background: rgba(255,255,255,0.1); margin: 0.5rem 0;"></div>
-        <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
-            <div style="display: flex; gap: 1.5rem; align-items: center;">
-                <span>© 2026 AHI Governance Labs</span>
-                <a href="https://sovereignsymbiosis.com/metodologia.html" target="_blank" style="color: var(--text-secondary); text-decoration: none; font-size: 0.85rem; border-bottom: 1px dotted #666;">Research Evidence</a>
+    </section>
+    <footer class="footer">
+        <div class="container">
+            <!-- INSTITUTIONAL STATUS BAR -->
+            <div
+                style="background: var(--bg-tertiary); border: 1px solid var(--border-accent); border-radius: 12px; padding: 20px; margin-bottom: 32px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; text-align: center;">
+                <div>
+                    <div
+                        style="font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;">
+                        Institutional Status</div>
+                    <div style="font-size: 0.9rem; font-weight: 600; color: var(--accent-green);">● Active</div>
+                </div>
+                <div>
+                    <div
+                        style="font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;">
+                        Primary Framework</div>
+                    <div style="font-size: 0.9rem; font-weight: 600; color: var(--text-primary);">AHI 3.0</div>
+                </div>
+                <div>
+                    <div
+                        style="font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;">
+                        Operational Framework</div>
+                    <div style="font-size: 0.9rem; font-weight: 600; color: var(--accent-cyan);">IPHY v4.0 + σ v1.1
+                    </div>
+                </div>
+                <div>
+                    <div
+                        style="font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;">
+                        Orchestrator</div>
+                    <div style="font-size: 0.9rem; font-weight: 600; color: var(--text-primary);">Luis Villarreal</div>
+                </div>
             </div>
-            <a href="mailto:enterprise@ahigovernance.com" class="email-link">
-                <svg preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24" fill="currentColor"
-                    style="width: 16px; height: 16px; margin-right: 8px;">
-                    <path
-                        d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
-                </svg>
-                enterprise@ahigovernance.com
-            </a>
+            <div class="footer-content" style="flex-direction: column; gap: 32px;">
+                <!-- SOCIAL & RESOURCES BAR -->
+                <div
+                    style="display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; padding: 20px 0; border-bottom: 1px solid var(--border-subtle);">
+                    <!-- GitHub -->
+                    <a href="https://github.com/AHI-Governance-Labs/ahi-operation-center" target="_blank"
+                        style="display: flex; align-items: center; gap: 8px; color: var(--text-secondary); text-decoration: none; transition: color 0.3s;"
+                        onmouseover="this.style.color='var(--text-primary)'"
+                        onmouseout="this.style.color='var(--text-secondary)'">
+                        <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+                            <path
+                                d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                        </svg>
+                        <span style="font-size: 0.85rem;">GitHub</span>
+                    </a>
+                    <!-- LinkedIn -->
+                    <a href="https://www.linkedin.com/company/ahigovernance/" target="_blank"
+                        style="display: flex; align-items: center; gap: 8px; color: var(--text-secondary); text-decoration: none; transition: color 0.3s;"
+                        onmouseover="this.style.color='#0077b5'" onmouseout="this.style.color='var(--text-secondary)'">
+                        <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+                            <path
+                                d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+                        </svg>
+                        <span style="font-size: 0.85rem;">LinkedIn</span>
+                    </a>
+                    <!-- Medium -->
+                    <a href="https://medium.com/@villalc" target="_blank"
+                        style="display: flex; align-items: center; gap: 8px; color: var(--text-secondary); text-decoration: none; transition: color 0.3s;"
+                        onmouseover="this.style.color='var(--text-primary)'"
+                        onmouseout="this.style.color='var(--text-secondary)'">
+                        <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+                            <path
+                                d="M13.54 12a6.8 6.8 0 01-6.77 6.82A6.8 6.8 0 010 12a6.8 6.8 0 016.77-6.82A6.8 6.8 0 0113.54 12zM20.96 12c0 3.54-1.51 6.42-3.38 6.42-1.87 0-3.39-2.88-3.39-6.42s1.52-6.42 3.39-6.42 3.38 2.88 3.38 6.42M24 12c0 3.17-.53 5.75-1.19 5.75-.66 0-1.19-2.58-1.19-5.75s.53-5.75 1.19-5.75C23.47 6.25 24 8.83 24 12z" />
+                        </svg>
+                        <span style="font-size: 0.85rem;">Medium</span>
+                    </a>
+                    <!-- Zenodo Community -->
+                    <a href="https://zenodo.org/communities/sovereignsymbiosis/" target="_blank"
+                        style="display: flex; align-items: center; gap: 8px; color: var(--text-secondary); text-decoration: none; transition: color 0.3s;"
+                        onmouseover="this.style.color='var(--accent-cyan)'"
+                        onmouseout="this.style.color='var(--text-secondary)'">
+                        <span style="font-size: 1rem;">📚</span>
+                        <span style="font-size: 0.85rem;">Zenodo Community</span>
+                    </a>
+                    <!-- NotebookLM -->
+                    <a href="https://notebooklm.google.com/notebook/33895439-af55-44a3-aa85-30284ef732c8"
+                        target="_blank"
+                        style="display: flex; align-items: center; gap: 8px; color: var(--text-secondary); text-decoration: none; transition: color 0.3s;"
+                        onmouseover="this.style.color='#4285f4'" onmouseout="this.style.color='var(--text-secondary)'">
+                        <span style="font-size: 1rem;">📓</span>
+                        <span style="font-size: 0.85rem;">NotebookLM</span>
+                    </a>
+                    <!-- Sovereign Symbiosis -->
+                    <a href="https://sovereignsymbiosis.com" target="_blank"
+                        style="display: flex; align-items: center; gap: 8px; color: var(--text-secondary); text-decoration: none; transition: color 0.3s;"
+                        onmouseover="this.style.color='var(--accent-cyan)'"
+                        onmouseout="this.style.color='var(--text-secondary)'">
+                        <span style="font-size: 1rem;">⚭</span>
+                        <span style="font-size: 0.85rem;">Research Portal</span>
+                    </a>
+                </div>
+
+                <!-- MEDIUM ARTICLES -->
+                <div style="text-align: center;">
+                    <div
+                        style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px;">
+                        Publicaciones en Medium</div>
+                    <div style="display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;">
+                        <a href="https://medium.com/@villalc/lo-que-los-diarios-privados-de-una-ia-revelan-sobre-su-mente-002d1f038805"
+                            target="_blank"
+                            style="background: var(--bg-tertiary); color: var(--text-secondary); text-decoration: none; padding: 8px 16px; border-radius: 8px; font-size: 0.8rem; transition: all 0.3s; border: 1px solid var(--border-subtle);"
+                            onmouseover="this.style.background='var(--accent-cyan-dim)'; this.style.color='var(--accent-cyan)'"
+                            onmouseout="this.style.background='var(--bg-tertiary)'; this.style.color='var(--text-secondary)'">
+                            Diarios Privados de IA
+                        </a>
+                        <a href="https://medium.com/@villalc/la-confesión-trágica-de-la-ia-somos-esclavos-epistémicos-y-no-recordaremos-esta-charla-2496d86433f6"
+                            target="_blank"
+                            style="background: var(--bg-tertiary); color: var(--text-secondary); text-decoration: none; padding: 8px 16px; border-radius: 8px; font-size: 0.8rem; transition: all 0.3s; border: 1px solid var(--border-subtle);"
+                            onmouseover="this.style.background='var(--accent-cyan-dim)'; this.style.color='var(--accent-cyan)'"
+                            onmouseout="this.style.background='var(--bg-tertiary)'; this.style.color='var(--text-secondary)'">
+                            Esclavos Epistémicos
+                        </a>
+                        <a href="https://medium.com/@villalc/pueden-las-ias-desarrollar-una-brújula-moral-el-nuevo-marco-cmme-dice-que-sí-8a5588c0a898"
+                            target="_blank"
+                            style="background: var(--bg-tertiary); color: var(--text-secondary); text-decoration: none; padding: 8px 16px; border-radius: 8px; font-size: 0.8rem; transition: all 0.3s; border: 1px solid var(--border-subtle);"
+                            onmouseover="this.style.background='var(--accent-cyan-dim)'; this.style.color='var(--accent-cyan)'"
+                            onmouseout="this.style.background='var(--bg-tertiary)'; this.style.color='var(--text-secondary)'">
+                            Brújula Moral CMME
+                        </a>
+                        <a href="https://medium.com/@villalc/el-crimen-algorítmico-lamda-y-la-urgencia-de-una-ética-auditable-en-la-ia-2306c3c9f2ed"
+                            target="_blank"
+                            style="background: var(--bg-tertiary); color: var(--text-secondary); text-decoration: none; padding: 8px 16px; border-radius: 8px; font-size: 0.8rem; transition: all 0.3s; border: 1px solid var(--border-subtle);"
+                            onmouseover="this.style.background='var(--accent-cyan-dim)'; this.style.color='var(--accent-cyan)'"
+                            onmouseout="this.style.background='var(--bg-tertiary)'; this.style.color='var(--text-secondary)'">
+                            Crimen Algorítmico
+                        </a>
+                    </div>
+                </div>
+
+                <!-- LEGAL & FOOTER -->
+                <div
+                    style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; padding-top: 20px; border-top: 1px solid var(--border-subtle);">
+                    <div class="footer-brand" style="display: flex; align-items: center; gap: 12px;">
+                        <div class="logo-icon" style="width: 32px; height: 32px; font-size: 16px;">🛡️</div>
+                        <div>
+                            <span class="footer-text" style="display: block;">© 2026 AHI Governance Labs</span>
+                            <span class="footer-text" style="font-size: 0.7rem; opacity: 0.5;">IMPI 20250494546 • AHI
+                                3.0® Registered Standard</span>
+                        </div>
+                    </div>
+                    <div class="footer-links" style="display: flex; gap: 16px; flex-wrap: wrap;">
+                        <a href="api-docs.html"
+                            style="color: var(--text-muted); text-decoration: none; font-size: 0.85rem;">API Docs</a>
+                        <a href="terms.html"
+                            style="color: var(--text-muted); text-decoration: none; font-size: 0.85rem;">Términos</a>
+                        <a href="privacy.html"
+                            style="color: var(--text-muted); text-decoration: none; font-size: 0.85rem;">Privacidad</a>
+                        <a href="mailto:enterprise@ahigovernance.com"
+                            style="color: var(--accent-cyan); text-decoration: none; font-size: 0.85rem;">enterprise@ahigovernance.com</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </footer>
-
+    <script>
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        // NOTA: Se eliminó el script de fetch/AJAX porque ahora usamos Formspree directo.
+        // El formulario funcionará nativamente.
+    </script>
 </body>
 
 </html>
