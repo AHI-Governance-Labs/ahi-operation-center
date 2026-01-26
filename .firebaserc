@@ -1,9 +1,9 @@
 {
   "projects": {
-    "default": "project-59987ce8-64ac-4ffb-b2b"
+    "default": "cs-poc-aguy0wkzgf55jarewtxljk9"
   },
   "targets": {
-    "project-59987ce8-64ac-4ffb-b2b": {
+    "cs-poc-aguy0wkzgf55jarewtxljk9": {
       "hosting": {
         "ahigovernance": [
           "ahigovernance"
