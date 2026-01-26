@@ -1,0 +1,9 @@
+Generating 100000 interactions...
+
+Running Benchmark...
+Legacy (O(4N)) Time: 0.2107s
+Current (O(N) + Cache) Time: 0.0126s
+Current (O(N) Uncached) Time: 0.1248s
+
+Speedup (Uncached Loop vs Legacy): 1.69x
+Speedup (Real-world with Cache): 16.79x
