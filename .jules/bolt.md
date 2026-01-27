@@ -1,0 +1,3 @@
+## 2025-05-23 - Optimization of Log Compaction
+**Learning:** Python built-in functions (`sum`, `min`, `max`) are fast, but multiple passes over large data + intermediate list creation can be slower than a single Python loop, especially when multiple aggregates are needed. In `ICEWLogger._compact_logs`, replacing 5+ list iterations and a large list allocation with a single loop yielded a ~1.6x speedup.
+**Action:** When calculating multiple aggregates (sum, min, max, count conditions) from a large collection, prefer a single pass loop over multiple list comprehensions and built-in function calls.
