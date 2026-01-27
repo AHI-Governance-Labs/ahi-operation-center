@@ -1,4 +1,16 @@
 {
+  "functions": [
+    {
+      "source": "alpha-core",
+      "codebase": "alpha-core",
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log"
+      ]
+    }
+  ],
   "hosting": [
     {
       "target": "ahigovernance",
@@ -48,5 +60,19 @@
         }
       ]
     }
-  ]
+  ],
+  "apphosting": {
+    "backendId": "alpha-core-842",
+    "rootDir": ".",
+    "ignore": [
+      "node_modules",
+      ".git",
+      "firebase-debug.log",
+      "firebase-debug.*.log",
+      "functions"
+    ]
+  },
+  "storage": {
+    "rules": "storage.rules"
+  }
 }
