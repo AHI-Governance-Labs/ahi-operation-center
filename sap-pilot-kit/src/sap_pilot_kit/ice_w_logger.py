@@ -73,27 +73,41 @@ class ICEWLogger:
         """
         Summarize granular telemetry logs into an epoch summary to free memory.
         """
-        if not self.telemetry_log:
+        count = len(self.telemetry_log)
+        if count == 0:
             return
 
-        cns = [entry['metrics']['cn'] for entry in self.telemetry_log]
         start_time = self.telemetry_log[0]['event']['timestamp']
         end_time = self.telemetry_log[-1]['event']['timestamp']
 
-        # Count violations
-        degraded_count = sum(1 for entry in self.telemetry_log if entry['event']['state'] == "DEGRADED")
-        invalidated_count = sum(1 for entry in self.telemetry_log if entry['event']['state'] == "INVALIDATED")
+        # Optimization: Single pass calculation (O(N)) avoids multiple iterations and list allocation
+        # Replaces previous implementation that used list comprehension + min/max/sum calls
+        cn_sum = 0.0
+        cn_min = float('inf')
+        cn_max = float('-inf')
+        degraded_count = 0
+        invalidated_count = 0
 
-        # Optimization: Use built-in functions instead of numpy
-        cn_avg = sum(cns) / len(cns) if cns else 0.0
-        cn_min = min(cns) if cns else 0.0
-        cn_max = max(cns) if cns else 0.0
+        for entry in self.telemetry_log:
+            cn = entry['metrics']['cn']
+            state = entry['event']['state']
+
+            cn_sum += cn
+            if cn < cn_min: cn_min = cn
+            if cn > cn_max: cn_max = cn
+
+            if state == "DEGRADED":
+                degraded_count += 1
+            elif state == "INVALIDATED":
+                invalidated_count += 1
+
+        cn_avg = cn_sum / count
 
         summary = {
             "type": "epoch_summary",
             "start_time": start_time,
             "end_time": end_time,
-            "event_count": len(self.telemetry_log),
+            "event_count": count,
             "metrics": {
                 "cn_avg": float(cn_avg),
                 "cn_min": float(cn_min),
