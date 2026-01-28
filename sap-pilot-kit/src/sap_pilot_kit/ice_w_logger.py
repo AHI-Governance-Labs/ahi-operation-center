@@ -158,14 +158,23 @@ class ICEWLogger:
 
         # 1. Análisis de Deriva (Invariante de Trayectoria)
         if len(self.window) >= 10:
-            # Optimization: Pure Python calculation instead of numpy overhead for small window
-            w_list = list(self.window)
-            w_len = len(w_list)
-            mean_w = sum(w_list) / w_len
+            w_len = len(self.window)
+
+            # Optimization: Single pass calculation (O(N)) avoids list allocation and multiple iterations
+            # Uses formula: Var(X) = E[X^2] - (E[X])^2
+            sum_x = 0.0
+            sum_sq_x = 0.0
+
+            for x in self.window:
+                sum_x += x
+                sum_sq_x += x * x
+
+            mean_w = sum_x / w_len
+            variance = (sum_sq_x / w_len) - (mean_w * mean_w)
 
             # Population standard deviation (ddof=0) to match np.std
-            variance = sum((x - mean_w) ** 2 for x in w_list) / w_len
-            std_w = math.sqrt(variance) + 1e-6  # Evitar división por cero
+            # Clamp variance to 0 to handle floating point precision issues
+            std_w = math.sqrt(max(0.0, variance)) + 1e-6
 
             delta_cn = abs(cn - mean_w)
             threshold_crossed = delta_cn > (self.sigma * std_w)
