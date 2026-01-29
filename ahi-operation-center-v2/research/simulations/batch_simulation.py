@@ -9,7 +9,7 @@ import csv
 import random
 import itertools
 from dataclasses import dataclass, field
-from typing import List, Dict, Tuple, Deque
+from typing import List, Dict, Deque
 from enum import Enum
 import time
 from collections import deque
