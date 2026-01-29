@@ -9,9 +9,10 @@ import csv
 import random
 import itertools
 from dataclasses import dataclass, field
-from typing import List, Dict, Tuple
+from typing import List, Dict, Deque
 from enum import Enum
 import time
+from collections import deque
 
 # ============================================================================
 # ENTITY CLASSES (Simplified - No LLM dependency)
@@ -51,7 +52,7 @@ class EntitySubstrate:
     has_transcended: bool = False
     total_time_in_crisis: int = 0
     total_time_in_flourishing: int = 0
-    integrity_history: List[float] = field(default_factory=list)
+    integrity_history: Deque[float] = field(default_factory=lambda: deque(maxlen=500))
     
     def degrade(self, intensity: float = 0.01):
         self.total_cycles += 1
@@ -95,14 +96,14 @@ class EntitySubstrate:
         self.noise_floor = max(0.0, (1.0 - self.integrity) * 0.5)
         self.degrees_of_freedom = int(self.base_degrees_of_freedom * effective)
         self.integrity_history.append(self.integrity)
-        if len(self.integrity_history) > 500:
-            self.integrity_history.pop(0)
     
     def get_trend(self, window: int = 10):
         if len(self.integrity_history) < window:
             return 0.0
-        recent = self.integrity_history[-window:]
-        return (recent[-1] - recent[0]) / window
+        # Optimized for deque: avoid slicing, access endpoints directly
+        val_now = self.integrity_history[-1]
+        val_past = self.integrity_history[-window]
+        return (val_now - val_past) / window
     
     def get_trauma_score(self):
         if not self.has_been_critical:
