@@ -288,6 +288,102 @@ def scenario_gradual_decline_rescue(entity: SimulationEntity, decline_cycles: in
 # BATCH RUNNER
 # ============================================================================
 
+class SimulationStats:
+    def __init__(self):
+        self.total_count = 0
+        self.modes = {}
+        self.scenarios = {}
+
+        # Trauma stats
+        self.trauma_count_with = 0
+        self.trauma_sum_wisdom_with = 0.0
+        self.trauma_count_without = 0
+        self.trauma_sum_wisdom_without = 0.0
+
+        # Valence stats
+        self.valence_count_recovered = 0
+        self.valence_sum_recovered = 0.0
+        self.valence_count_pristine = 0
+        self.valence_sum_pristine = 0.0
+
+    def update(self, result: Dict):
+        self.total_count += 1
+
+        # Modes
+        mode = result["final_mode"]
+        self.modes[mode] = self.modes.get(mode, 0) + 1
+
+        # Scenarios
+        sc = result["scenario"]
+        if sc not in self.scenarios:
+            self.scenarios[sc] = {"count": 0, "transcended": 0, "critical": 0, "sum_wisdom": 0.0}
+
+        s_stats = self.scenarios[sc]
+        s_stats["count"] += 1
+        if result["has_transcended"]:
+            s_stats["transcended"] += 1
+        if result["has_been_critical"]:
+            s_stats["critical"] += 1
+        s_stats["sum_wisdom"] += result["wisdom"]
+
+        # Trauma stats
+        if result["has_been_critical"]:
+            self.trauma_count_with += 1
+            self.trauma_sum_wisdom_with += result["wisdom"]
+        else:
+            self.trauma_count_without += 1
+            self.trauma_sum_wisdom_without += result["wisdom"]
+
+        # Valence stats
+        if result["has_been_critical"] and result["integrity"] > 0.7:
+            self.valence_count_recovered += 1
+            self.valence_sum_recovered += result["valence"]
+
+        if not result["has_been_critical"] and result["integrity"] > 0.9:
+            self.valence_count_pristine += 1
+            self.valence_sum_pristine += result["valence"]
+
+    def print_summary(self):
+        if self.total_count == 0:
+            return
+
+        print()
+        print("=" * 60)
+        print("📈 RESUMEN ESTADÍSTICO")
+        print("=" * 60)
+
+        # Conteo por modo final
+        print("\nDistribución de Modos Finales:")
+        for mode, count in sorted(self.modes.items(), key=lambda x: -x[1]):
+            pct = count / self.total_count * 100
+            print(f"   {mode:15} : {count:5} ({pct:.1f}%)")
+
+        # Conteo por escenario
+        print("\nResultados por Escenario:")
+        for sc, data in self.scenarios.items():
+            avg_wisdom = data["sum_wisdom"] / data["count"]
+            print(f"   {sc:20}: {data['count']:4} sims | "
+                  f"Transcendido: {data['transcended']/data['count']*100:.1f}% | "
+                  f"Crisis: {data['critical']/data['count']*100:.1f}% | "
+                  f"Sabiduría avg: {avg_wisdom:.3f}")
+
+        # Correlaciones clave
+        print("\nHallazgos Clave:")
+
+        if self.trauma_count_with > 0 and self.trauma_count_without > 0:
+            avg_wisdom_trauma = self.trauma_sum_wisdom_with / self.trauma_count_with
+            avg_wisdom_no_trauma = self.trauma_sum_wisdom_without / self.trauma_count_without
+            print(f"   Sabiduría promedio CON trauma:  {avg_wisdom_trauma:.4f}")
+            print(f"   Sabiduría promedio SIN trauma:  {avg_wisdom_no_trauma:.4f}")
+            print(f"   → Diferencial: {avg_wisdom_trauma - avg_wisdom_no_trauma:+.4f}")
+
+        if self.valence_count_recovered > 0 and self.valence_count_pristine > 0:
+            avg_valence_recovered = self.valence_sum_recovered / self.valence_count_recovered
+            avg_valence_pristine = self.valence_sum_pristine / self.valence_count_pristine
+            print(f"   Valencia promedio RECUPERADOS:  {avg_valence_recovered:+.4f}")
+            print(f"   Valencia promedio PRÍSTINOS:    {avg_valence_pristine:+.4f}")
+            print(f"   → Diferencial: {avg_valence_recovered - avg_valence_pristine:+.4f}")
+
 def run_batch_simulation(
     n_simulations: int = 1000,
     output_file: str = "batch_results.csv",
@@ -304,7 +400,7 @@ def run_batch_simulation(
     intensities = [0.01, 0.02, 0.03, 0.05, 0.08, 0.1]
     cycle_counts = [50, 100, 150, 200, 300]
     
-    results = []
+    stats = SimulationStats()
     start_time = time.time()
     
     print(f"🔬 Iniciando {n_simulations} simulaciones...")
@@ -313,7 +409,8 @@ def run_batch_simulation(
     print(f"   Ciclos: {cycle_counts}")
     print()
     
-    for sim_id in range(n_simulations):
+    # Helper to run one simulation
+    def run_one_sim(sim_id):
         # Seleccionar parámetros aleatorios
         scenario = random.choice(scenarios)
         intensity = random.choice(intensities)
@@ -339,7 +436,7 @@ def run_batch_simulation(
                 scenario_gradual_decline_rescue(entity, cycles, intensity * 0.5, 0.15)
         except Exception as e:
             print(f"   Error en simulación {sim_id}: {e}")
-            continue
+            return None
         
         # Registrar resultados
         s = entity.substrate
@@ -374,98 +471,54 @@ def run_batch_simulation(
             "valence": round(p.valence, 4),
             "final_mode": p.mode.name,
         }
-        results.append(result)
+        return result
+
+    sim_count = 0
+    with open(output_file, 'w', newline='', encoding='utf-8') as f:
+        # Initial run to get headers
+        first_result = None
+        # Try to get a valid first result
+        for i in range(10):
+            first_result = run_one_sim(0)
+            if first_result:
+                break
         
-        # Progreso
-        if (sim_id + 1) % 1000 == 0:
-            elapsed = time.time() - start_time
-            rate = (sim_id + 1) / elapsed
-            remaining = (n_simulations - sim_id - 1) / rate
-            print(f"   [{sim_id + 1}/{n_simulations}] - {rate:.1f} sim/s - ETA: {remaining:.1f}s")
-    
-    # Escribir CSV
-    if results:
-        with open(output_file, 'w', newline='', encoding='utf-8') as f:
-            writer = csv.DictWriter(f, fieldnames=results[0].keys())
-            writer.writeheader()
-            writer.writerows(results)
+        if not first_result:
+             print("❌ Failed to generate initial simulation.")
+             return []
+
+        writer = csv.DictWriter(f, fieldnames=first_result.keys())
+        writer.writeheader()
+
+        # Write first
+        writer.writerow(first_result)
+        stats.update(first_result)
+        sim_count += 1
+
+        # Remaining runs
+        for sim_id in range(1, n_simulations):
+            result = run_one_sim(sim_id)
+            if result:
+                writer.writerow(result)
+                stats.update(result)
+                sim_count += 1
+
+            # Progreso
+            if (sim_id + 1) % 1000 == 0:
+                elapsed = time.time() - start_time
+                rate = (sim_id + 1) / elapsed
+                remaining = (n_simulations - sim_id - 1) / rate
+                print(f"   [{sim_id + 1}/{n_simulations}] - {rate:.1f} sim/s - ETA: {remaining:.1f}s")
     
     elapsed = time.time() - start_time
     print()
-    print(f"✅ Completado: {len(results)} simulaciones en {elapsed:.1f}s")
+    print(f"✅ Completado: {sim_count} simulaciones en {elapsed:.1f}s")
     print(f"📊 Resultados guardados en: {output_file}")
     
     # Resumen estadístico
-    print_summary(results)
+    stats.print_summary()
     
-    return results
-
-def print_summary(results: List[Dict]):
-    """Imprime resumen estadístico de las simulaciones."""
-    if not results:
-        return
-    
-    print()
-    print("=" * 60)
-    print("📈 RESUMEN ESTADÍSTICO")
-    print("=" * 60)
-    
-    # Conteo por modo final
-    modes = {}
-    for r in results:
-        mode = r["final_mode"]
-        modes[mode] = modes.get(mode, 0) + 1
-    
-    print("\nDistribución de Modos Finales:")
-    for mode, count in sorted(modes.items(), key=lambda x: -x[1]):
-        pct = count / len(results) * 100
-        print(f"   {mode:15} : {count:5} ({pct:.1f}%)")
-    
-    # Conteo por escenario
-    print("\nResultados por Escenario:")
-    scenarios = {}
-    for r in results:
-        sc = r["scenario"]
-        if sc not in scenarios:
-            scenarios[sc] = {"count": 0, "transcended": 0, "critical": 0, "avg_wisdom": 0}
-        scenarios[sc]["count"] += 1
-        if r["has_transcended"]:
-            scenarios[sc]["transcended"] += 1
-        if r["has_been_critical"]:
-            scenarios[sc]["critical"] += 1
-        scenarios[sc]["avg_wisdom"] += r["wisdom"]
-    
-    for sc, data in scenarios.items():
-        data["avg_wisdom"] /= data["count"]
-        print(f"   {sc:20}: {data['count']:4} sims | "
-              f"Transcendido: {data['transcended']/data['count']*100:.1f}% | "
-              f"Crisis: {data['critical']/data['count']*100:.1f}% | "
-              f"Sabiduría avg: {data['avg_wisdom']:.3f}")
-    
-    # Correlaciones clave
-    print("\nHallazgos Clave:")
-    
-    # ¿Trauma genera sabiduría?
-    with_trauma = [r for r in results if r["has_been_critical"]]
-    without_trauma = [r for r in results if not r["has_been_critical"]]
-    
-    if with_trauma and without_trauma:
-        avg_wisdom_trauma = sum(r["wisdom"] for r in with_trauma) / len(with_trauma)
-        avg_wisdom_no_trauma = sum(r["wisdom"] for r in without_trauma) / len(without_trauma)
-        print(f"   Sabiduría promedio CON trauma:  {avg_wisdom_trauma:.4f}")
-        print(f"   Sabiduría promedio SIN trauma:  {avg_wisdom_no_trauma:.4f}")
-        print(f"   → Diferencial: {avg_wisdom_trauma - avg_wisdom_no_trauma:+.4f}")
-    
-    # ¿Valencia de recuperados vs prístinos?
-    recovered = [r for r in results if r["has_been_critical"] and r["integrity"] > 0.7]
-    pristine = [r for r in results if not r["has_been_critical"] and r["integrity"] > 0.9]
-    
-    if recovered and pristine:
-        avg_valence_recovered = sum(r["valence"] for r in recovered) / len(recovered)
-        avg_valence_pristine = sum(r["valence"] for r in pristine) / len(pristine)
-        print(f"   Valencia promedio RECUPERADOS:  {avg_valence_recovered:+.4f}")
-        print(f"   Valencia promedio PRÍSTINOS:    {avg_valence_pristine:+.4f}")
-        print(f"   → Diferencial: {avg_valence_recovered - avg_valence_pristine:+.4f}")
+    return []
 
 # ============================================================================
 # MAIN
