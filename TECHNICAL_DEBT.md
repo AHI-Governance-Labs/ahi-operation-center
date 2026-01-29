@@ -1,6 +1,6 @@
 # Technical Debt Report
 
-**Date:** October 26, 2023
+**Date:** January 29, 2026
 **Auditor:** AHI Governance Agent
 
 ## Summary
@@ -37,3 +37,4 @@ This report identifies technical debt markers, unused imports, and potential dea
 | `sap-pilot-kit/src/sap_pilot_kit/boiling_frog_tester.py` | 2 | Unused Import | Low | `random` imported but unused | [FIXED] Removed import |
 | `sap-pilot-kit/tests/test_ice_w_logger.py` | 4 | Unused Import | Low | `sys` imported but unused | [FIXED] Removed import |
 | `sap-pilot-kit/tests/test_ice_w_logger.py` | 8 | Unused Import | Low | `pathlib.Path` imported but unused | [FIXED] Removed import |
+| `.env` | - | Security | Critical | Was tracked in git with placeholder credentials | [FIXED] Removed from git tracking |

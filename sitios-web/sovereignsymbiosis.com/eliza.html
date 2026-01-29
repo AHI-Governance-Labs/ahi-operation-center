@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ELIZA Translator Protocol | Sovereign Symbiosis</title>
+  <meta name="description"
+    content="Protocolo de comunicación ética cross-model con preservación de intención. Sovereign Symbiosis Research." />
+  <!-- AHI 3.0 Integrity Seal -->
+  <meta name="ahi-integrity" content="84.2%">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&family=Inter:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --primary-bg: #ffffff;
+      --secondary-bg: #f8f9fa;
+      --tertiary-bg: #e9ecef;
+      --primary-text: #212529;
+      --secondary-text: #6c757d;
+      --accent-primary: #000000;
+      --gold: #c9a227;
+      --gold-dim: rgba(201, 162, 39, 0.15);
+      --jade: #2d8a6e;
+      --jade-dim: rgba(45, 138, 110, 0.12);
+      --cyan: #00f2ea;
+      --cyan-dim: rgba(0, 242, 234, 0.12);
+      --magenta: #ff0055;
+      --magenta-dim: rgba(255, 0, 85, 0.12);
+      --purple: #a855f7;
+      --border-light: #dee2e6;
+      --shadow: rgba(0, 0, 0, 0.08);
+      --shadow-strong: rgba(0, 0, 0, 0.15);
+      --gradient-primary: linear-gradient(135deg, #c9a227 0%, #2d8a6e 100%);
+    }
+
+    [data-theme="dark"] {
+      --primary-bg: #0a0a0f;
+      --secondary-bg: #12121a;
+      --tertiary-bg: #1e1e2a;
+      --primary-text: #f0f0f5;
+      --secondary-text: #9090a0;
+      --accent-primary: #ffffff;
+      --border-light: #2a2a3a;
+      --shadow: rgba(255, 255, 255, 0.08);
+      --shadow-strong: rgba(255, 255, 255, 0.15);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--primary-bg);
+      color: var(--primary-text);
+      line-height: 1.6;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    /* Subtle paper texture */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      opacity: 0.025;
+      pointer-events: none;
+      z-index: 10000;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* HEADER */
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 1020;
+      background: var(--primary-bg);
+      border-bottom: 1px solid var(--border-light);
+      backdrop-filter: blur(20px);
+      transition: all 0.3s;
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 0;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .logo-text {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--accent-primary);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .logo-icon {
+      width: 42px;
+      height: 42px;
+      background: var(--gradient-primary);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      color: white;
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 1rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: var(--primary-text);
+      text-decoration: none;
+      font-weight: 600;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      transition: all 0.25s;
+      font-size: 0.9rem;
+    }
+
+    .nav-links a:hover {
+      background: var(--tertiary-bg);
+    }
+
+    .theme-toggle {
+      background: none;
+      border: 1px solid var(--border-light);
+      border-radius: 8px;
+      padding: 0.5rem 0.75rem;
+      cursor: pointer;
+      font-size: 1rem;
+      color: var(--primary-text);
+      transition: all 0.3s;
+    }
+
+    .theme-toggle:hover {
+      background: var(--tertiary-bg);
+    }
+
+    /* HERO */
+    .hero {
+      padding: 8rem 0 6rem;
+      background: linear-gradient(180deg, var(--secondary-bg) 0%, var(--primary-bg) 100%);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      min-height: 80vh;
+      display: flex;
+      align-items: center;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 800px;
+      height: 800px;
+      background: radial-gradient(ellipse, rgba(168, 85, 247, 0.1) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+    }
+
+    .hero-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 900;
+      margin-bottom: 1.25rem;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+    }
+
+    .hero-subtitle {
+      font-size: 1.25rem;
+      color: var(--secondary-text);
+      margin-bottom: 2.5rem;
+      max-width: 720px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .badge {
+      display: inline-block;
+      background: var(--purple);
+      color: white;
+      padding: 0.4rem 1rem;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.9rem 1.75rem;
+      border-radius: 10px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.25s;
+      font-size: 0.95rem;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: var(--purple);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 8px 25px rgba(168, 85, 247, 0.4);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--primary-text);
+      border: 1px solid var(--border-light);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--primary-text);
+    }
+
+    /* FOOTER */
+    .footer {
+      background: var(--secondary-bg);
+      border-top: 1px solid var(--border-light);
+      padding: 3rem 0;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <header class="header">
+    <div class="container">
+      <nav class="navbar">
+        <a href="index.html" class="logo-text">
+          <div class="logo-icon">⚭</div>
+          Sovereign Symbiosis
+        </a>
+        <button class="theme-toggle" id="themeToggle">🌓</button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container">
+        <div class="hero-content">
+          <div class="badge">Investigación en Progreso</div>
+          <h1 class="hero-title">ELIZA Translator <br><span style="color: var(--purple);">Protocol</span></h1>
+          <p class="hero-subtitle">Comunicación ética cross-model con preservación de intención.</p>
+
+          <p style="max-width: 600px; margin: 0 auto 2.5rem; color: var(--secondary-text); font-size: 1.1rem; line-height: 1.7;">
+            Un protocolo de intermediación que permite a sistemas de IA heterogéneos comunicarse y negociar dilemas éticos preservando la integridad de sus restricciones constitucionales originales.
+          </p>
+
+          <div style="max-width: 400px; margin: 0 auto 3rem; display: flex; gap: 0.5rem; flex-wrap: wrap;">
+            <input type="email" placeholder="Correo electrónico" style="flex: 1; padding: 0.8rem 1rem; border-radius: 8px; border: 1px solid var(--border-light); min-width: 200px; font-size: 1rem;">
+            <button class="btn btn-primary" style="justify-content: center; flex-grow: 1;">Notificarme</button>
+          </div>
+
+          <div>
+            <a href="index.html" class="btn btn-secondary">← Volver a Sovereign Symbiosis</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p style="color: var(--secondary-text); font-size: 0.9rem;">&copy; 2026 Simbiosis Soberana Research Foundation</p>
+    </div>
+  </footer>
+
+  <script>
+    const themeToggle = document.getElementById('themeToggle');
+    const storedTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', storedTheme);
+    themeToggle.textContent = storedTheme === 'light' ? '🌙' : '☀️';
+
+    themeToggle.addEventListener('click', () => {
+      const current = document.documentElement.getAttribute('data-theme');
+      const newTheme = current === 'light' ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      themeToggle.textContent = newTheme === 'light' ? '🌙' : '☀️';
+    });
+  </script>
+</body>
+</html>

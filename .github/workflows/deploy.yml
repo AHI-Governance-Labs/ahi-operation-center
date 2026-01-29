@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - 'sitios-web/**'
+      - 'sitios-web/ethic-check/**'
       - 'firebase.json'
       - '.github/workflows/deploy.yml'
 
@@ -39,3 +40,4 @@ jobs:
           # Esto evita el error de "firebase login" definitivamente
           firebase deploy --only hosting:ahigovernance --project cs-poc-aguy0wkzgf55jarewtxljk9 --token "${{ steps.auth.outputs.access_token }}"
           firebase deploy --only hosting:sovereignsymbiosis --project cs-poc-aguy0wkzgf55jarewtxljk9 --token "${{ steps.auth.outputs.access_token }}"
+          firebase deploy --only hosting:ethic-check --project cs-poc-aguy0wkzgf55jarewtxljk9 --token "${{ steps.auth.outputs.access_token }}"
