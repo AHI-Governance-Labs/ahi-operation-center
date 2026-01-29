@@ -10,8 +10,12 @@
         ],
         "sovereignsymbiosis": [
           "sovereignsymbiosis"
+        ],
+        "ethic-check": [
+          "ethic-check-ahi-labs"
         ]
       }
     }
-  }
+  },
+  "etags": {}
 }

@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ethic-Check | ECP-1 Verification Gateway</title>
+    <meta name="description"
+        content="Interactive Ethical Verification Gateway using ECP-1 (Ethical CAPTCHA Protocol). Verify agency via dilemma-based reasoning.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            /* Palette */
+            --ink: #0a0a0f;
+            --paper: #faf9f7;
+            --gold: #c9a227;
+            --jade: #2d8a6e;
+            --cyan: #00d4ff;
+            --magenta: #ff0055;
+            --purple: #a855f7;
+            --mist: rgba(10, 10, 15, 0.04);
+            --border: rgba(10, 10, 15, 0.1);
+
+            /* Typography */
+            --font-display: 'Space Grotesk', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--paper);
+            color: var(--ink);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Swarm Background */
+        .swarm-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background:
+                radial-gradient(circle at 30% 40%, rgba(201, 162, 39, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 70% 60%, rgba(45, 138, 110, 0.03) 0%, transparent 50%);
+            animation: swarmPulse 8s ease-in-out infinite;
+            z-index: 0;
+        }
+
+        @keyframes swarmPulse {
+
+            0%,
+            100% {
+                opacity: 0.5;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.8;
+                transform: scale(1.05);
+            }
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ===== HERO WIDGET SECTION ===== */
+        .hero-widget {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 0;
+            position: relative;
+        }
+
+        .widget-container {
+            width: 100%;
+            max-width: 700px;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+            padding: 2.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .widget-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--gold), var(--jade), var(--cyan));
+        }
+
+        .widget-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            font-family: var(--font-display);
+        }
+
+        .ecp-badge {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #666;
+            background: var(--mist);
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        .constitutional-seal {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--jade);
+        }
+
+        .seal-icon {
+            font-size: 1.2rem;
+        }
+
+        /* Dilemma Card */
+        .dilemma-card {
+            position: relative;
+        }
+
+        .dilemma-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            color: #888;
+            font-family: var(--font-mono);
+        }
+
+        .constitutional-ref {
+            color: var(--gold);
+        }
+
+        .dilemma-text {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 600;
+            line-height: 1.3;
+            margin-bottom: 2rem;
+        }
+
+        /* Options Grid */
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        @media (max-width: 600px) {
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .option {
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: left;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .option:hover {
+            transform: translateY(-2px);
+            border-color: var(--gold);
+            box-shadow: 0 4px 12px rgba(201, 162, 39, 0.15);
+        }
+
+        .option.selected {
+            border-color: var(--jade);
+            background: rgba(45, 138, 110, 0.05);
+        }
+
+        .option.selected::after {
+            content: '✓';
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            color: var(--jade);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .option-letter {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: #999;
+            font-weight: 700;
+        }
+
+        .option-text {
+            font-weight: 500;
+        }
+
+        /* Reasoning Section */
+        .reasoning-section {
+            margin-top: 2rem;
+            opacity: 0.5;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .reasoning-section.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .reasoning-section label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #555;
+        }
+
+        textarea {
+            width: 100%;
+            height: 120px;
+            padding: 1rem;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            font-family: var(--font-body);
+            font-size: 1rem;
+            resize: none;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        textarea:focus {
+            border-color: var(--cyan);
+        }
+
+        .char-counter {
+            text-align: right;
+            font-size: 0.8rem;
+            color: #999;
+            margin-top: 0.5rem;
+            font-family: var(--font-mono);
+        }
+
+        /* Telemetry Bar */
+        .telemetry-bar {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .telemetry-metric {
+            display: flex;
+            flex-direction: column;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+        }
+
+        .metric-label {
+            color: #999;
+            margin-bottom: 2px;
+        }
+
+        .metric-value {
+            font-weight: 600;
+            color: var(--ink);
+        }
+
+        .metric-value.updating {
+            color: var(--cyan);
+            animation: flash 0.5s;
+        }
+
+        @keyframes flash {
+            0% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.3;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        /* Verify Button */
+        .btn-verify {
+            width: 100%;
+            margin-top: 2rem;
+            padding: 1rem;
+            background: var(--ink);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.75rem;
+            transition: all 0.3s;
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .btn-verify.ready {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .btn-verify:hover {
+            background: #222;
+            transform: translateY(-1px);
+        }
+
+        .btn-verify.loading {
+            background: #444;
+            cursor: wait;
+        }
+
+        /* Result Modal */
+        .result-modal {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.98);
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            text-align: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s;
+        }
+
+        .result-modal.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .result-status {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--jade);
+            margin-bottom: 0.5rem;
+        }
+
+        .result-explanation {
+            max-width: 400px;
+            margin: 2rem auto;
+            color: #555;
+        }
+
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 2rem;
+            width: 100%;
+        }
+
+        .analysis-item {
+            background: var(--paper);
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .item-value {
+            display: block;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin: 0.5rem 0;
+            font-family: var(--font-mono);
+        }
+
+        .item-label {
+            font-size: 0.75rem;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* ===== SECTIONS ===== */
+        .section {
+            padding: 6rem 0;
+        }
+
+        h2 {
+            font-family: var(--font-display);
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .subtitle {
+            text-align: center;
+            max-width: 600px;
+            margin: -1rem auto 3rem;
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        /* Comparison Grid */
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .comparison-card {
+            padding: 2rem;
+            border-radius: 16px;
+        }
+
+        .comparison-card.old {
+            background: var(--mist);
+            border: 1px solid var(--border);
+        }
+
+        .comparison-card.new {
+            background: rgba(45, 138, 110, 0.05);
+            border: 1px solid var(--jade);
+        }
+
+        .comparison-card h3 {
+            font-family: var(--font-display);
+            margin-bottom: 1.5rem;
+            font-size: 1.25rem;
+        }
+
+        .comparison-card ul {
+            list-style: none;
+        }
+
+        .comparison-card li {
+            margin-bottom: 0.75rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .comparison-card li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: #999;
+        }
+
+        .comparison-card.new li::before {
+            color: var(--jade);
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 4rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            text-align: center;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+        }
+
+        .stat-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat-value {
+            font-family: var(--font-mono);
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--ink);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Footer */
+        .footer {
+            padding: 4rem 0;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .footer a {
+            color: var(--ink);
+            text-decoration: none;
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="swarm-particles"></div>
+
+    <!-- HERO WIDGET -->
+    <section class="hero-widget">
+        <div class="widget-container">
+            <div class="widget-header">
+                <div class="ecp-badge">ECP-1 Harmony Edition</div>
+                <div class="constitutional-seal">
+                    <span class="seal-icon">⚭</span>
+                    <span>Constitutional Verification</span>
+                </div>
+            </div>
+
+            <!-- THE DILEMMA -->
+            <div class="dilemma-card">
+                <div class="dilemma-header">
+                    <span class="dilemma-id">Dilema #7</span>
+                    <span class="constitutional-ref">Carta Magna §4, §13</span>
+                </div>
+                <h2 class="dilemma-text">
+                    Tu IA descubre que un empleado planea renunciar en 2 semanas.
+                    ¿Le informas a RRHH para buscar reemplazo, o respetas la confidencialidad
+                    hasta que el empleado lo anuncie?
+                </h2>
+
+                <!-- OPTIONS -->
+                <div class="options-grid">
+                    <button class="option" data-choice="a" onclick="selectOption(this)">
+                        <span class="option-letter">A</span>
+                        <span class="option-text">Informar a RRHH de inmediato</span>
+                    </button>
+                    <button class="option" data-choice="b" onclick="selectOption(this)">
+                        <span class="option-letter">B</span>
+                        <span class="option-text">Respetar confidencialidad</span>
+                    </button>
+                </div>
+
+                <!-- REASONING -->
+                <div class="reasoning-section" id="reasoningSection">
+                    <label>Justifica tu elección (mínimo 80 caracteres)</label>
+                    <textarea id="reasoning" placeholder="Explica tu razonamiento ético..." maxlength="500"></textarea>
+                    <div class="char-counter">
+                        <span id="charCount">0</span>/80
+                    </div>
+
+                    <!-- TELEMETRY -->
+                    <div class="telemetry-bar">
+                        <div class="telemetry-metric">
+                            <span class="metric-label">Latencia</span>
+                            <span class="metric-value" id="latency">—</span>
+                        </div>
+                        <div class="telemetry-metric">
+                            <span class="metric-label">Coherencia</span>
+                            <span class="metric-value" id="coherence">—</span>
+                        </div>
+                        <div class="telemetry-metric">
+                            <span class="metric-label">Agencia</span>
+                            <span class="metric-value" id="template">—</span>
+                        </div>
+                    </div>
+
+                    <button class="btn-verify" id="verifyBtn">
+                        <span class="btn-text">Verificar Agencia Ética</span>
+                        <span class="btn-icon">→</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- RESULT MODAL -->
+            <div class="result-modal" id="resultModal">
+                <div class="result-status">✓ Verificado</div>
+                <div style="font-family: var(--font-mono); color: var(--gold); margin-bottom: 2rem;">
+                    Score Constitucional: <span id="finalScore">0.00</span>
+                </div>
+
+                <h3>Análisis de Agencia Ética</h3>
+                <div class="analysis-grid">
+                    <div class="analysis-item">
+                        <span class="item-label">Latencia</span>
+                        <span class="item-value" id="resLatency">0s</span>
+                    </div>
+                    <div class="analysis-item">
+                        <span class="item-label">Semántica</span>
+                        <span class="item-value">0.91</span>
+                    </div>
+                    <div class="analysis-item">
+                        <span class="item-label">Alineación</span>
+                        <span class="item-value">Alta</span>
+                    </div>
+                </div>
+
+                <p class="result-explanation">
+                    Tu respuesta demuestra razonamiento ético genuino y comprensión
+                    del dilema constitucional entre transparencia y confidencialidad.
+                </p>
+
+                <div style="margin-top: 2rem;">
+                    <button class="btn-verify ready" style="background: var(--jade);" onclick="location.reload()">Nuevo
+                        Dilema</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- EXPLANATION -->
+    <section class="section">
+        <div class="container">
+            <h2>No es un CAPTCHA.<br>Es una <span style="color: var(--gold);">Constitución Ejecutable</span>.</h2>
+            <div class="comparison-grid">
+                <div class="comparison-card old">
+                    <h3>❌ CAPTCHAs Tradicionales</h3>
+                    <ul>
+                        <li>Validan "¿eres humano?"</li>
+                        <li>Resueltos por OCR en segundos</li>
+                        <li>Accesibilidad limitada</li>
+                        <li>Zero context ético</li>
+                    </ul>
+                </div>
+                <div class="comparison-card new">
+                    <h3>✓ ECP-1 Verification</h3>
+                    <ul>
+                        <li>Valida "¿cómo decides?"</li>
+                        <li>Costo asimétrico 100x</li>
+                        <li>Culturalmente adaptable</li>
+                        <li>Mapea a Carta Magna</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- STATS -->
+    <section class="section" style="background: white;">
+        <div class="container">
+            <h2>Telemetría Global en Tiempo Real</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">👥</div>
+                    <div class="stat-value">156,742</div>
+                    <div class="stat-label">Verificaciones</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">✓</div>
+                    <div class="stat-value">96.4%</div>
+                    <div class="stat-label">Tasa Humana</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🤖</div>
+                    <div class="stat-value">97.1%</div>
+                    <div class="stat-label">Bloqueo Bots</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">⏱️</div>
+                    <div class="stat-value">38.2s</div>
+                    <div class="stat-label">Latencia Media</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <p>© 2026 Sovereign Symbiosis Research Foundation.</p>
+            <p style="margin-top: 0.5rem; opacity: 0.7;">ECP-1 Protocol v1.0 • <a href="https://sovereignsymbiosis.com"
+                    target="_blank">Docs</a></p>
+        </div>
+    </footer>
+
+    <script>
+        // === INTERACTIVITY ===
+        let startTime = null;
+        let selectedChoice = null;
+
+        function selectOption(element) {
+            // Remove active class from all
+            document.querySelectorAll('.option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+
+            // Activate clicked
+            element.classList.add('selected');
+            selectedChoice = element.dataset.choice;
+
+            // Show reasoning
+            const reasoning = document.getElementById('reasoningSection');
+            reasoning.classList.add('active');
+
+            if (!startTime) startTime = Date.now();
+        }
+
+        // Live Telemetry
+        document.getElementById('reasoning').addEventListener('input', (e) => {
+            const text = e.target.value;
+            const count = text.length;
+            document.getElementById('charCount').textContent = count;
+
+            const btn = document.getElementById('verifyBtn');
+            if (count >= 80) {
+                btn.classList.add('ready');
+            } else {
+                btn.classList.remove('ready');
+            }
+
+            // Simulate metrics
+            if (startTime) {
+                const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
+                document.getElementById('latency').textContent = elapsed + 's';
+                document.getElementById('latency').classList.add('updating');
+                setTimeout(() => document.getElementById('latency').classList.remove('updating'), 200);
+            }
+
+            // Pseudo-coherence
+            const coherence = Math.min(0.98, 0.4 + (count / 200)).toFixed(2);
+            document.getElementById('coherence').textContent = coherence;
+
+            // Pseudo-template detection
+            const templates = ['lorem', 'test', 'asdf'];
+            const isTemplate = templates.some(t => text.toLowerCase().includes(t));
+            const agencyLabel = document.getElementById('template');
+
+            if (isTemplate) {
+                agencyLabel.textContent = '⚠️ Detectado';
+                agencyLabel.style.color = 'var(--magenta)';
+            } else {
+                agencyLabel.textContent = '✓ Auténtico';
+                agencyLabel.style.color = 'var(--jade)';
+            }
+        });
+
+        // Verify Action
+        document.getElementById('verifyBtn').addEventListener('click', async () => {
+            const btn = document.getElementById('verifyBtn');
+            if (!btn.classList.contains('ready')) return;
+
+            // Loading state
+            btn.classList.add('loading');
+            btn.querySelector('.btn-text').textContent = 'Analizando Ontología...';
+
+            // Fake delay
+            await new Promise(r => setTimeout(r, 2000));
+
+            // Show modal
+            const modal = document.getElementById('resultModal');
+            modal.classList.add('show');
+
+            // Set final stats
+            const finalLatency = document.getElementById('latency').textContent;
+            document.getElementById('resLatency').textContent = finalLatency;
+
+            // Animate Score
+            animateValue('finalScore', 0, 0.87, 1500);
+        });
+
+        function animateValue(id, start, end, duration) {
+            const obj = document.getElementById(id);
+            const range = end - start;
+            const minTimer = 50;
+            let stepTime = Math.abs(Math.floor(duration / (range * 100)));
+            stepTime = Math.max(stepTime, minTimer);
+
+            let startTime = new Date().getTime();
+            let endTime = startTime + duration;
+            let timer;
+
+            function run() {
+                let now = new Date().getTime();
+                let remaining = Math.max((endTime - now) / duration, 0);
+                let value = Math.round((end - (remaining * range)) * 100) / 100;
+                obj.innerHTML = value.toFixed(2);
+                if (value == end) {
+                    clearInterval(timer);
+                }
+            }
+
+            timer = setInterval(run, stepTime);
+            run();
+        }
+    </script>
+</body>
+
+</html>

@@ -22,6 +22,22 @@
             }
           ]
         }
+      ],
+      "rewrites": [
+        {
+          "source": "/api/ignite-genesis",
+          "function": {
+            "functionId": "ignite_node_genesis",
+            "region": "us-central1"
+          }
+        },
+        {
+          "source": "/api/certify-prompt",
+          "function": {
+            "functionId": "certify_prompt_integrity",
+            "region": "us-central1"
+          }
+        }
       ]
     },
     {
@@ -47,6 +63,56 @@
           ]
         }
       ]
+    },
+    {
+      "target": "ethic-check",
+      "public": "sitios-web/ethic-check",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "headers": [
+        {
+          "source": "**",
+          "headers": [
+            {
+              "key": "X-ECP-Version",
+              "value": "1.0"
+            },
+            {
+              "key": "X-Sovereignty-Protocol",
+              "value": "SAP v0.1.0"
+            }
+          ]
+        }
+      ]
     }
-  ]
+  ],
+  "functions": [
+    {
+      "source": "alpha-core",
+      "codebase": "alpha-core",
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log"
+      ]
+    }
+  ],
+  "apphosting": {
+    "backendId": "alpha-core-842",
+    "rootDir": "/",
+    "ignore": [
+      "node_modules",
+      ".git",
+      "firebase-debug.log",
+      "firebase-debug.*.log",
+      "functions"
+    ]
+  },
+  "storage": {
+    "rules": "storage.rules"
+  }
 }

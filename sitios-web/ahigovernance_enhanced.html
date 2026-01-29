@@ -16,8 +16,7 @@
     <meta name="ecp-module" content="ECP-1 Ethical Verification Gateway">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
         rel="stylesheet">
     <style>
         :root {
@@ -38,33 +37,6 @@
             --border: rgba(10, 10, 15, 0.1);
             --gradient-primary: linear-gradient(135deg, #c9a227 0%, #2d8a6e 100%);
             --gradient-hero: linear-gradient(180deg, rgba(201, 162, 39, 0.03) 0%, transparent 100%);
-        }
-
-        [data-theme="dark"] {
-            --ink: #f0f0f5;
-            --paper: #0a0a0f;
-            --paper-dark: #12121a;
-            --mist: rgba(255, 255, 255, 0.05);
-            --shadow: rgba(255, 255, 255, 0.08);
-            --shadow-strong: rgba(0, 0, 0, 0.5);
-            --border: rgba(255, 255, 255, 0.1);
-        }
-
-        .theme-toggle {
-            background: none;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 0.4rem 0.6rem;
-            cursor: pointer;
-            font-size: 1rem;
-            color: var(--ink);
-            margin-left: 0.5rem;
-            transition: all 0.3s;
-        }
-
-        .theme-toggle:hover {
-            background: var(--mist);
-            border-color: var(--gold);
         }
 
         *,
@@ -115,7 +87,7 @@
             right: 0;
             z-index: 1000;
             padding: 1rem 2rem;
-            background: var(--paper);
+            background: rgba(250, 249, 247, 0.92);
             backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border);
         }
@@ -354,7 +326,7 @@
         }
 
         .stat-card {
-            background: var(--paper);
+            background: white;
             border: 1px solid var(--border);
             border-radius: 16px;
             padding: 2rem 1.5rem;
@@ -380,7 +352,7 @@
 
         .stat-label {
             font-size: 0.85rem;
-            color: var(--secondary-text);
+            color: #666;
             margin-top: 0.5rem;
         }
 
@@ -389,7 +361,7 @@
             padding: 2.5rem 0;
             border-top: 1px solid var(--border);
             border-bottom: 1px solid var(--border);
-            background: var(--paper);
+            background: white;
         }
 
         .trust-content {
@@ -404,7 +376,7 @@
             display: flex;
             align-items: center;
             gap: 0.75rem;
-            color: var(--secondary-text);
+            color: #666;
             font-size: 0.9rem;
         }
 
@@ -422,14 +394,8 @@
         }
 
         .section-dark {
-            background: #0a0a0f;
-            color: #faf9f7;
-        }
-
-        [data-theme="dark"] .section-dark {
-            background: #12121a;
-            border-top: 1px solid var(--border);
-            border-bottom: 1px solid var(--border);
+            background: var(--ink);
+            color: var(--paper);
         }
 
         .section-header {
@@ -461,7 +427,7 @@
 
         .section-subtitle {
             font-size: 1.1rem;
-            color: var(--secondary-text);
+            color: #666;
             max-width: 600px;
             margin: 0 auto;
         }
@@ -478,7 +444,7 @@
         }
 
         .feature-card {
-            background: var(--paper);
+            background: white;
             border: 1px solid var(--border);
             border-radius: 20px;
             padding: 2rem;
@@ -536,7 +502,7 @@
         }
 
         .feature-desc {
-            color: var(--secondary-text);
+            color: #666;
             font-size: 0.95rem;
             line-height: 1.7;
             margin-bottom: 1.5rem;
@@ -551,7 +517,7 @@
             align-items: flex-start;
             gap: 0.75rem;
             font-size: 0.9rem;
-            color: var(--secondary-text);
+            color: #666;
             margin-bottom: 0.75rem;
         }
 
@@ -565,7 +531,7 @@
         /* ===== ARCHITECTURE ===== */
         .architecture {
             padding: 6rem 0;
-            background: var(--paper);
+            background: white;
         }
 
         .architecture-content {
@@ -584,7 +550,7 @@
         }
 
         .architecture-info p {
-            color: var(--secondary-text);
+            color: #666;
             font-size: 1.1rem;
             line-height: 1.8;
             margin-bottom: 2rem;
@@ -634,7 +600,7 @@
         }
 
         .diagram-node {
-            background: var(--paper);
+            background: white;
             border: 1px solid var(--border);
             border-radius: 12px;
             padding: 1.5rem;
@@ -670,7 +636,7 @@
 
         .node-content p {
             font-size: 0.85rem;
-            color: var(--secondary-text);
+            color: #666;
         }
 
         .diagram-connector {
@@ -718,12 +684,12 @@
 
         .iphy-desc {
             font-size: 0.7rem;
-            color: var(--secondary-text);
+            color: #666;
         }
 
         .iphy-note {
             font-size: 0.75rem;
-            color: var(--secondary-text);
+            color: #666;
             text-align: center;
             font-style: italic;
             margin-top: 1rem;
@@ -735,7 +701,7 @@
         }
 
         .cri-content {
-            background: var(--paper);
+            background: white;
             border: 1px solid var(--border);
             border-radius: 24px;
             padding: 3rem;
@@ -815,7 +781,7 @@
 
         .cri-desc {
             font-size: 0.8rem;
-            color: var(--secondary-text);
+            color: #666;
         }
 
         /* ===== REGULATORY ROADMAP ===== */
@@ -873,7 +839,7 @@
 
         .roadmap-desc {
             font-size: 0.85rem;
-            color: var(--secondary-text);
+            color: #666;
             margin-bottom: 1rem;
         }
 
@@ -896,7 +862,7 @@
 
         .roadmap-tag.date {
             background: var(--mist);
-            color: var(--secondary-text);
+            color: #666;
         }
 
         /* ===== CTA SECTION ===== */
@@ -921,7 +887,7 @@
 
         .cta-subtitle {
             font-size: 1.1rem;
-            color: var(--secondary-text);
+            color: #666;
             margin-bottom: 2.5rem;
         }
 
@@ -957,7 +923,7 @@
 
         .cta-note {
             font-size: 0.85rem;
-            color: var(--secondary-text);
+            color: #666;
         }
 
         /* ===== FOOTER ===== */
@@ -1012,7 +978,7 @@
         }
 
         .social-link {
-            color: var(--secondary-text);
+            color: #666;
             text-decoration: none;
             transition: all 0.3s;
             padding: 0.75rem;
@@ -1071,7 +1037,7 @@
             flex-wrap: wrap;
             gap: 1.5rem;
             padding-top: 1.5rem;
-            color: var(--secondary-text);
+            color: #666;
             font-size: 0.8rem;
         }
 
@@ -1092,7 +1058,7 @@
         }
 
         .footer-links a {
-            color: var(--secondary-text);
+            color: #666;
             text-decoration: none;
             transition: color 0.2s;
         }
@@ -1160,9 +1126,8 @@
                 <a href="#features">Soluciones</a>
                 <a href="#architecture">Arquitectura</a>
                 <a href="#cri">Certificación CRI</a>
-                <a href="eu-ai-act.html">🇪🇺 EU AI Act</a>
+                <a href="ahigovernance.com/eu-ai-act.html">🇪🇺 EU AI Act</a>
                 <a href="#contact" class="btn btn-primary">Agendar Auditoría</a>
-                <button class="theme-toggle" id="themeToggle" title="Cambiar Tema">🌓</button>
             </div>
         </div>
     </nav>
@@ -1185,7 +1150,7 @@
                     <a href="#contact" class="btn btn-primary">
                         Solicitar Auditoría Gratuita →
                     </a>
-                    <a href="docs/Enterprise.pdf" target="_blank" class="btn btn-secondary">
+                    <a href="ahigovernance.com/docs/Enterprise.pdf" target="_blank" class="btn btn-secondary">
                         Descargar Whitepaper Técnico
                     </a>
                 </div>
@@ -1409,12 +1374,12 @@
                     <div class="cri-level red">
                         <div class="cri-indicator">🔴</div>
                         <div class="cri-range">CRI < 0.25</div>
-                                <div class="cri-status" style="color: var(--vermillion);">Insuficiente</div>
-                                <div class="cri-desc">No apto para uso corporativo</div>
-                        </div>
+                        <div class="cri-status" style="color: var(--vermillion);">Insuficiente</div>
+                        <div class="cri-desc">No apto para uso corporativo</div>
                     </div>
                 </div>
             </div>
+        </div>
     </section>
 
     <!-- REGULATORY ROADMAP -->
@@ -1443,8 +1408,7 @@
                 <div class="roadmap-card">
                     <div class="roadmap-badge prep">PREPARACIÓN</div>
                     <div class="roadmap-icon">🇪🇺</div>
-                    <h3 class="roadmap-title"><a href="eu-ai-act.html" style="color: inherit; text-decoration: none;">EU
-                            AI Act</a></h3>
+                    <h3 class="roadmap-title"><a href="ahigovernance.com/eu-ai-act.html" style="color: inherit; text-decoration: none;">EU AI Act</a></h3>
                     <p class="roadmap-desc">Regulación Europea de IA</p>
                     <div class="roadmap-tags">
                         <span class="roadmap-tag ready">High-Risk Ready</span>
@@ -1511,46 +1475,39 @@
                 </div>
                 <div>
                     <div class="inst-item-label">Orchestrator</div>
-                    <div class="inst-item-value">AHI 3.0</div>
+                    <div class="inst-item-value">Luis Villarreal</div>
                 </div>
             </div>
 
             <!-- SOCIAL ICONS BAR -->
             <div class="footer-social">
-                <a href="https://github.com/AHI-Governance-Labs/ahi-operation-center" target="_blank"
-                    class="social-link" title="GitHub">
+                <a href="https://github.com/AHI-Governance-Labs/ahi-operation-center" target="_blank" class="social-link" title="GitHub">
                     <svg viewBox="0 0 24 24">
-                        <path
-                            d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
                     </svg>
                 </a>
-                <a href="https://www.linkedin.com/company/ahigovernance/" target="_blank" class="social-link"
-                    title="LinkedIn">
+                <a href="https://www.linkedin.com/company/ahigovernance/" target="_blank" class="social-link" title="LinkedIn">
                     <svg viewBox="0 0 24 24">
-                        <path
-                            d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
                     </svg>
                 </a>
                 <a href="https://medium.com/@villalc" target="_blank" class="social-link" title="Medium">
                     <svg viewBox="0 0 24 24">
-                        <path
-                            d="M13.54 12a6.8 6.8 0 01-6.77 6.82A6.8 6.8 0 010 12a6.8 6.8 0 016.77-6.82A6.8 6.8 0 0113.54 12zM20.96 12c0 3.54-1.51 6.42-3.38 6.42-1.87 0-3.39-2.88-3.39-6.42s1.52-6.42 3.39-6.42 3.38 2.88 3.38 6.42M24 12c0 3.17-.53 5.75-1.19 5.75-.66 0-1.19-2.58-1.19-5.75s.53-5.75 1.19-5.75C23.47 6.25 24 8.83 24 12z" />
+                        <path d="M13.54 12a6.8 6.8 0 01-6.77 6.82A6.8 6.8 0 010 12a6.8 6.8 0 016.77-6.82A6.8 6.8 0 0113.54 12zM20.96 12c0 3.54-1.51 6.42-3.38 6.42-1.87 0-3.39-2.88-3.39-6.42s1.52-6.42 3.39-6.42 3.38 2.88 3.38 6.42M24 12c0 3.17-.53 5.75-1.19 5.75-.66 0-1.19-2.58-1.19-5.75s.53-5.75 1.19-5.75C23.47 6.25 24 8.83 24 12z"/>
                     </svg>
                 </a>
-
+                
                 <span class="social-divider"></span>
-
-                <a href="https://zenodo.org/communities/sovereignsymbiosis/" target="_blank" class="social-link"
-                    title="Zenodo">
+                
+                <a href="https://zenodo.org/communities/sovereignsymbiosis/" target="_blank" class="social-link" title="Zenodo">
                     <span style="font-size: 1.1rem;">📚</span>
                 </a>
-                <a href="https://notebooklm.google.com/notebook/33895439-af55-44a3-aa85-30284ef732c8" target="_blank"
-                    class="social-link" title="NotebookLM">
+                <a href="https://notebooklm.google.com/notebook/33895439-af55-44a3-aa85-30284ef732c8" target="_blank" class="social-link" title="NotebookLM">
                     <span style="font-size: 1.1rem;">📓</span>
                 </a>
-
+                
                 <span class="social-divider"></span>
-
+                
                 <a href="https://sovereignsymbiosis.com" target="_blank" class="social-research">
                     <span>⚭</span> Research Portal
                 </a>
@@ -1563,41 +1520,16 @@
                     <span style="opacity: 0.5; margin: 0 0.5rem;">|</span>
                     <span style="opacity: 0.7;">IMPI 20250494546</span>
                 </div>
-                <div class="footer-links" style="flex-wrap: wrap; gap: 1rem;">
-                    <a href="terms.html">Términos</a>
-                    <a href="privacy.html">Privacidad</a>
-                    <a href="mailto:admin@ahigovernance.com">admin@ahigovernance.com</a>
-                    <a href="mailto:api@ahigovernance.com">api@ahigovernance.com</a>
+                <div class="footer-links">
+                    <a href="ahigovernance.com/terms.html">Términos</a>
+                    <a href="ahigovernance.com/privacy.html">Privacidad</a>
                     <a href="mailto:enterprise@ahigovernance.com" class="highlight">enterprise@ahigovernance.com</a>
-                    <a href="mailto:privacy@ahigovernance.com">privacy@ahigovernance.com</a>
-                    <a href="mailto:sales@ahigovernance.com">sales@ahigovernance.com</a>
                 </div>
             </div>
         </div>
     </footer>
 
     <script>
-        // Theme Toggle Logic
-        const themeToggle = document.getElementById('themeToggle');
-        const htmlElement = document.documentElement;
-
-        // Check local storage or system preference
-        const storedTheme = localStorage.getItem('theme');
-        const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-
-        const currentTheme = storedTheme || systemTheme;
-        htmlElement.setAttribute('data-theme', currentTheme);
-        themeToggle.textContent = currentTheme === 'light' ? '🌙' : '☀️';
-
-        themeToggle.addEventListener('click', () => {
-            const current = htmlElement.getAttribute('data-theme');
-            const newTheme = current === 'light' ? 'dark' : 'light';
-
-            htmlElement.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-            themeToggle.textContent = newTheme === 'light' ? '🌙' : '☀️';
-        });
-
         // Smooth scroll for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
