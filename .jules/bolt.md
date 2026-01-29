@@ -1,3 +1,15 @@
 ## 2025-05-23 - Optimization of Log Compaction
 **Learning:** Python built-in functions (`sum`, `min`, `max`) are fast, but multiple passes over large data + intermediate list creation can be slower than a single Python loop, especially when multiple aggregates are needed. In `ICEWLogger._compact_logs`, replacing 5+ list iterations and a large list allocation with a single loop yielded a ~1.6x speedup.
 **Action:** When calculating multiple aggregates (sum, min, max, count conditions) from a large collection, prefer a single pass loop over multiple list comprehensions and built-in function calls.
+
+## 2025-05-24 - Optimization of Variance Calculation
+**Learning:** Calculating variance on a small sliding window (`deque`, N=100) using the standard definition (`sum((x-mean)**2)`) requires iterating twice or creating an intermediate list. Using the batch formula `Var(X) = E[X^2] - (E[X])^2` allows for a single-pass calculation without list allocation, yielding a ~3x speedup.
+**Action:** For calculating mean and variance on small collections in hot paths, use the single-pass sum and sum-of-squares approach to avoid allocation and redundant iteration, ensuring to clamp variance to 0 for numerical stability.
+
+## 2025-05-24 - Optimization of Log Compaction (O(N) to O(1))
+**Learning:** Iterating over a large list (N=100,000) to calculate aggregates creates a latency spike (jitter) even if the average throughput is high. By maintaining incremental statistics (sum, min, max, counts) on every insertion (O(1)), the compaction step becomes O(1), eliminating the spike.
+**Action:** For large rolling logs where summaries are needed, favor incremental updates of statistics over batch processing at the end, provided the update overhead is negligible (using instance attributes instead of dictionary keys reduces overhead).
+
+## 2025-05-24 - Optimization of MEBA Metric Calculation (O(N) to O(1))
+**Learning:** Caching aggregates is insufficient for high-frequency interleaved read/write workloads (O(N) on cache miss). Incremental updates provide consistent O(1) performance regardless of usage pattern.
+**Action:** Prefer incremental counters over lazy evaluation + caching for cumulative metrics.

@@ -10,9 +10,9 @@ import random
 import csv
 import os
 from dataclasses import dataclass, field
-from typing import List, Dict, Tuple
+from typing import List, Dict, Tuple, Deque
 from enum import Enum
-from collections import Counter
+from collections import Counter, deque
 import time
 
 # ============================================================================
@@ -53,7 +53,7 @@ class EntitySubstrate:
     has_transcended: bool = False
     total_time_in_crisis: int = 0
     total_time_in_flourishing: int = 0
-    integrity_history: List[float] = field(default_factory=list)
+    integrity_history: Deque[float] = field(default_factory=lambda: deque(maxlen=100))
     
     def degrade(self, intensity: float = 0.01):
         self.total_cycles += 1
@@ -97,14 +97,11 @@ class EntitySubstrate:
         self.noise_floor = max(0.0, (1.0 - self.integrity) * 0.5)
         self.degrees_of_freedom = int(self.base_degrees_of_freedom * effective)
         self.integrity_history.append(self.integrity)
-        if len(self.integrity_history) > 100:
-            self.integrity_history.pop(0)
     
     def get_trend(self, window: int = 10):
         if len(self.integrity_history) < window:
             return 0.0
-        recent = self.integrity_history[-window:]
-        return (recent[-1] - recent[0]) / window
+        return (self.integrity_history[-1] - self.integrity_history[-window]) / window
     
     def get_trauma_score(self):
         if not self.has_been_critical:

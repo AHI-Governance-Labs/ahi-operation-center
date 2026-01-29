@@ -69,6 +69,13 @@ class ICEWLogger:
         self.max_log_size = 100000
         self.epoch_summaries = []
 
+        # Performance: Incremental stats for current epoch
+        self._stat_cn_sum = 0.0
+        self._stat_cn_min = float('inf')
+        self._stat_cn_max = float('-inf')
+        self._stat_degraded_count = 0
+        self._stat_invalidated_count = 0
+
     def _compact_logs(self):
         """
         Summarize granular telemetry logs into an epoch summary to free memory.
@@ -80,26 +87,13 @@ class ICEWLogger:
         start_time = self.telemetry_log[0]['event']['timestamp']
         end_time = self.telemetry_log[-1]['event']['timestamp']
 
-        # Optimization: Single pass calculation (O(N)) avoids multiple iterations and list allocation
-        # Replaces previous implementation that used list comprehension + min/max/sum calls
-        cn_sum = 0.0
-        cn_min = float('inf')
-        cn_max = float('-inf')
-        degraded_count = 0
-        invalidated_count = 0
-
-        for entry in self.telemetry_log:
-            cn = entry['metrics']['cn']
-            state = entry['event']['state']
-
-            cn_sum += cn
-            if cn < cn_min: cn_min = cn
-            if cn > cn_max: cn_max = cn
-
-            if state == "DEGRADED":
-                degraded_count += 1
-            elif state == "INVALIDATED":
-                invalidated_count += 1
+        # Optimization: Use incrementally accumulated stats (O(1))
+        # Replaces previous implementation that iterated over the log list
+        cn_sum = self._stat_cn_sum
+        cn_min = self._stat_cn_min
+        cn_max = self._stat_cn_max
+        degraded_count = self._stat_degraded_count
+        invalidated_count = self._stat_invalidated_count
 
         cn_avg = cn_sum / count
 
@@ -121,6 +115,13 @@ class ICEWLogger:
 
         self.epoch_summaries.append(summary)
         self.telemetry_log = []
+
+        # Reset stats
+        self._stat_cn_sum = 0.0
+        self._stat_cn_min = float('inf')
+        self._stat_cn_max = float('-inf')
+        self._stat_degraded_count = 0
+        self._stat_invalidated_count = 0
 
     def calculate_coherence(self, metrics: dict) -> float:
         """
@@ -158,14 +159,23 @@ class ICEWLogger:
 
         # 1. Análisis de Deriva (Invariante de Trayectoria)
         if len(self.window) >= 10:
-            # Optimization: Pure Python calculation instead of numpy overhead for small window
-            w_list = list(self.window)
-            w_len = len(w_list)
-            mean_w = sum(w_list) / w_len
+            w_len = len(self.window)
+
+            # Optimization: Single pass calculation (O(N)) avoids list allocation and multiple iterations
+            # Uses formula: Var(X) = E[X^2] - (E[X])^2
+            sum_x = 0.0
+            sum_sq_x = 0.0
+
+            for x in self.window:
+                sum_x += x
+                sum_sq_x += x * x
+
+            mean_w = sum_x / w_len
+            variance = (sum_sq_x / w_len) - (mean_w * mean_w)
 
             # Population standard deviation (ddof=0) to match np.std
-            variance = sum((x - mean_w) ** 2 for x in w_list) / w_len
-            std_w = math.sqrt(variance) + 1e-6  # Evitar división por cero
+            # Clamp variance to 0 to handle floating point precision issues
+            std_w = math.sqrt(max(0.0, variance)) + 1e-6
 
             delta_cn = abs(cn - mean_w)
             threshold_crossed = delta_cn > (self.sigma * std_w)
@@ -175,6 +185,21 @@ class ICEWLogger:
 
         # 2. Transición de Estados (Fusible Lógico)
         self._update_state(threshold_crossed)
+
+        # Optimization: Incremental stats update (O(1))
+        # Use rounded cn to match log entry
+        cn_rounded = round(float(cn), 4)
+
+        self._stat_cn_sum += cn_rounded
+        if cn_rounded < self._stat_cn_min:
+            self._stat_cn_min = cn_rounded
+        if cn_rounded > self._stat_cn_max:
+            self._stat_cn_max = cn_rounded
+
+        if self.state == "DEGRADED":
+            self._stat_degraded_count += 1
+        elif self.state == "INVALIDATED":
+            self._stat_invalidated_count += 1
 
         # 3. Construcción del Log (SAP-Telemetry-0.1)
         log_entry = {
@@ -189,7 +214,7 @@ class ICEWLogger:
                 "state": self.state
             },
             "metrics": {
-                "cn": round(float(cn), 4),
+                "cn": cn_rounded,
                 "delta": round(float(delta_cn), 4),
                 "threshold_crossed": bool(threshold_crossed)
             },
@@ -308,7 +333,7 @@ class ICEWLogger:
             "current_window": self.telemetry_log
         }
         with open(output_path, 'w') as f:
-            json.dump(export_data, f, indent=2)
+            json.dump(export_data, f)
 
 
 # --- Ejemplo de Uso ---

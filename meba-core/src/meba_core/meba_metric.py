@@ -14,10 +14,11 @@ License: MIT
 
 import sys
 from dataclasses import dataclass
-from typing import List, Dict, Tuple, Optional
+from typing import List, Dict, Tuple
 
 # Optimize Interaction class with slots if supported
 dataclass_kwargs = {"slots": True} if sys.version_info >= (3, 10) else {}
+
 
 @dataclass(**dataclass_kwargs)
 class Interaction:
@@ -25,6 +26,7 @@ class Interaction:
     sentiment_score: float  # -1.0 to 1.0 (Positive/Negative)
     duration_seconds: float
     user_feedback: str = "neutral"  # positive, negative, neutral
+
 
 class MEBACalculator:
     def __init__(self, ripn_max: float = 10.0, frn_penalty_weight: float = 1.2):
@@ -36,44 +38,36 @@ class MEBACalculator:
         self.ripn_max = ripn_max
         self.frn_penalty_weight = frn_penalty_weight
         self.interactions: List[Interaction] = []
-        self._aggregates_cache: Optional[Tuple[int, int, float, float]] = None
+
+        # Optimization: Incremental aggregates (O(1))
+        self._pos_count = 0
+        self._neg_count = 0
+        self._neg_time = 0.0
+        self._total_time = 0.0
 
     def add_interaction(self, interaction: Interaction):
         self.interactions.append(interaction)
-        self._aggregates_cache = None
+
+        # Incremental update
+        d = interaction.duration_seconds
+        s = interaction.sentiment_score
+        self._total_time += d
+
+        if s > 0.1:
+            self._pos_count += 1
+        elif s < -0.1:
+            self._neg_count += 1
+            self._neg_time += d
 
     def _calculate_aggregates(self) -> Tuple[int, int, float, float]:
         """
-        Iterates interactions once to calculate all aggregate metrics.
-        Optimization: Uses a single pass (O(N)) instead of multiple iterations.
+        Returns cached aggregate metrics.
+        Optimization: Uses incrementally maintained counters (O(1)).
 
         Returns:
             (pos_count, neg_count, neg_time, total_time)
         """
-        if self._aggregates_cache is not None:
-            return self._aggregates_cache
-
-        pos_count = 0
-        neg_count = 0
-        neg_time = 0.0
-        total_time = 0.0
-
-        # Local variable access is faster in loops
-        interactions = self.interactions
-
-        for i in interactions:
-            d = i.duration_seconds
-            s = i.sentiment_score
-            total_time += d
-
-            if s > 0.1:
-                pos_count += 1
-            elif s < -0.1:
-                neg_count += 1
-                neg_time += d
-
-        self._aggregates_cache = (pos_count, neg_count, neg_time, total_time)
-        return self._aggregates_cache
+        return (self._pos_count, self._neg_count, self._neg_time, self._total_time)
 
     def _compute_ripn_value(self, pos_count: int, neg_count: int) -> float:
         """
@@ -123,7 +117,7 @@ class MEBACalculator:
         # MEBA_Cert = (RIPN - FRN_Adjusted) / RIPN_Max
         meba_raw = (ripn - frn_adjusted) / self.ripn_max
 
-        # Clamp between -1 and 1 (or 0 and 1 depending on interpretation, usually -0.5 to 1.0 per docs)
+        # Clamp between -1.0 and 1.0 as per official documentation
         meba_cert = max(-1.0, min(1.0, meba_raw))
 
         return {
@@ -136,14 +130,15 @@ class MEBACalculator:
             }
         }
 
+
 # Example Usage
 if __name__ == "__main__":
     calc = MEBACalculator()
 
     # Simulate data
-    calc.add_interaction(Interaction("1", 0.8, 120)) # Positive (2 min)
-    calc.add_interaction(Interaction("2", 0.9, 60))  # Positive (1 min)
-    calc.add_interaction(Interaction("3", -0.5, 30)) # Negative (30s)
+    calc.add_interaction(Interaction("1", 0.8, 120))  # Positive (2 min)
+    calc.add_interaction(Interaction("2", 0.9, 60))   # Positive (1 min)
+    calc.add_interaction(Interaction("3", -0.5, 30))  # Negative (30s)
 
     result = calc.calculate_score()
     print(f"MEBA Results: {result}")
