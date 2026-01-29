@@ -21,28 +21,6 @@ class PythonAnalyzer(BaseLanguageAnalyzer):
     def analyze(self, source_code: str) -> List[Dict[str, Any]]:
         try:
             tree = ast.parse(source_code)
-            nodes = []
-            
-            for node in ast.walk(tree):
-                if isinstance(node, (ast.ClassDef, ast.FunctionDef)):
-                    # Determine type
-                    node_type = "Class" if isinstance(node, ast.ClassDef) else "Method"
-                    if isinstance(node, ast.FunctionDef):
-                        # Simple check: if it's top level or nested in function, it's a Function.
-                        # If nested in Class, it's a Method. (Approximation for now)
-                        # The original code relied on parent_is_class which ast.walk doesn't set by default
-                        # We will stick to the simplified logic from the extensive original file or improve it.
-                        node_type = "Function" # Default to function, will be refined if we traverse differently
-                        
-                        # Note: To correctly distinguish Method vs Function with ast.walk, we usually 
-                        # need to track context. For this migration, I'll keep it simple:
-                        # If the original code had specific logic, we replicate it.
-                        # The original used `getattr(node, 'parent_is_class', False)`. 
-                        # Standard AST doesn't have parent links. We can re-implement the parent setter text.
-                        pass
-
-                    # Re-implementing a smarter traversal to catch Methods correctly
-                    pass
 
             # Let's use a NodeVisitor to correctly identify methods vs functions
             visitor = SymbolVisitor()
