@@ -9,3 +9,7 @@
 ## 2025-05-24 - Optimization of Log Compaction (O(N) to O(1))
 **Learning:** Iterating over a large list (N=100,000) to calculate aggregates creates a latency spike (jitter) even if the average throughput is high. By maintaining incremental statistics (sum, min, max, counts) on every insertion (O(1)), the compaction step becomes O(1), eliminating the spike.
 **Action:** For large rolling logs where summaries are needed, favor incremental updates of statistics over batch processing at the end, provided the update overhead is negligible (using instance attributes instead of dictionary keys reduces overhead).
+
+## 2025-05-24 - Optimization of MEBA Metric Calculation (O(N) to O(1))
+**Learning:** Caching aggregates is insufficient for high-frequency interleaved read/write workloads (O(N) on cache miss). Incremental updates provide consistent O(1) performance regardless of usage pattern.
+**Action:** Prefer incremental counters over lazy evaluation + caching for cumulative metrics.
