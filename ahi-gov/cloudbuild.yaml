@@ -4,6 +4,7 @@ steps:
     args:
       - '-c'
       - |
+        set -e
         cd apiproxies/sap-governance-v1
         zip -r ../../apiproxy.zip apiproxy
     dir: 'ahi-gov/src/main/apigee'
@@ -14,6 +15,7 @@ steps:
     args:
       - '-c'
       - |
+        set -e
         echo "🚀 Deploying to Apigee Organization: $PROJECT_ID"
         gcloud apigee apis deploy \
           --organization=$PROJECT_ID \

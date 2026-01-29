@@ -87,3 +87,5 @@ archives/
 
 # Generated figures (can be regenerated)
 # figures/*.png
+
+*.zip
