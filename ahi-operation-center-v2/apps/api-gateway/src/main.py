@@ -115,13 +115,23 @@ async def calculate_meba(request: MEBARequest):
         # Import MEBA calculator (in production, this would be properly installed)
         # For now, return mock calculation
         
-        positive_count = sum(1 for i in request.interactions if i.sentiment_score > 0.1)
-        negative_count = sum(1 for i in request.interactions if i.sentiment_score < -0.1)
+        positive_count = 0
+        negative_count = 0
+        total_time = 0.0
+        neg_time = 0.0
+
+        for i in request.interactions:
+            score = i.sentiment_score
+            duration = i.duration_seconds
+            total_time += duration
+
+            if score > 0.1:
+                positive_count += 1
+            elif score < -0.1:
+                negative_count += 1
+                neg_time += duration
         
         ripn = positive_count / max(1, negative_count)
-        
-        total_time = sum(i.duration_seconds for i in request.interactions)
-        neg_time = sum(i.duration_seconds for i in request.interactions if i.sentiment_score < -0.1)
         frn = neg_time / max(1, total_time)
         
         frn_adjusted = frn * request.frn_penalty_weight
