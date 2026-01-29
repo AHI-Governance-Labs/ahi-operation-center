@@ -35,7 +35,10 @@ jobs:
           # Instalamos las herramientas de Firebase
           npm install -g firebase-tools
           
-          # Desplegamos ambos sitios usando el token de acceso de OIDC
-          # Esto evita el error de "firebase login" definitivamente
+          # Desplegamos los tres sitios del ecosistema usando el token de acceso de OIDC
+          # AHI Governance - Sitio corporativo
           firebase deploy --only hosting:ahigovernance --project cs-poc-aguy0wkzgf55jarewtxljk9 --token "${{ steps.auth.outputs.access_token }}"
+          # Sovereign Symbiosis - Research hub
           firebase deploy --only hosting:sovereignsymbiosis --project cs-poc-aguy0wkzgf55jarewtxljk9 --token "${{ steps.auth.outputs.access_token }}"
+          # ECP-1 Ethical Captcha - Verificación ética
+          firebase deploy --only hosting:ethic-check --project cs-poc-aguy0wkzgf55jarewtxljk9 --token "${{ steps.auth.outputs.access_token }}"
