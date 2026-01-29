@@ -5,3 +5,7 @@
 ## 2025-05-24 - Optimization of Variance Calculation
 **Learning:** Calculating variance on a small sliding window (`deque`, N=100) using the standard definition (`sum((x-mean)**2)`) requires iterating twice or creating an intermediate list. Using the batch formula `Var(X) = E[X^2] - (E[X])^2` allows for a single-pass calculation without list allocation, yielding a ~3x speedup.
 **Action:** For calculating mean and variance on small collections in hot paths, use the single-pass sum and sum-of-squares approach to avoid allocation and redundant iteration, ensuring to clamp variance to 0 for numerical stability.
+
+## 2025-05-24 - Optimization of Log Compaction (O(N) to O(1))
+**Learning:** Iterating over a large list (N=100,000) to calculate aggregates creates a latency spike (jitter) even if the average throughput is high. By maintaining incremental statistics (sum, min, max, counts) on every insertion (O(1)), the compaction step becomes O(1), eliminating the spike.
+**Action:** For large rolling logs where summaries are needed, favor incremental updates of statistics over batch processing at the end, provided the update overhead is negligible (using instance attributes instead of dictionary keys reduces overhead).
