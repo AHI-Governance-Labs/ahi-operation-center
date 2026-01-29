@@ -333,7 +333,7 @@ class ICEWLogger:
             "current_window": self.telemetry_log
         }
         with open(output_path, 'w') as f:
-            json.dump(export_data, f, indent=2)
+            json.dump(export_data, f)
 
 
 # --- Ejemplo de Uso ---
