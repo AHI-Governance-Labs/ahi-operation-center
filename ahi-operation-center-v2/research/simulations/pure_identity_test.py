@@ -16,10 +16,8 @@
 import random
 import csv
 import time
-from dataclasses import dataclass, field
-from typing import List, Dict, Tuple
-from enum import Enum
-from collections import Counter
+from dataclasses import dataclass
+from typing import Dict
 
 # ============================================================================
 # MINIMAL SUBSTRATE (Pure Numbers)
@@ -38,9 +36,6 @@ class PureSubstrate:
     has_been_critical: bool = False
     lowest_integrity: float = 1.0
     time_in_crisis: int = 0
-    
-    # History tracking
-    integrity_history: List[float] = field(default_factory=list)
     
     def degrade(self, intensity: float):
         self.total_cycles += 1
@@ -66,11 +61,6 @@ class PureSubstrate:
         self._update()
     
     def _update(self):
-        # Update derived metrics
-        self.integrity_history.append(self.integrity)
-        if len(self.integrity_history) > 100:
-            self.integrity_history.pop(0)
-        
         # Trauma memory accumulates during crisis
         if self.has_been_critical:
             depth = 1.0 - self.lowest_integrity
