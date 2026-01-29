@@ -123,7 +123,7 @@ class MEBACalculator:
         # MEBA_Cert = (RIPN - FRN_Adjusted) / RIPN_Max
         meba_raw = (ripn - frn_adjusted) / self.ripn_max
 
-        # Clamp between -1 and 1 (or 0 and 1 depending on interpretation, usually -0.5 to 1.0 per docs)
+        # Clamp between -1.0 and 1.0 as per official documentation
         meba_cert = max(-1.0, min(1.0, meba_raw))
 
         return {

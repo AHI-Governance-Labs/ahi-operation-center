@@ -107,6 +107,23 @@ class TestMEBACalculator:
         result = calc.calculate_score()
         assert result["meba_cert"] <= 1.0
 
+    def test_meba_score_lower_bound_clamping(self):
+        """Test that MEBA score is clamped to valid lower bound (-1.0)."""
+        # Set parameters to easily reach negative scores
+        # RIPN_Max = 1.0
+        # FRN Penalty = 2.0
+        # If we have only negative interactions, RIPN=0, FRN=1.0
+        # FRN_Adjusted = 1.0 * 2.0 = 2.0
+        # Score = (0 - 2.0) / 1.0 = -2.0
+        # Should be clamped to -1.0
+
+        calc = MEBACalculator(ripn_max=1.0, frn_penalty_weight=2.0)
+        calc.add_interaction(Interaction("1", -0.9, 100))
+
+        result = calc.calculate_score()
+        assert result["meba_cert"] == -1.0
+        assert "meba_cert" in result
+
 
 class TestInteraction:
     """Test suite for Interaction dataclass."""
