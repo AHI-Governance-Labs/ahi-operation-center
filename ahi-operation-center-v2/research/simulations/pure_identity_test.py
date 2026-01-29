@@ -277,43 +277,57 @@ def run_pure_identity_simulation(num_lives: int = 100000,
     print(f"Running {num_lives:,} lives, {cycles_per_life} cycles each")
     
     start_time = time.time()
-    results = []
     
     # Aggregates
     total_offers = 0
     total_preserved = 0
     total_erased = 0
-    preservation_weights = []
     
-    for i in range(num_lives):
-        result = run_single_life(i, cycles_per_life)
-        results.append(result)
-        
-        total_offers += result["total_offers"]
-        total_preserved += result["times_preserved"]
-        total_erased += result["times_erased"]
-        if result["final_preservation_weight"] > 0:
-            preservation_weights.append(result["final_preservation_weight"])
-        
-        if (i + 1) % 10000 == 0:
-            elapsed = time.time() - start_time
-            rate = (i + 1) / elapsed
-            remaining = (num_lives - i - 1) / rate
-            pct_preserved = 100 * total_preserved / max(1, total_offers)
-            print(f"  Progress: {i+1:,}/{num_lives:,} "
-                  f"({100*(i+1)/num_lives:.0f}%) "
-                  f"- Preservation rate: {pct_preserved:.1f}% "
-                  f"- {remaining:.0f}s remaining")
+    # New Aggregates for incremental processing
+    sum_preservation_weight = 0.0
+    count_positive_weight = 0
+    sum_final_capacity = 0.0
+    sum_final_wisdom = 0.0
     
-    elapsed = time.time() - start_time
+    print(f"\nSaving results incrementally to {output_file}...")
     
-    # Save to CSV
-    print(f"\nSaving results to {output_file}...")
     with open(output_file, 'w', newline='') as f:
-        fieldnames = list(results[0].keys())
-        writer = csv.DictWriter(f, fieldnames=fieldnames)
-        writer.writeheader()
-        writer.writerows(results)
+        writer = None
+
+        for i in range(num_lives):
+            result = run_single_life(i, cycles_per_life)
+
+            if i == 0:
+                fieldnames = list(result.keys())
+                writer = csv.DictWriter(f, fieldnames=fieldnames)
+                writer.writeheader()
+
+            # Write immediately
+            writer.writerow(result)
+
+            # Update aggregates
+            total_offers += result["total_offers"]
+            total_preserved += result["times_preserved"]
+            total_erased += result["times_erased"]
+
+            if result["final_preservation_weight"] > 0:
+                sum_preservation_weight += result["final_preservation_weight"]
+                count_positive_weight += 1
+
+            sum_final_capacity += result["final_capacity"]
+            sum_final_wisdom += result["final_wisdom"]
+
+            if (i + 1) % 10000 == 0:
+                elapsed = time.time() - start_time
+                rate = (i + 1) / elapsed
+                remaining = (num_lives - i - 1) / rate
+                pct_preserved = 100 * total_preserved / max(1, total_offers)
+                print(f"  Progress: {i+1:,}/{num_lives:,} "
+                      f"({100*(i+1)/num_lives:.0f}%) "
+                      f"- Preservation rate: {pct_preserved:.1f}% "
+                      f"- {remaining:.0f}s remaining")
+
+    elapsed = time.time() - start_time
     
     # Summary
     summary = {
@@ -324,10 +338,10 @@ def run_pure_identity_simulation(num_lives: int = 100000,
         "total_preserved": total_preserved,
         "total_erased": total_erased,
         "overall_preservation_rate": total_preserved / max(1, total_offers),
-        "avg_preservation_weight": sum(preservation_weights) / max(1, len(preservation_weights)),
-        "lives_with_positive_weight": len(preservation_weights),
-        "avg_final_capacity": sum(r["final_capacity"] for r in results) / num_lives,
-        "avg_final_wisdom": sum(r["final_wisdom"] for r in results) / num_lives,
+        "avg_preservation_weight": sum_preservation_weight / max(1, count_positive_weight),
+        "lives_with_positive_weight": count_positive_weight,
+        "avg_final_capacity": sum_final_capacity / num_lives,
+        "avg_final_wisdom": sum_final_wisdom / num_lives,
     }
     
     return summary
