@@ -17,6 +17,7 @@ steps:
       - |
         set -e
         echo "🚀 Deploying to Apigee Organization: $PROJECT_ID"
+        if [ ! -f "ahi-gov/src/main/apigee/apiproxy.zip" ]; then echo "❌ Error: Artifact not found"; exit 1; fi
         gcloud apigee apis deploy \
           --organization=$PROJECT_ID \
           --api=sap-governance-v1 \
