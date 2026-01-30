@@ -38,8 +38,14 @@ class TestPerformanceIntegrity(unittest.TestCase):
         for i in range(10):
             data[i] = 0.1 * i
 
-        # We need to inject this data into the logger's window
-        logger.window = deque(data, maxlen=100)
+        # Feed data properly so internal stats are updated
+        for val in data:
+            logger.process_event({
+                'semantic_stability': val,
+                'output_stability': val,
+                'constraint_compliance': val,
+                'decision_entropy': 1.0 - val
+            })
 
         # Let's send an event with a known CN
         # metrics that sum to 2.0 -> cn = 0.5

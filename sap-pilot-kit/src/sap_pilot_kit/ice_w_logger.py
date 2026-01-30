@@ -76,6 +76,11 @@ class ICEWLogger:
         self._stat_degraded_count = 0
         self._stat_invalidated_count = 0
 
+        # Optimization: Incremental stats for sliding window (O(1) variance)
+        self._window_sum_x = 0.0
+        self._window_sum_sq_x = 0.0
+        self._drift_counter = 0
+
     def _compact_logs(self):
         """
         Summarize granular telemetry logs into an epoch summary to free memory.
@@ -161,14 +166,10 @@ class ICEWLogger:
         if len(self.window) >= 10:
             w_len = len(self.window)
 
-            # Optimization: Single pass calculation (O(N)) avoids list allocation and multiple iterations
+            # Optimization: Incremental stats calculation (O(1))
             # Uses formula: Var(X) = E[X^2] - (E[X])^2
-            sum_x = 0.0
-            sum_sq_x = 0.0
-
-            for x in self.window:
-                sum_x += x
-                sum_sq_x += x * x
+            sum_x = self._window_sum_x
+            sum_sq_x = self._window_sum_sq_x
 
             mean_w = sum_x / w_len
             variance = (sum_sq_x / w_len) - (mean_w * mean_w)
@@ -226,7 +227,24 @@ class ICEWLogger:
             }
         }
 
+        # Update sliding window stats (O(1))
+        removed = 0.0
+        if len(self.window) == self.window.maxlen:
+            removed = self.window[0]
+
         self.window.append(cn)
+
+        self._window_sum_x += cn
+        self._window_sum_x -= removed
+        self._window_sum_sq_x += (cn * cn)
+        self._window_sum_sq_x -= (removed * removed)
+
+        # Periodic re-computation to prevent floating point drift
+        self._drift_counter += 1
+        if self._drift_counter >= 1000:
+            self._window_sum_x = sum(self.window)
+            self._window_sum_sq_x = sum(x * x for x in self.window)
+            self._drift_counter = 0
 
         # Compact logs if limit reached
         if len(self.telemetry_log) >= self.max_log_size:
