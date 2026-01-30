@@ -22,7 +22,7 @@ steps:
           --api=sap-governance-v1 \
           --environment=${_APIGEE_ENV} \
           --source=ahi-gov/src/main/apigee/apiproxy.zip
-        echo "✅ Deployment complete."
+        echo "✅ Deployment of sap-governance-v1 complete."
 
 substitutions:
   _APIGEE_ENV: prod
