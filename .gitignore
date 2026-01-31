@@ -89,3 +89,10 @@ archives/
 # figures/*.png
 
 *.zip
+
+# =================================
+# Confidential - Local Only
+# =================================
+
+# Case studies (sensitive internal documents)
+documentos-de-gobernanza/case-studies/
