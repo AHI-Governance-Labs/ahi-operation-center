@@ -17,3 +17,7 @@
 ## 2025-05-24 - Optimization of Sliding Window Variance (O(N) to O(1))
 **Learning:** Replacing an O(N) loop (N=100) with O(1) incremental updates for variance calculation yielded a ~8.5% speedup in `ICEWLogger.process_event`. The gain was limited by the dominant overhead of UUID generation and object allocation in the logging step, proving that Amdahl's Law applies heavily here.
 **Action:** When optimizing hot paths involving heavy I/O or logging, purely algorithmic optimizations (like O(N) -> O(1) math) may have diminishing returns unless the dominant overhead (logging) is also addressed.
+
+## 2025-05-24 - Optimization of Object Allocation and UUID Generation
+**Learning:** In high-frequency logging paths, repeated dictionary creation and `uuid.uuid4()` calls are expensive. Replacing `uuid4()` with a hybrid approach (one-time UUID prefix + incremental counter) preserved the standard UUID format (36 chars) while providing O(1) performance. Also, reusing constant dictionary structures with `.copy()` reduced allocation overhead without risking shared state mutation.
+**Action:** For high-throughput telemetry, use hybrid ID generation (Prefix + Counter) to balance speed and format compliance, and pre-allocate constant dictionary parts.
