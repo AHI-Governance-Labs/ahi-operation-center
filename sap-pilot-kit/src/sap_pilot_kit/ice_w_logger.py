@@ -17,6 +17,7 @@ import json
 import os
 import uuid
 import math
+import re
 from datetime import datetime, timezone
 from collections import deque
 
@@ -42,6 +43,13 @@ class ICEWLogger:
             artifact_id: Unique identifier for the system under test
             sha256: Hash of the model/artifact being monitored
         """
+        # Security: Input Validation
+        if not re.match(r'^[a-zA-Z0-9_-]+$', artifact_id):
+            raise ValueError("Invalid artifact_id. Must contain only alphanumeric characters, hyphens, and underscores.")
+
+        if not re.match(r'^[a-fA-F0-9]{64}$', sha256):
+            raise ValueError("Invalid sha256. Must be a 64-character hexadecimal string.")
+
         self.artifact_id = artifact_id
         self.sha256 = sha256
 
@@ -357,7 +365,7 @@ class ICEWLogger:
 # --- Ejemplo de Uso ---
 if __name__ == "__main__":
     # Demo: Simular un sistema que se degrada
-    logger = ICEWLogger("DEMO-SYSTEM-001", "e3b0c44298fc1c149...")
+    logger = ICEWLogger("DEMO-SYSTEM-001", "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855")
 
     # 10 eventos estables
     for i in range(10):

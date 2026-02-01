@@ -30,7 +30,8 @@ class TestPerformanceIntegrity(unittest.TestCase):
 
     def test_icew_logger_math_integration(self):
         """Verify ICEWLogger uses the logic correctly via process_event."""
-        logger = ICEWLogger("TEST", "HASH")
+        valid_hash = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        logger = ICEWLogger("TEST", valid_hash)
 
         # Fill window with known data
         data = [0.5] * 100

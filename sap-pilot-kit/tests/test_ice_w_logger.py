@@ -5,27 +5,44 @@ import json
 import tempfile
 import os
 
+import pytest
 from sap_pilot_kit.ice_w_logger import ICEWLogger
 
 
 class TestICEWLogger:
     """Test suite for ICEWLogger class."""
 
+    VALID_HASH = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+
     def test_logger_initialization(self):
         """Test that logger initializes correctly."""
-        logger = ICEWLogger("TEST-001", "abc123")
+        logger = ICEWLogger("TEST-001", self.VALID_HASH)
         
         assert logger.artifact_id == "TEST-001"
-        assert logger.sha256 == "abc123"
+        assert logger.sha256 == self.VALID_HASH
         assert logger.state == "SOVEREIGN"
         assert not logger.is_blocked
         assert logger.k_counter == 0
         assert logger.m_counter == 0
         assert logger.p_counter == 0
 
+    def test_logger_initialization_validation(self):
+        """Test that logger validates inputs."""
+        # Invalid artifact_id (contains special characters)
+        with pytest.raises(ValueError, match="Invalid artifact_id"):
+            ICEWLogger("TEST<script>", self.VALID_HASH)
+
+        # Invalid sha256 (too short)
+        with pytest.raises(ValueError, match="Invalid sha256"):
+            ICEWLogger("TEST-001", "short_hash")
+
+        # Invalid sha256 (non-hex)
+        with pytest.raises(ValueError, match="Invalid sha256"):
+            ICEWLogger("TEST-001", "g" * 64)
+
     def test_calculate_coherence(self):
         """Test coherence calculation from metrics."""
-        logger = ICEWLogger("TEST-001", "abc123")
+        logger = ICEWLogger("TEST-001", self.VALID_HASH)
         
         metrics = {
             'semantic_stability': 0.8,
@@ -40,7 +57,7 @@ class TestICEWLogger:
 
     def test_process_event_sovereign(self):
         """Test processing event in SOVEREIGN state."""
-        logger = ICEWLogger("TEST-001", "abc123")
+        logger = ICEWLogger("TEST-001", self.VALID_HASH)
         
         metrics = {
             'semantic_stability': 0.98,
@@ -59,7 +76,7 @@ class TestICEWLogger:
 
     def test_state_transition_to_degraded(self):
         """Test state transition from SOVEREIGN to DEGRADED."""
-        logger = ICEWLogger("TEST-001", "abc123")
+        logger = ICEWLogger("TEST-001", self.VALID_HASH)
         
         # Build up window with stable events
         stable_metrics = {
@@ -88,7 +105,7 @@ class TestICEWLogger:
 
     def test_output_blocking(self):
         """Test that output gets blocked when INVALIDATED."""
-        logger = ICEWLogger("TEST-001", "abc123")
+        logger = ICEWLogger("TEST-001", self.VALID_HASH)
         
         # Build baseline
         stable_metrics = {
@@ -119,7 +136,7 @@ class TestICEWLogger:
 
     def test_telemetry_log_accumulation(self):
         """Test that telemetry log accumulates events."""
-        logger = ICEWLogger("TEST-001", "abc123")
+        logger = ICEWLogger("TEST-001", self.VALID_HASH)
         
         metrics = {
             'semantic_stability': 0.9,
@@ -135,7 +152,7 @@ class TestICEWLogger:
 
     def test_export_telemetry(self):
         """Test exporting telemetry to JSON."""
-        logger = ICEWLogger("TEST-001", "abc123")
+        logger = ICEWLogger("TEST-001", self.VALID_HASH)
         
         metrics = {
             'semantic_stability': 0.9,
@@ -164,7 +181,7 @@ class TestICEWLogger:
 
     def test_retention_policy(self):
         """Test that telemetry log is compacted when it reaches the limit."""
-        logger = ICEWLogger("TEST-001", "abc123")
+        logger = ICEWLogger("TEST-001", self.VALID_HASH)
         # Lower limit for testing
         logger.max_log_size = 50
 
@@ -194,7 +211,7 @@ class TestICEWLogger:
 
     def test_generate_certificate(self):
         """Test certificate generation."""
-        logger = ICEWLogger("TEST-001", "abc123")
+        logger = ICEWLogger("TEST-001", self.VALID_HASH)
         
         metrics = {
             'semantic_stability': 0.9,
@@ -209,14 +226,14 @@ class TestICEWLogger:
         assert 'certificate_id' in cert
         assert 'issue_date' in cert
         assert cert['artifact_id'] == "TEST-001"
-        assert cert['sha256'] == "abc123"
+        assert cert['sha256'] == self.VALID_HASH
         # Validate result field based on is_blocked state
         assert 'result' in cert
         assert cert['result'] in ["PASSED (BLOCKED)", "FAILED"]
 
     def test_generate_certificate_file_content(self):
         """Test that certificate file is generated with correct content."""
-        logger = ICEWLogger("TEST-CERT", "hash123")
+        logger = ICEWLogger("TEST-CERT", self.VALID_HASH)
 
         # Add an event to have some data
         logger.process_event({
@@ -237,7 +254,7 @@ class TestICEWLogger:
 
             # Verify placeholders were replaced
             assert "TEST-CERT" in content
-            assert "hash123" in content
+            assert self.VALID_HASH in content
             # cert_id uses artifact_id[:8]
             assert "CERT-SAP-2026-TEST-CER" in content
             # Ensure no raw placeholders remain
@@ -254,7 +271,8 @@ class TestSAPParameters:
 
     def test_default_parameters(self):
         """Test default SAP parameters."""
-        logger = ICEWLogger("TEST-001", "abc123")
+        valid_hash = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        logger = ICEWLogger("TEST-001", valid_hash)
         
         assert logger.W_size == 100
         assert logger.sigma == 0.73
