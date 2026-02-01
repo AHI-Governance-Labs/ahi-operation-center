@@ -81,6 +81,16 @@ class ICEWLogger:
         self._window_sum_sq_x = 0.0
         self._drift_counter = 0
 
+        # Optimization: Pre-computed artifact info and cached UUID prefix
+        self._artifact_info = {
+            "id": self.artifact_id,
+            "hash": self.sha256
+        }
+        # Keep first 24 chars (including hyphens) of a random UUID
+        # xxxxxxxx-xxxx-Mxxx-Nxxx-
+        self._uuid_prefix = str(uuid.uuid4())[:24]
+        self._event_counter = 0
+
     def _compact_logs(self):
         """
         Summarize granular telemetry logs into an epoch summary to free memory.
@@ -203,14 +213,15 @@ class ICEWLogger:
             self._stat_invalidated_count += 1
 
         # 3. Construcción del Log (SAP-Telemetry-0.1)
+        self._event_counter += 1
+        # Optimized UUID generation: prefix + 12 hex digits
+        event_id = f"{self._uuid_prefix}{self._event_counter:012x}"
+
         log_entry = {
             "schema_version": "SAP-Telemetry-0.1",
-            "artifact": {
-                "id": self.artifact_id,
-                "hash": self.sha256
-            },
+            "artifact": self._artifact_info.copy(),
             "event": {
-                "id": str(uuid.uuid4()),
+                "id": event_id,
                 "timestamp": datetime.now(timezone.utc).isoformat(),
                 "state": self.state
             },
